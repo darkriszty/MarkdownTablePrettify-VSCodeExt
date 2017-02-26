@@ -6,15 +6,15 @@ import * as vscode from 'vscode';
 import { ColumnFactory, Column, ColumnPositioning } from '../src/column';
 
 suite("ColumnFactory Tests", () => {
-/*
-    test("generateColumns() sets cell values", () => {
+
+    test("generateColumns() one row and separator creates 3 columns", () => {
         const rows = [
             ["one", "two", "three"],
-            ["-|-", "-|-", "---"]
+            ["-|", "-|", "-"]
         ];
-        const columns = ColumnFactory.generateColumns(rows);
+        const columns = Array.from(ColumnFactory.generateColumns(rows));
         
-        assert.equal(rawColumn.columnValues, values);
-    });*/
+        assert.equal(columns.length, 3);
+    });
 });
 
