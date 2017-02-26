@@ -1,4 +1,4 @@
-import { Column, ColumnType, ColumnFactory } from "./column";
+import { Column, ColumnPositioning, ColumnFactory } from "./column";
 
 export class Table {
     private _columns: Column[] = [];
@@ -24,7 +24,7 @@ export class Table {
             for (let col = 0; col < colCount; col++) {
                 const column = this._columns[col];
                 buffer += column.getValue(row);
-                if (column.getType() != ColumnType.Last)
+                if (column.getPositioning() != ColumnPositioning.Last)
                     buffer += "|";
             }
             buffer += "\r";
