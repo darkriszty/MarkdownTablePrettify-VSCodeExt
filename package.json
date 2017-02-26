@@ -11,14 +11,12 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onLanguage:markdown"
     ],
     "main": "./out/src/extension",
-    "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
-        }]
+    "contributes": { },
+    "capabilities": {
+        "documentFormattingProvider" : "true"
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
