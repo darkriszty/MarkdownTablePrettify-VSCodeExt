@@ -1,8 +1,6 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
+
 import { Column, ColumnPositioning, RawColumn } from '../src/column';
 
 suite("Column Tests", () => {
@@ -19,7 +17,7 @@ suite("Column Tests", () => {
         assert.equal(lastCol.getPositioning(), ColumnPositioning.Last);
     });
 
-    test("getSize() matches the give raw column count plus 1 separator", () => {
+    test("getSize() matches the given raw column count plus 1 separator", () => {
         assertGetSize(new RawColumn([]), 0);
         assertGetSize(new RawColumn(["row 1"]), 2);
         assertGetSize(new RawColumn(["row 1","row 2"]), 3);
@@ -29,6 +27,54 @@ suite("Column Tests", () => {
         assertIsEmpty(new RawColumn([]), true);
         assertIsEmpty(new RawColumn(["row 1"]), false);
         assertIsEmpty(new RawColumn(["row 1","row 2"]), false);
+    });
+
+    test("getValue() first column gives expected values right padded to header length", () => {
+        const column = new Column(new RawColumn(["Header row", "row 1","row 2"]), ColumnPositioning.First);
+        assert.equal(column.getValue(0), "Header row ");
+        assert.equal(column.getValue(1), "-----------");
+        assert.equal(column.getValue(2), "row 1      ");
+        assert.equal(column.getValue(3), "row 2      ");
+    });
+
+    test("getValue() first column gives expected values right padded to longest row length", () => {
+        const column = new Column(new RawColumn(["Header row", "very long first row","row 2"]), ColumnPositioning.First);
+        assert.equal(column.getValue(0), "Header row          ");
+        assert.equal(column.getValue(1), "--------------------");
+        assert.equal(column.getValue(2), "very long first row ");
+        assert.equal(column.getValue(3), "row 2               ");
+    });
+
+    test("getValue() middle column gives expected values padded to header length", () => {
+        const column = new Column(new RawColumn(["Header row", "row 1","row 2"]), ColumnPositioning.Middle);
+        assert.equal(column.getValue(0), " Header row ");
+        assert.equal(column.getValue(1), "------------");
+        assert.equal(column.getValue(2), " row 1      ");
+        assert.equal(column.getValue(3), " row 2      ");
+    });
+
+    test("getValue() middle column gives expected values padded to longest row length", () => {
+        const column = new Column(new RawColumn(["Header row", "very long first row","row 2"]), ColumnPositioning.Middle);
+        assert.equal(column.getValue(0), " Header row          ");
+        assert.equal(column.getValue(1), "---------------------");
+        assert.equal(column.getValue(2), " very long first row ");
+        assert.equal(column.getValue(3), " row 2               ");
+    });
+
+    test("getValue() last column gives expected values with only the separator having padded to header length", () => {
+        const column = new Column(new RawColumn(["Header row", "row 1","row 2"]), ColumnPositioning.Last);
+        assert.equal(column.getValue(0), " Header row");
+        assert.equal(column.getValue(1), "------------");
+        assert.equal(column.getValue(2), " row 1");
+        assert.equal(column.getValue(3), " row 2");
+    });
+
+    test("getValue() last column gives expected values with only the separator having padded to longest row length", () => {
+        const column = new Column(new RawColumn(["Header row", "very long first row","row 2"]), ColumnPositioning.Last);
+        assert.equal(column.getValue(0), " Header row");
+        assert.equal(column.getValue(1), "---------------------");
+        assert.equal(column.getValue(2), " very long first row");
+        assert.equal(column.getValue(3), " row 2");
     });
 
     function assertGetSize(raw: RawColumn, expectedSize: number){
