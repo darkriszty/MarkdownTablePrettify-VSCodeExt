@@ -77,6 +77,30 @@ suite("Column Tests", () => {
         assert.equal(column.getValue(3), " row 2");
     });
 
+    test("getValue() with empty first column gives empty results", () => {
+        const column = new Column(new RawColumn(["", "",""]), ColumnPositioning.First);
+        assert.equal(column.getValue(0), "");
+        assert.equal(column.getValue(1), "");
+        assert.equal(column.getValue(2), "");
+        assert.equal(column.getValue(3), "");
+    });
+
+    test("getValue() with empty middle column gives one space with padding on left and right", () => {
+        const column = new Column(new RawColumn(["", "",""]), ColumnPositioning.Middle);
+        assert.equal(column.getValue(0), "   ");
+        assert.equal(column.getValue(1), "---");
+        assert.equal(column.getValue(2), "   ");
+        assert.equal(column.getValue(3), "   ");
+    });
+
+    test("getValue() with empty last column gives empty results", () => {
+        const column = new Column(new RawColumn(["", "",""]), ColumnPositioning.Last);
+        assert.equal(column.getValue(0), "");
+        assert.equal(column.getValue(1), "");
+        assert.equal(column.getValue(2), "");
+        assert.equal(column.getValue(3), "");
+    });
+
     function assertGetSize(raw: RawColumn, expectedSize: number){
         const firstCol = new Column(raw, ColumnPositioning.First);
         const middleCol = new Column(raw, ColumnPositioning.Middle);

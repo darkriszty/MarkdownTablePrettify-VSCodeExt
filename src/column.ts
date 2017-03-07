@@ -25,7 +25,10 @@ export class Column {
 
     private _normalizeColumns(): void {
         for (let row = 0, rowCount = this._rawColumn.columnValues.length ; row < rowCount; row++) {
-            this._addValueWithPadding(this._rawColumn.columnValues[row], " ");
+            const currentRowValue = this.isEmpty() && this._columnType == ColumnPositioning.Middle
+                ? " " 
+                : this._rawColumn.columnValues[row];
+            this._addValueWithPadding(currentRowValue, " ");
             if (row == 0)
                 this._addValueWithPadding("-", "-");
         }
@@ -33,7 +36,7 @@ export class Column {
 
     private _addValueWithPadding(value: string, padChar: string): void {
         let newValue = "";
-        if (!this.isEmpty()) {
+        if (!this.isEmpty() || this._columnType == ColumnPositioning.Middle) {
             const left = this._getLeftPad(value, padChar);
             const right = this._getRightPad(value, padChar);
 
@@ -63,7 +66,7 @@ export class Column {
         if (this._columnType == ColumnPositioning.Last && !seperatorBeingAdded)
             return "";
 
-        const extraPaddingCount = this._rawColumn.cellLength - value.length + 2;
+        const extraPaddingCount = Math.max(this._rawColumn.cellLength - value.length + 2, 2);
         return new Array(extraPaddingCount).join(rightPad);
     }
 
