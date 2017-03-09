@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Table, TableFactory } from "./table";
+import { Table } from "./table";
 
 export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditProvider {
     provideDocumentRangeFormattingEdits(
@@ -16,7 +16,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
             let table: Table = null;
 
             try {
-                table = TableFactory.createTable(selection);
+                table = Table.create(selection);
                 if (table == null) {
                     message = "Mismatching table column sizes.";
                 }

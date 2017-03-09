@@ -3,11 +3,29 @@ import { Column, ColumnPositioning, ColumnFactory } from "./column";
 export class Table {
     private _columns: Column[] = [];
 
-    constructor(rawRows: string[][]) {
-        if (!TableValidator.areValidRows(rawRows))
-            throw "Invalid table: mismatching column counts.";
-        this._generateColumns(rawRows);
+    public static create(text: string): Table {
+        const lines = text.split(/\r\n|\r|\n/);
+        const columns = 0;
+
+        // split by separators to get a 2d array remove any empty lines
+        const rows = lines
+            .map(l => l.split("|"))
+            .filter(arr => !(arr.length == 1 && arr[0] == ""));
+
+        // remove the separator line from second line
+        const rowsWithoutSeparator = TableValidator.containsHeaderSeparator(rows)
+            ? rows.filter((v, i) => i != 1) // remove the separator line from second line
+            : null;
+
+        if (!TableValidator.areValidRows(rowsWithoutSeparator))
+            return null;
+
+        var result = new Table();
+        result._generateColumns(rowsWithoutSeparator);
+        return result;
     }
+
+    private constructor() { }
 
     private _generateColumns(rawRows: string[][]): void {
         for (let column of ColumnFactory.generateColumns(rawRows)) {
@@ -31,27 +49,6 @@ export class Table {
         }
 
         return buffer;
-    }
-}
-
-export class TableFactory {
-    public static createTable(text: string): Table {
-        const lines = text.split(/\r\n|\r|\n/);
-        const columns = 0;
-
-        // split by separators to get a 2d array remove any empty lines
-        const rows = lines
-            .map(l => l.split("|"))
-            .filter(arr => !(arr.length == 1 && arr[0] == ""));
-
-        // remove the separator line from second line
-        const rowsWithoutSeparator = TableValidator.containsHeaderSeparator(rows)
-            ? rows.filter((v, i) => i != 1) // remove the separator line from second line
-            : null;
-
-        return TableValidator.areValidRows(rowsWithoutSeparator)
-            ? new Table(rowsWithoutSeparator)
-            : null;
     }
 }
 
