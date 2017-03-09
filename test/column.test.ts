@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import * as vscode from 'vscode';
 
 import { Column, ColumnPositioning, RawColumn } from '../src/column';
 

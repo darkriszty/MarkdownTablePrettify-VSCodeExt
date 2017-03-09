@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as vscode from 'vscode';
+
 import { ColumnFactory, Column, ColumnPositioning } from '../src/column';
 
 suite("ColumnFactory Tests", () => {
