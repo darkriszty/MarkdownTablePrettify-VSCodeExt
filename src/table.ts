@@ -45,7 +45,8 @@ export class Table {
                 if (column.getPositioning() != ColumnPositioning.Last)
                     buffer += "|";
             }
-            buffer += "\r";
+            if (row < rowCount - 1)
+                buffer += "\r";
         }
 
         return buffer;
