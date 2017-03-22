@@ -9,7 +9,7 @@ suite("ColumnFactory Tests", () => {
             ["one"]
         ];
         const columns = Array.from(ColumnFactory.generateColumns(rows));
-        
+
         assert.equal(columns.length, 1);
     });
 
@@ -18,7 +18,7 @@ suite("ColumnFactory Tests", () => {
             ["one", "two", "three"]
         ];
         const columns = Array.from(ColumnFactory.generateColumns(rows));
-        
+
         assert.equal(columns.length, 3);
     });
 
@@ -28,8 +28,32 @@ suite("ColumnFactory Tests", () => {
             ["1", "2", "3", "4"]
         ];
         const columns = Array.from(ColumnFactory.generateColumns(rows));
-        
+
         assert.equal(columns.length, 4);
+    });
+
+    test("generateColumns() trims headers and values from extra whitespace", () => {
+        const rows = [
+            ["  one   ", "two", "   three", "four"],
+            ["1", "         2", "3   ", "4          "]
+        ];
+        const columns = Array.from(ColumnFactory.generateColumns(rows));
+
+        assert.equal(columns[0].getValue(0), "one ");
+        assert.equal(columns[0].getValue(1), "----");
+        assert.equal(columns[0].getValue(2), "1   ");
+
+        assert.equal(columns[1].getValue(0), " two ");
+        assert.equal(columns[1].getValue(1), "-----");
+        assert.equal(columns[1].getValue(2), " 2   ");
+
+        assert.equal(columns[2].getValue(0), " three ");
+        assert.equal(columns[2].getValue(1), "-------");
+        assert.equal(columns[2].getValue(2), " 3     ");
+
+        assert.equal(columns[3].getValue(0), " four");
+        assert.equal(columns[3].getValue(1), "------");
+        assert.equal(columns[3].getValue(2), " 4");
     });
 
     test("generateColumns() set correct ColumnPositioning", () => {

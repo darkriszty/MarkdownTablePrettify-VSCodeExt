@@ -92,7 +92,7 @@ export class ColumnFactory {
         // Create "raw" columns first to be able to specify the position (first/middle/last) of all columns later (based 
         // on maxLength) taking into account that columns can still be added or removed from the begginning/end.
         for (let col = 0; col < colCount; col++) {
-            rawColumns.push(new RawColumn(rawRows.map(r => r[col])));
+            rawColumns.push(new RawColumn(rawRows.map(r => r[col].trim())));
         }
 
         if (colCount > 1 && !rawColumns[0].isEmpty() && rawColumns[colCount - 1].isEmpty()) {
