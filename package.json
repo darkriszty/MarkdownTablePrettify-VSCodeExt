@@ -1,9 +1,9 @@
 {
-    "name": "markdowntableprettify",
-    "displayName": "MarkdownTablePrettify",
+    "name": "markdown-table-prettify",
+    "displayName": "Markdown Table Prettifier",
     "description": "Transforms markdown tables to be more readable.",
     "version": "0.0.1",
-    "publisher": "None",
+    "publisher": "darkriszty",
     "engines": {
         "vscode": "^1.5.0"
     },
