@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as os from "os";
 
 export class MockMarkdownTextDocument implements vscode.TextDocument {
     private _lines: string[];
@@ -49,10 +50,12 @@ export class MockMarkdownTextDocument implements vscode.TextDocument {
 
             if (isFirstRow)
                 buffer = line.substring(range.start.character);
-            if (isFirstRow && isLastRow)
+            else if (isFirstRow && isLastRow)
                 break;
-            if (isLastRow)
+            else
                 buffer += line.substring(0, range.end.character);
+            if (!isLastRow)
+                buffer += os.EOL;
         }
         return buffer;
     }

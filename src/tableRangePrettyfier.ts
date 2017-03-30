@@ -27,8 +27,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
                 table = this._tableFactory.create(selection);
                 if (table == null) {
                     message = "Mismatching table column sizes.";
-                }
-                else {
+                } else {
                     const formattedTable = table.prettyPrint();
                     result.push(new vscode.TextEdit(range, formattedTable));
                 }
@@ -36,6 +35,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
             }
             catch (ex) {
                 this._logger.logError(ex);
+                console.error("Error: \n\n" + ex);
             }
 
             if (!!message)
