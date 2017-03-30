@@ -1,18 +1,20 @@
 'use strict';
 import * as vscode from 'vscode';
 import { TableRangePrettyfier } from "./tableRangePrettyfier";
+import { TableFactory } from "./tableFactory";
+import { VsWindowLogger } from "./logger";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+// This method is called when the extension is activated.
+// The extension is activated the very first time the command is executed.
 export function activate(context: vscode.ExtensionContext): void {
     const MD_MODE: vscode.DocumentFilter = { language: "markdown", scheme: "file" };
+
     let disposable = vscode.languages.registerDocumentRangeFormattingEditProvider(
-        MD_MODE, new TableRangePrettyfier()
+        MD_MODE, new TableRangePrettyfier(new TableFactory(), new VsWindowLogger())
     );
 
     context.subscriptions.push(disposable);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
 }

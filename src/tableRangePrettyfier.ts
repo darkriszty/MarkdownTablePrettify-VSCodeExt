@@ -1,7 +1,15 @@
 import * as vscode from 'vscode';
-import { Table } from "./table";
+import { ITable, Table } from "./table";
+import { ITableFactory } from "./tableFactory";
+import { ILogger } from "./logger";
 
 export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditProvider {
+
+    constructor(
+        private _tableFactory: ITableFactory,
+        private _logger: ILogger
+    ) { }
+
     provideDocumentRangeFormattingEdits(
         document: vscode.TextDocument, range: vscode.Range,
         options: vscode.FormattingOptions, token: vscode.CancellationToken) : vscode.TextEdit[]
@@ -13,10 +21,10 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
         const isWholeDocumentFormatting = this.isWholeDocumentFormatting(document, range);
         if (!isWholeDocumentFormatting) {
             let message: string = null;
-            let table: Table = null;
+            let table: ITable = null;
 
             try {
-                table = Table.create(selection);
+                table = this._tableFactory.create(selection);
                 if (table == null) {
                     message = "Mismatching table column sizes.";
                 }
@@ -27,12 +35,11 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
 
             }
             catch (ex) {
-                message = (<Error>ex).message;
-                console.error(ex);
+                this._logger.logError(ex);
             }
 
             if (!!message)
-                vscode.window.showInformationMessage(message);
+                this._logger.logInfo(message);
         }
 
         return result;
