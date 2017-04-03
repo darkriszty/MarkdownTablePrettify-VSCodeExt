@@ -8,6 +8,8 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 
 - Remove redundant ending table border if the beginning has no border, so the table _will not end_ with "|".
 - Create missing ending table border if the beginning already has a border, so the table _will end_ with "|".
+- Save space by not right-padding the last column if the table has no border.
+- Support empty columns inside tables.
 
 ![feature X](assets/animation.gif)
 
@@ -18,4 +20,3 @@ The extension is available for markdown (_.md_) files. To format a table just se
 ## Known Issues
 
 - Formatting multiple tables at once and formatting an entire file is not supported.
-- The extension is not yet published.
