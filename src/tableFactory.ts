@@ -35,19 +35,24 @@ class TableValidator {
     }
 
     private static isSeparator(cellValue: string, isFirstOrLast: boolean): boolean {
-        if (cellValue.trim() == "-")
-            return true;
+        // if (cellValue.trim() == "-")
+        // return true;
         // If the first or last column is empty then it still can be a header containing separator, 
         // for example table starting or ending with borders ("|") would produce this.
         if (cellValue.trim() == "" && isFirstOrLast)
             return true;
-        return false;
+        
+        // If the column containing more "-"
+        for (let v of cellValue.trim()) {
+            if (v !== "-") return false;
+        }
+        return true;
     }
 
     public static areValidRows(rawRows: string[][]): boolean {
-        return !!rawRows && 
-                rawRows.length > 1 && // at least two rows are required
-                rawRows[0].length > 1 && // at least two columns are required
-                rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
+        return !!rawRows &&
+            rawRows.length > 1 && // at least two rows are required
+            rawRows[0].length > 1 && // at least two columns are required
+            rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
     }
 }
