@@ -4,7 +4,7 @@ export class Column {
     constructor(
         private _rawColumn: RawColumn,
         private _columnType: ColumnPositioning) {
-            this._normalizeColumns();
+        this._normalizeColumns();
     }
 
     public getSize(): number {
@@ -24,21 +24,21 @@ export class Column {
     }
 
     private _normalizeColumns(): void {
-        for (let row = 0, rowCount = this._rawColumn.columnValues.length ; row < rowCount; row++) {
+        for (let row = 0, rowCount = this._rawColumn.columnValues.length; row < rowCount; row++) {
             const currentRowValue = this.isEmpty() && this._columnType == ColumnPositioning.Middle
-                ? " " 
+                ? " "
                 : this._rawColumn.columnValues[row];
-            this._addValueWithPadding(currentRowValue, " ");
+            this._addValueWithPadding(currentRowValue, " ", this._rawColumn.cellLengths[row]);
             if (row == 0)
-                this._addValueWithPadding("-", "-");
+                this._addValueWithPadding("-", "-", 1);
         }
     }
 
-    private _addValueWithPadding(value: string, padChar: string): void {
+    private _addValueWithPadding(value: string, padChar: string, cellLength: number): void {
         let newValue = "";
         if (!this.isEmpty() || this._columnType == ColumnPositioning.Middle) {
             const left = this._getLeftPad(value, padChar);
-            const right = this._getRightPad(value, padChar);
+            const right = this._getRightPad(value, padChar, cellLength);
 
             newValue = left + value + right;
         }
@@ -60,13 +60,13 @@ export class Column {
         }
     }
 
-    private _getRightPad(value: string, rightPad: string): string {
+    private _getRightPad(value: string, rightPad: string, cellLength: number): string {
         const seperatorBeingAdded = this._oneRowExists();
         // only the separator has padding in the last column
         if (this._columnType == ColumnPositioning.Last && !seperatorBeingAdded)
             return "";
 
-        const extraPaddingCount = Math.max(this._rawColumn.cellLength - value.length + 2, 2);
+        const extraPaddingCount = Math.max(this._rawColumn.cellLength - cellLength + 2, 2);
         return new Array(extraPaddingCount).join(rightPad);
     }
 
@@ -101,7 +101,7 @@ export class ColumnFactory {
             colCount--;
         } else if (colCount > 1 && rawColumns[0].isEmpty() && !rawColumns[colCount - 1].isEmpty()) {
             // add an empty column at the end if the first one is an empty column but the last one isn't
-            const emptyRawRows = new Array(rowCount).fill(0);
+            const emptyRawRows = new Array(rowCount).fill('');
             rawColumns.push(new RawColumn(emptyRawRows));
             colCount++;
         }
@@ -120,7 +120,8 @@ export class ColumnFactory {
 
 export class RawColumn {
     public cellLength: number = 0;
-    constructor(public columnValues: string[]) { 
+    public cellLengths: number[] = [];
+    constructor(public columnValues: string[]) {
         this._setCellLength();
     }
 
@@ -128,13 +129,18 @@ export class RawColumn {
         return this.cellLength == 0;
     }
 
+    getLenth(columnValue: string): number {
+        return columnValue.replace(/[^\x00-\xff]/g, "aa").length; // 双字节长度为2
+    }
+
     private _setCellLength(): void {
         // determine the expected maximum length of this column
         const rowCount = this.columnValues.length;
-        for (let row = 0 ; row < rowCount; row++) {
-            const currentLength = this.columnValues[row].length;
+        for (let row = 0; row < rowCount; row++) {
+            this.cellLengths.push(this.getLenth(this.columnValues[row]));
+            const currentLength = this.cellLengths[row];
             if (currentLength > this.cellLength)
-               this.cellLength = currentLength;
+                this.cellLength = currentLength;
         }
     }
 }
