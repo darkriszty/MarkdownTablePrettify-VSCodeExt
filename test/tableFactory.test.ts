@@ -67,4 +67,14 @@ suite("TableFactory tests", () => {
         assert.equal(true, table != null);
         assert.equal(true, (table as ITable) != null);
     });
+
+    test("create() two column header with separator with multiple '-' and a row table instance created", () => {
+        const text = `header 1 | header 2
+                      -----|--
+                      value 1 | value 2`;
+        const factory = new TableFactory();
+        const table = factory.create(text);
+        assert.equal(true, table != null);
+        assert.equal(true, (table as ITable) != null);
+    });    
 });

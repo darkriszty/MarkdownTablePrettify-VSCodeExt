@@ -29,35 +29,39 @@ suite("Column Tests", () => {
     });
 
     test("getValue() first column gives expected values right padded to header length", () => {
-        const column = new Column(new RawColumn(["Header row", "row 1","row 2"]), ColumnPositioning.First);
+        const column = new Column(new RawColumn(["Header row", "row 1","row 2", "中文"]), ColumnPositioning.First);
         assert.equal(column.getValue(0), "Header row ");
         assert.equal(column.getValue(1), "-----------");
         assert.equal(column.getValue(2), "row 1      ");
         assert.equal(column.getValue(3), "row 2      ");
+        assert.equal(column.getValue(4), "中文       ");
     });
 
     test("getValue() first column gives expected values right padded to longest row length", () => {
-        const column = new Column(new RawColumn(["Header row", "very long first row","row 2"]), ColumnPositioning.First);
+        const column = new Column(new RawColumn(["Header row", "very long first row","row 2", "中文"]), ColumnPositioning.First);
         assert.equal(column.getValue(0), "Header row          ");
         assert.equal(column.getValue(1), "--------------------");
         assert.equal(column.getValue(2), "very long first row ");
         assert.equal(column.getValue(3), "row 2               ");
+        assert.equal(column.getValue(4), "中文                ");
     });
 
     test("getValue() middle column gives expected values padded to header length", () => {
-        const column = new Column(new RawColumn(["Header row", "row 1","row 2"]), ColumnPositioning.Middle);
+        const column = new Column(new RawColumn(["Header row", "row 1","row 2", "中文"]), ColumnPositioning.Middle);
         assert.equal(column.getValue(0), " Header row ");
         assert.equal(column.getValue(1), "------------");
         assert.equal(column.getValue(2), " row 1      ");
         assert.equal(column.getValue(3), " row 2      ");
+        assert.equal(column.getValue(4), " 中文       ");
     });
 
     test("getValue() middle column gives expected values padded to longest row length", () => {
-        const column = new Column(new RawColumn(["Header row", "very long first row","row 2"]), ColumnPositioning.Middle);
+        const column = new Column(new RawColumn(["Header row", "very long first row","row 2", "中文"]), ColumnPositioning.Middle);
         assert.equal(column.getValue(0), " Header row          ");
         assert.equal(column.getValue(1), "---------------------");
         assert.equal(column.getValue(2), " very long first row ");
         assert.equal(column.getValue(3), " row 2               ");
+        assert.equal(column.getValue(4), " 中文                ");
     });
 
     test("getValue() last column gives expected values with only the separator having padded to header length", () => {
