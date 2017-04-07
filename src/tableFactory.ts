@@ -14,40 +14,59 @@ export class TableFactory implements ITableFactory {
             .map(l => l.split("|"))
             .filter(arr => !(arr.length == 1 && arr[0] == ""));
 
+        if (!TableValidator.rowAndColumnSizeValid(rows))
+            return null;
+
         // remove the separator line from second line
-        const rowsWithoutSeparator = TableValidator.containsHeaderSeparator(rows)
+        const rowsWithoutSeparator = TableValidator.hasValidSeparators(rows)
             ? rows.filter((v, i) => i != 1) // remove the separator line from second line
             : null;
 
-        if (!TableValidator.areValidRows(rowsWithoutSeparator))
-            return null;
-
-        return new Table(rowsWithoutSeparator);
+        return rowsWithoutSeparator != null ? new Table(rowsWithoutSeparator) : null;
     }
 }
 
 class TableValidator {
-    public static containsHeaderSeparator(rawRows: string[][]): boolean {
-        if (!rawRows || rawRows.length < 1 || !rawRows[1])
-            return false;
-        const secondRow = rawRows[1];
-        return secondRow.every((v, i) => this.isSeparator(v, i == 0 || i == secondRow.length - 1));
+    public static rowAndColumnSizeValid(rawRows: string[][]): boolean {
+        return !!rawRows && 
+                rawRows.length > 2 && // at least two rows are required besides the separator
+                rawRows[0].length > 1 && // at least two columns are required
+                rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
     }
 
-    private static isSeparator(cellValue: string, isFirstOrLast: boolean): boolean {
-        if (cellValue.trim() == "-")
+    public static hasValidSeparators(rawRows: string[][]): boolean {
+        if (!rawRows || rawRows.length < 1 || !rawRows[1])
+            return false;
+
+        // if all columns are dashes, then it is valid
+        const secondRow = rawRows[1];
+        const allCellsDash = secondRow.every(cell => this.composedOfDashes(cell));
+        if (allCellsDash)
             return true;
-        // If the first or last column is empty then it still can be a header containing separator, 
-        // for example table starting or ending with borders ("|") would produce this.
-        if (cellValue.trim() == "" && isFirstOrLast)
+
+        // now it can only be valid of the table starts or ends with a border and the middle columns are dashes
+        return this.allDashesWithBorder(secondRow);
+    }
+
+    private static composedOfDashes(cellValue: string): boolean {
+        const trimmedSpace = cellValue.trim();
+        const firstDash = trimmedSpace.replace(/(?!^)-/g, "");
+        if (firstDash === "-")
             return true;
         return false;
     }
 
-    public static areValidRows(rawRows: string[][]): boolean {
-        return !!rawRows && 
-                rawRows.length > 1 && // at least two rows are required
-                rawRows[0].length > 1 && // at least two columns are required
-                rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
+    private static allDashesWithBorder(secondRow: string[]): boolean {
+        const hasStartingBorder = secondRow.length >= 3 && secondRow[0].trim() === "";
+        const hasEndingBorder = secondRow.length >= 3 && secondRow[secondRow.length - 1].trim() === "";
+
+        let startIndex = hasStartingBorder ? 1 : 0;
+        let endIndex = hasEndingBorder ? secondRow.length - 2 : secondRow.length - 1;
+
+        const middleColumns = secondRow.filter((v, i) => i >= startIndex && i <= endIndex);
+        const middleColumnsAllDash = middleColumns.every(cell => this.composedOfDashes(cell));
+        if (middleColumnsAllDash && (hasStartingBorder || hasEndingBorder))
+            return true;
+        return false;
     }
 }

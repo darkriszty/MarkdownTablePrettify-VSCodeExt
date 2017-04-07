@@ -16,7 +16,7 @@ int|32|Integer|
 
 Create missing ending table border if the beginning already has a border:
 |Primitive Type|Size(bit)|Wrapper
-|-|-|-|
+|-|-|-
 |short|16|Short
 |int|32|Integer
 
