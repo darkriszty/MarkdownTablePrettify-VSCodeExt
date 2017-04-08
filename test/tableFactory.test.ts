@@ -67,4 +67,53 @@ suite("TableFactory tests", () => {
         assert.equal(true, table != null);
         assert.equal(true, (table as ITable) != null);
     });
+
+    test("create() two column header with longer separator and a row table instance created", () => {
+        const text = `header 1 | header 2
+                      ----|----
+                      value 1 | value 2`;
+        const factory = new TableFactory();
+        const table = factory.create(text);
+        assert.equal(true, table != null);
+        assert.equal(true, (table as ITable) != null);
+    });
+
+    test("create() table with left border and valid separator a table instance created", () => {
+        const text = `|header 1 | header 2
+                      |-|----
+                      |value 1 | value 2`;
+        const factory = new TableFactory();
+        const table = factory.create(text);
+        assert.equal(true, table != null);
+        assert.equal(true, (table as ITable) != null);
+    });
+
+    test("create() table with right border and valid separator a table instance created", () => {
+        const text = `header 1 | header 2|
+                      ---|----|
+                      value 1 | value 2|`;
+        const factory = new TableFactory();
+        const table = factory.create(text);
+        assert.equal(true, table != null);
+        assert.equal(true, (table as ITable) != null);
+    });
+
+    test("create() table with both borders and valid separator a table instance created", () => {
+        const text = `|header 1 | header 2|
+                      |---|---|
+                      |value 1 | value 2|`;
+        const factory = new TableFactory();
+        const table = factory.create(text);
+        assert.equal(true, table != null);
+        assert.equal(true, (table as ITable) != null);
+    });
+
+    test("create() two column header with invalid separator null table returned", () => {
+        const text = `header 1 | header 2
+                      |
+                      value 1 | value 2`;
+        const factory = new TableFactory();
+        const table = factory.create(text);
+        assert.equal(table, null);
+    });
 });
