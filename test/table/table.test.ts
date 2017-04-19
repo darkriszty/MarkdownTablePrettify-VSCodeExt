@@ -1,6 +1,5 @@
 import * as assert from 'assert';
-
-import { Table } from '../src/table';
+import { Table } from "../../src/table/table";
 
 suite("Table pretty printing tests", () => {
 

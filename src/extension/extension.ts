@@ -1,8 +1,8 @@
 'use strict';
 import * as vscode from 'vscode';
 import { TableRangePrettyfier } from "./tableRangePrettyfier";
-import { TableFactory } from "./tableFactory";
-import { VsWindowLogger } from "./logger";
+import { TableFactory } from "../table/tableFactory";
+import { VsWindowLogger } from "../diagnostics/logger";
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
