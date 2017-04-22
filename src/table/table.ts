@@ -1,4 +1,6 @@
-import { Column, ColumnPositioning, ColumnFactory } from "./column";
+import { Column } from "../column/column";
+import { ColumnFactory } from "../column/columnFactory";
+import { ColumnPositioning } from "../column/columnPositioning";
 
 export interface ITable {
     prettyPrint(): string;

@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { TableFactory } from "../src/tableFactory";
-import { ITable } from "../src/table";
+import { TableFactory } from "../../src/table/tableFactory";
+import { ITable } from "../../src/table/table";
 
 suite("TableFactory tests", () => {
 

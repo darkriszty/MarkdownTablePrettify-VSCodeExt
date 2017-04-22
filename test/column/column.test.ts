@@ -1,6 +1,8 @@
 import * as assert from 'assert';
+import { RawColumn } from "../../src/column/rawColumn";
+import { Column } from "../../src/column/column";
+import { ColumnPositioning } from "../../src/column/columnPositioning";
 
-import { Column, ColumnPositioning, RawColumn } from '../src/column';
 
 suite("Column Tests", () => {
 

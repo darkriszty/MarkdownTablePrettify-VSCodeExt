@@ -1,20 +1,20 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import * as mockVsCode from "./mockVsCodeClasses";
-import { TableRangePrettyfier } from "../src/tableRangePrettyfier";
-import { ITableFactory } from "../src/tableFactory";
-import { ITable } from "../src/table";
-import { ILogger } from "../src/logger";
-import * as TypeMoq from "typemoq";
+import * as typeMock from "typemoq";
 import { It, Times } from "typemoq";
+import { ITableFactory } from "../../src/table/tableFactory";
+import { ILogger } from "../../src/diagnostics/logger";
+import { TableRangePrettyfier } from "../../src/extension/tableRangePrettyfier";
+import { MockMarkdownTextDocument } from "../mocks/mockMarkdownTextDocument";
+import { ITable } from "../../src/table/table";
 
 suite("TableRangePrettyfier tests", () => {
 
     test("provideDocumentRangeFormattingEdits() whole document selection returns empty text edits", () => {
-        const mockTableFactory: TypeMoq.IMock<ITableFactory> = TypeMoq.Mock.ofType<ITableFactory>();
-        const mockLogger: TypeMoq.IMock<ILogger> = TypeMoq.Mock.ofType<ILogger>();
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
-        const textDoc = new mockVsCode.MockMarkdownTextDocument("hello world");
+        const textDoc = new MockMarkdownTextDocument("hello world");
 
         const textEdits = trp.provideDocumentRangeFormattingEdits(textDoc, textDoc.getFullRange(), null, null);
 
@@ -27,11 +27,11 @@ hello | world
 -|-
 new | line
 `;
-        const mockTableFactory: TypeMoq.IMock<ITableFactory> = TypeMoq.Mock.ofType<ITableFactory>();
-        const mockLogger: TypeMoq.IMock<ILogger> = TypeMoq.Mock.ofType<ILogger>();
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
-        const textDoc = new mockVsCode.MockMarkdownTextDocument(tableText);
+        const textDoc = new MockMarkdownTextDocument(tableText);
         const range = textDoc.getRangeForLines(1, 4);
         mockTableFactory
             .setup(t => t.create(textDoc.getText(range)))
@@ -53,12 +53,12 @@ hello | world
 -|-
 new | line
 `;
-        const mockTableFactory: TypeMoq.IMock<ITableFactory> = TypeMoq.Mock.ofType<ITableFactory>();
-        const mockLogger: TypeMoq.IMock<ILogger> = TypeMoq.Mock.ofType<ILogger>();
-        const mockTable: TypeMoq.IMock<ITable> = TypeMoq.Mock.ofType<ITable>();
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
+        const mockTable: typeMock.IMock<ITable> = typeMock.Mock.ofType<ITable>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
-        const textDoc = new mockVsCode.MockMarkdownTextDocument(tableText);
+        const textDoc = new MockMarkdownTextDocument(tableText);
         const range = textDoc.getRangeForLines(1, 4);
 
         mockTable
@@ -85,12 +85,12 @@ hello | world
 -|-
 new | line
 `;
-        const mockTableFactory: TypeMoq.IMock<ITableFactory> = TypeMoq.Mock.ofType<ITableFactory>();
-        const mockLogger: TypeMoq.IMock<ILogger> = TypeMoq.Mock.ofType<ILogger>();
-        const mockTable: TypeMoq.IMock<ITable> = TypeMoq.Mock.ofType<ITable>();
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
+        const mockTable: typeMock.IMock<ITable> = typeMock.Mock.ofType<ITable>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
-        const textDoc = new mockVsCode.MockMarkdownTextDocument(tableText);
+        const textDoc = new MockMarkdownTextDocument(tableText);
         const range = textDoc.getRangeForLines(1, 4);
 
         mockTable

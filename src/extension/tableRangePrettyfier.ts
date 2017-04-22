@@ -1,7 +1,7 @@
-import * as vscode from 'vscode';
-import { ITable, Table } from "./table";
-import { ITableFactory } from "./tableFactory";
-import { ILogger } from "./logger";
+import * as vscode from "vscode";
+import { ITable } from "../table/table";
+import { ITableFactory } from "../table/tableFactory";
+import { ILogger } from "../diagnostics/logger";
 
 export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditProvider {
 

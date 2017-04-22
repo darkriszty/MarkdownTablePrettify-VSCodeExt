@@ -1,5 +1,6 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 import * as os from "os";
+import { MockTextLine } from "./mockTextLine";
 
 export class MockMarkdownTextDocument implements vscode.TextDocument {
     private _lines: string[];
@@ -78,19 +79,4 @@ export class MockMarkdownTextDocument implements vscode.TextDocument {
     validatePosition(position: vscode.Position): vscode.Position {
         return new vscode.Position[0];
     }
-}
-
-export class MockTextLine implements vscode.TextLine {
-    constructor(lineNumber: number, text: string, range: vscode.Range) {
-        this.lineNumber = lineNumber;
-        this.text = text;
-        this.range = range;
-    }
-
-    lineNumber: number;
-    text: string;
-    range: vscode.Range;
-    rangeIncludingLineBreak: vscode.Range;
-    firstNonWhitespaceCharacterIndex: number;
-    isEmptyOrWhitespace: boolean;
 }
