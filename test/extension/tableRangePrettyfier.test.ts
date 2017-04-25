@@ -22,17 +22,15 @@ suite("TableRangePrettyfier tests", () => {
     });
 
     test("provideDocumentRangeFormattingEdits() table factory called with invalid table then logInfo() called", () => {
-        const tableText = `
-hello | world
--|-
-new | line
-`;
+        const tableText = `hello | world
+                            -|-
+                            new | line`;
         const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
         const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
         const textDoc = new MockMarkdownTextDocument(tableText);
-        const range = textDoc.getRangeForLines(1, 4);
+        const range = textDoc.getRangeForLines(1, 3);
         mockTableFactory
             .setup(t => t.create(textDoc.getText(range)))
             .returns(() => null)
@@ -48,18 +46,16 @@ new | line
     });
 
     test("provideDocumentRangeFormattingEdits() table prettyPrint() called and logInfo() not called", () => {
-        const tableText = `
-hello | world
--|-
-new | line
-`;
+        const tableText = `hello | world
+                            -|-
+                            new | line`;
         const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
         const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const mockTable: typeMock.IMock<ITable> = typeMock.Mock.ofType<ITable>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
         const textDoc = new MockMarkdownTextDocument(tableText);
-        const range = textDoc.getRangeForLines(1, 4);
+        const range = textDoc.getRangeForLines(1, 3);
 
         mockTable
             .setup(t => t.prettyPrint())
@@ -80,18 +76,16 @@ new | line
     });
 
     test("provideDocumentRangeFormattingEdits() the result of the prettyPrint() is returned", () => {
-        const tableText = `
-hello | world
--|-
-new | line
-`;
+        const tableText = `hello | world
+                            -|-
+                            new | line`;
         const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
         const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const mockTable: typeMock.IMock<ITable> = typeMock.Mock.ofType<ITable>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
         const textDoc = new MockMarkdownTextDocument(tableText);
-        const range = textDoc.getRangeForLines(1, 4);
+        const range = textDoc.getRangeForLines(1, 3);
 
         mockTable
             .setup(t => t.prettyPrint())
