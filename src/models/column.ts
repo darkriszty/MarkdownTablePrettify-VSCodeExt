@@ -1,21 +1,21 @@
-import { RawColumn } from "./rawColumn";
 import { ColumnPositioning } from "./columnPositioning";
+import { Cell } from "./cell";
 
 export class Column {
     private _normalizedColumnValues: string[] = [];
+    private _columnType: ColumnPositioning;
+    private _columnLength: number = 0;
 
-    constructor(
-        private _rawColumn: RawColumn,
-        private _columnType: ColumnPositioning) {
-            this._normalizeColumns();
+    constructor(private _cells: Cell[]) {
+        this._setColumnLength();
     }
 
-    public getSize(): number {
-        return this._normalizedColumnValues.length;
+    public getNumberOfRows(): number {
+        return this._cells.length + 1;
     }
 
     public isEmpty(): boolean {
-        return this._rawColumn.isEmpty();
+        return this._columnLength == 0;
     }
 
     public getValue(row: number): string {
@@ -26,24 +26,30 @@ export class Column {
         return this._columnType;
     }
 
+    public setPositioning(position: ColumnPositioning): void {
+        this._columnType = position;
+        this._normalizeColumns();
+    }
+
     private _normalizeColumns(): void {
-        for (let row = 0, rowCount = this._rawColumn.columnValues.length ; row < rowCount; row++) {
+        for (let row = 0, rowCount = this._cells.length ; row < rowCount; row++) {
             const currentRowValue = this.isEmpty() && this._columnType == ColumnPositioning.Middle
-                ? " " 
-                : this._rawColumn.columnValues[row];
+                ? Cell.Empty
+                : this._cells[row];
             this._addValueWithPadding(currentRowValue, " ");
             if (row == 0)
-                this._addValueWithPadding("-", "-");
+                this._addValueWithPadding(new Cell("-"), "-");
         }
     }
 
-    private _addValueWithPadding(value: string, padChar: string): void {
+    private _addValueWithPadding(cell: Cell, padChar: string): void {
         let newValue = "";
+        const cellValue = cell.getValue();
         if (!this.isEmpty() || this._columnType == ColumnPositioning.Middle) {
-            const left = this._getLeftPad(value, padChar);
-            const right = this._getRightPad(value, padChar);
+            const left = this._getLeftPad(cellValue, padChar);
+            const right = this._getRightPad(cell, padChar);
 
-            newValue = left + value + right;
+            newValue = left + cellValue + right;
         }
         this._normalizedColumnValues.push(newValue);
     }
@@ -63,14 +69,23 @@ export class Column {
         }
     }
 
-    private _getRightPad(value: string, rightPad: string): string {
+    private _getRightPad(cell: Cell, rightPad: string): string {
         const seperatorBeingAdded = this._oneRowExists();
         // only the separator has padding in the last column
         if (this._columnType == ColumnPositioning.Last && !seperatorBeingAdded)
             return "";
 
-        const extraPaddingCount = Math.max(this._rawColumn.cellLength - value.length + 2, 2);
+        const extraPaddingCount = Math.max(this._columnLength - cell.getLength() + 2, 2);
         return new Array(extraPaddingCount).join(rightPad);
+    }
+
+    private _setColumnLength(): void {
+        const rowCount = this._cells.length;
+        for (let row = 0 ; row < rowCount; row++) {
+            const currentLength = this._cells[row].getLength();
+            if (currentLength > this._columnLength)
+               this._columnLength = currentLength;
+        }
     }
 
     private _oneRowExists(): boolean {

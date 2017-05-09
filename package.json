@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -22,9 +22,9 @@
     "onLanguage:markdown"
   ],
   "main": "./out/src/extension/extension",
-  "contributes": { },
+  "contributes": {},
   "capabilities": {
-    "documentFormattingProvider" : "true"
+    "documentFormattingProvider": "true"
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
@@ -37,7 +37,7 @@
     "@types/node": "^6.0.40",
     "mocha": "^2.3.3",
     "typemoq": "^1.4.1",
-    "typescript": "^2.0.3",
+    "typescript": "^2.3.2",
     "vscode": "^1.0.0"
   },
   "license": "MIT"

@@ -1,3 +1,6 @@
+import { Cell } from "./cell";
+import { Column } from "./column";
+import { ColumnFactory } from "./columnFactory";
 import { ITable, Table } from "./table";
 
 export interface ITableFactory {
@@ -7,7 +10,6 @@ export interface ITableFactory {
 export class TableFactory implements ITableFactory {
     public create(text: string): ITable {
         const lines = text.split(/\r\n|\r|\n/);
-        const columns = 0;
 
         // split by separators to get a 2d array remove any empty lines
         const rows = lines
@@ -22,7 +24,9 @@ export class TableFactory implements ITableFactory {
             ? rows.filter((v, i) => i != 1) // remove the separator line from second line
             : null;
 
-        return rowsWithoutSeparator != null ? new Table(rowsWithoutSeparator) : null;
+        return rowsWithoutSeparator != null
+            ? new Table(ColumnFactory.generateColumns(rowsWithoutSeparator))
+            : null;
     }
 }
 

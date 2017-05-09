@@ -1,26 +1,16 @@
-import { Column } from "../column/column";
-import { ColumnFactory } from "../column/columnFactory";
-import { ColumnPositioning } from "../column/columnPositioning";
+import { Column } from "./column";
+import { ColumnFactory } from "./columnFactory";
+import { ColumnPositioning } from "./columnPositioning";
 
 export interface ITable {
     prettyPrint(): string;
 }
 
 export class Table implements ITable {
-    private _columns: Column[] = [];
-
-    constructor(rowsWithoutSeparator: string[][]) {
-        this._generateColumns(rowsWithoutSeparator);
-    }
-
-    private _generateColumns(rawRows: string[][]): void {
-        for (let column of ColumnFactory.generateColumns(rawRows)) {
-            this._columns.push(column);
-        }
-    }
+    constructor(private _columns: Column[]) { }
 
     public prettyPrint(): string {
-        const rowCount = this._columns[0].getSize();
+        const rowCount = this._columns[0].getNumberOfRows();
         const colCount = this._columns.length;
 
         let buffer = "";

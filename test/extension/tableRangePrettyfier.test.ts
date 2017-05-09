@@ -2,11 +2,11 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 import * as typeMock from "typemoq";
 import { It, Times } from "typemoq";
-import { ITableFactory } from "../../src/table/tableFactory";
+import { ITableFactory } from "../../src/models/tableFactory";
 import { ILogger } from "../../src/diagnostics/logger";
 import { TableRangePrettyfier } from "../../src/extension/tableRangePrettyfier";
 import { MockMarkdownTextDocument } from "../mocks/mockMarkdownTextDocument";
-import { ITable } from "../../src/table/table";
+import { ITable } from "../../src/models/table";
 
 suite("TableRangePrettyfier tests", () => {
 
