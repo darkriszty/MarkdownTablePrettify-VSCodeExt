@@ -19,4 +19,4 @@ The extension is available for markdown (_.md_) files. To format a table just se
 
 ## Known Issues
 
-- Formatting multiple tables at once and formatting an entire file is not supported.
+- Formatting multiple tables at once is not supported (issue #7).

@@ -25,3 +25,9 @@ Primitive Type||Size(bit)|Class
 -|-|-|-
 byte||8|Byte
 char||16|Character
+
+Support for CJK character lengths:
+Column 1 | Column 2 | Column 3
+-|-|-
+1|𠁻|a
+x|𣄿|a
