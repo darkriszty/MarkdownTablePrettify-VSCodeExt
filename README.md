@@ -10,6 +10,7 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 - Create missing ending table border if the beginning already has a border, so the table _will end_ with "|".
 - Save space by not right-padding the last column if the table has no border.
 - Support empty columns inside tables.
+- Support character lengths for Chinese, Japanese and Korean characters.
 
 ![feature X](assets/animation.gif)
 
