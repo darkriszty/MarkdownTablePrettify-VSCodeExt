@@ -1,13 +1,19 @@
 import { TableViewModel } from "../viewModels/tableViewModel";
+import { TableValidator } from "../modelFactory/tableValidator";
 
 export class TableViewModelBuilder {
-    public build(tableValues: string[][]): TableViewModel {
+
+    constructor(
+        private _tableValidator: TableValidator
+    ) { }
+
+    public build(values: string[][]): TableViewModel {
         /*
-            1) validate
-            2) split rows&trim
+            1) validate without separator
+            2) trim values
             3) create intermediary columns
             4) obtain max length for each column
-            5) create RowValue from intermediary columns for each row
+            5) create Row VMB
             6) use first row to get header from rowViewModelBuilder.buildRow
             7) use dummy column to build separator from rowViewModelBuilder.buildSeparator
             8) use the rest of the rows to get the contents via rowViewModelBuilder.buildRow
