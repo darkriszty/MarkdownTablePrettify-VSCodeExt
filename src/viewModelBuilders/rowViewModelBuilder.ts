@@ -1,8 +1,11 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
-import { RowValue } from "./rowValue";
 
 export class RowViewModelBuilder {
-    public buildRow(rowValues: RowValue[]): RowViewModel {
+
+    constructor(private _maxTextLengthsPerColumn: number[]) {
+    }
+
+    public buildRow(rowValues: string[]): RowViewModel {
         /*
             for each value, add a left padding and a right padding:
                 * first column:
@@ -19,7 +22,7 @@ export class RowViewModelBuilder {
         return null;
     }
 
-    public buildSeparator(rowValues: RowValue[]): RowViewModel {
+    public buildSeparator(): RowViewModel {
         /*
             for each value, add a left padding and a right padding:
                 * first column:
@@ -38,10 +41,3 @@ export class RowViewModelBuilder {
         return null;
     }
 }
-
-/* TODO: refactor: 
-- this should get a ColumnConfiguration (array of numbers with MaxTextLengths per column) 
-- the buildRows should get an array of strings
-- the buildSeparator should not get any params
-Then the RowValue should become obsolete.
-*/
