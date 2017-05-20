@@ -2,7 +2,8 @@ import * as assert from 'assert';
 import { RowValue } from "../../src/viewModelBuilders/rowValue";
 import { RowViewModelBuilder } from "../../src/viewModelBuilders/rowViewModelBuilder";
 
-suite("buildRow() tests", () => {
+suite("RowViewModelBuilder.buildRow() tests", () => {
+
     test("First column not left padded", () => {
         const inputRows: RowValue[] = [
             new RowValue("c1", 5),
