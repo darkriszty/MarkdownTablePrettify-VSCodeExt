@@ -2,9 +2,9 @@ export class RowValue {
     private _value: string;
     private _maxColumnTextLength: number;
 
-    constructor(value : string, maxColumnTextLength : number) {
-        if (value == null) throw new Error("Argument cannot be null: value");
-        if (value.length > maxColumnTextLength) throw new Error("Invalid usage: the length of value cannot exceed maxColumnTextLength");
+    constructor(maxColumnTextLength : number, value? : string) {
+        if (value != null && value.length > maxColumnTextLength) 
+            throw new Error("Invalid usage: the length of value cannot exceed maxColumnTextLength");
 
         this._value = value;
         this._maxColumnTextLength = maxColumnTextLength;
