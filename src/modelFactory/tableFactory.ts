@@ -9,8 +9,9 @@ export class TableFactory {
     public getModel(text: string): string[][] {
         /*
             1) validate
-            2) remove separator
-            3) return matrix
+            2) remove empty rows
+            3) remove separator
+            4) return matrix
         */
         return null;
     }
