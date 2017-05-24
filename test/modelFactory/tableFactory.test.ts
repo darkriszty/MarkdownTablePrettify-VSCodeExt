@@ -6,7 +6,7 @@ import { TableValidator } from "../../src/modelFactory/tableValidator";
 suite("TableFactory tests", () => {
     let _mockValidator: IMock<TableValidator>;
 
-    beforeEach(function(){
+    setup(() => {
         _mockValidator = Mock.ofType<TableValidator>();
     });
 
