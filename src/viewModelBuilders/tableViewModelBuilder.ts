@@ -7,8 +7,8 @@ export class TableViewModelBuilder {
         private _tableValidator: TableValidator
     ) { }
 
-    public build(values: string[][]): TableViewModel {
-        if (!this._tableValidator.isValid(values, false))
+    public build(valuesWithoutSeparator: string[][]): TableViewModel {
+        if (!this._tableValidator.isValid(valuesWithoutSeparator, false))
             throw new Error("Invalid table values supplied.");
         /*
             1) validate without separator
