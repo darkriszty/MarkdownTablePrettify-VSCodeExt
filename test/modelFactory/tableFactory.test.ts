@@ -10,7 +10,7 @@ suite("TableFactory tests", () => {
         _mockValidator = Mock.ofType<TableValidator>();
     });
 
-    test("Invalid table throws error and calls validator", () => {
+    test("getModel() with invalid table throws error and calls validator", () => {
         const tableText = "invalid";
         _mockValidator.setup(m => m.isValid(It.isAny(), true)).returns(() => false).verifiable(Times.once());
         const sut = createFactory();
@@ -19,27 +19,46 @@ suite("TableFactory tests", () => {
         _mockValidator.verifyAll();
     });
 
-    test("Removes separator row and returns expected cells", () => {
+    test("getModel() removes empty rows", () => {
         const tableText = `
-            c1 | c2 | | c4
+          
+          c1 | c2 | | c4
             -|-|-|-
-            a | b || d`;
+           a | b || d
+           
+           `;
         _mockValidator.setup(m => m.isValid(It.isAny(), true)).returns(() => true).verifiable(Times.once());
         const sut = createFactory();
 
-        const cells: string[][] = sut.getModel(tableText);
+        const rows: string[][] = sut.getModel(tableText);
 
-        assert.equal(cells != null, true);
-        assert.equal(cells.length, 2);
-        assert.equal(cells.every(r => r.length == 4), true);
-        assert.equal(cells[0][0], "            c1 ");
-        assert.equal(cells[0][1], " c2 ");
-        assert.equal(cells[0][2], " ");
-        assert.equal(cells[0][3], " c4");
-        assert.equal(cells[1][0], "            a ");
-        assert.equal(cells[1][1], " b ");
-        assert.equal(cells[1][2], "");
-        assert.equal(cells[1][3], " d");
+        assert.equal(rows != null, true);
+        assert.equal(rows.length, 2);
+        assert.equal(rows.every(r => r.length == 4), true);
+        _mockValidator.verifyAll();
+    });
+
+    test("getModel() removes separator row and returns expected cells", () => {
+        const tableText = 
+        ` c1 | c2 | | c4
+            -|-|-|-
+           a | b || d`;
+        _mockValidator.setup(m => m.isValid(It.isAny(), true)).returns(() => true).verifiable(Times.once());
+        const sut = createFactory();
+
+        const rows: string[][] = sut.getModel(tableText);
+
+        assert.equal(rows != null, true);
+        assert.equal(rows.length, 2);
+        assert.equal(rows.every(r => r.length == 4), true);
+        assert.equal(rows[0][0], " c1 ");
+        assert.equal(rows[0][1], " c2 ");
+        assert.equal(rows[0][2], " ");
+        assert.equal(rows[0][3], " c4");
+        assert.equal(rows[1][0], "            a ");
+        assert.equal(rows[1][1], " b ");
+        assert.equal(rows[1][2], "");
+        assert.equal(rows[1][3], " d");
         _mockValidator.verifyAll();
     });
 
