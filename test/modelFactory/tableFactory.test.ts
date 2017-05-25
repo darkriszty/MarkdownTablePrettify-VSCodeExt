@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import { IMock, Mock, It, Times } from "typemoq";
 import { TableFactory } from "../../src/modelFactory/tableFactory";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
+import { assertExt } from "../assertExtensions";
 
 suite("TableFactory tests", () => {
     let _mockValidator: IMock<TableValidator>;
@@ -32,7 +33,7 @@ suite("TableFactory tests", () => {
 
         const rows: string[][] = sut.getModel(tableText);
 
-        assert.equal(rows != null, true);
+        assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
         assert.equal(rows.every(r => r.length == 4), true);
         _mockValidator.verifyAll();
@@ -48,7 +49,7 @@ suite("TableFactory tests", () => {
 
         const rows: string[][] = sut.getModel(tableText);
 
-        assert.equal(rows != null, true);
+        assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
         assert.equal(rows.every(r => r.length == 4), true);
         assert.equal(rows[0][0], " c1 ");

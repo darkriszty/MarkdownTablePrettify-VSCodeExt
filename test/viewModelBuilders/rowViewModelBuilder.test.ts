@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import { assertExt } from "../assertExtensions";
 import { RowViewModelBuilder } from "../../src/viewModelBuilders/rowViewModelBuilder";
 
 suite("RowViewModelBuilder.buildRow() tests", () => {
@@ -8,7 +9,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0).startsWith("c1"), true);
     });
 
@@ -17,7 +18,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(1).startsWith(" c2"), true);
     });
 
@@ -26,7 +27,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(2).startsWith(" c3"), true);
     });
 
@@ -35,7 +36,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0).endsWith("    "), true);
     });
 
@@ -44,7 +45,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(1).endsWith("    "), true);
     });
 
@@ -53,7 +54,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(2).endsWith("c3"), true);
     });
 
@@ -62,7 +63,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["", "c2", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "");
     });
 
@@ -71,7 +72,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", ""]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(2), "");
     });
 
@@ -80,7 +81,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "", "c3"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(1), "   ");
     });
 
@@ -89,7 +90,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c1", "c1"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(1), " c1    ");
     });
 
@@ -98,7 +99,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["col1", "", "c3", "c4"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "col1  ");
         assert.equal(rowViewModel.getValueAt(1), "   ");
         assert.equal(rowViewModel.getValueAt(2), " c3       ");
@@ -110,7 +111,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["", "c2", "c3", "c4"]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "");
         assert.equal(rowViewModel.getValueAt(1), " c2   ");
         assert.equal(rowViewModel.getValueAt(2), " c3       ");
@@ -122,7 +123,7 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(["c1", "c2", "c3", ""]);
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "c1  ");
         assert.equal(rowViewModel.getValueAt(1), " c2  ");
         assert.equal(rowViewModel.getValueAt(2), " c3  ");
@@ -138,7 +139,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "------");
     });
 
@@ -147,7 +148,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(1), "-------");
     });
 
@@ -156,7 +157,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(2), "-------");
     });
 
@@ -165,7 +166,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "");
     });
 
@@ -174,7 +175,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(1), "---");
     });
 
@@ -183,7 +184,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(2), "");
     });
 
@@ -191,7 +192,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
         const sut = createBuilder([5, 0, 8, 5]);
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "------");
         assert.equal(rowViewModel.getValueAt(1), "---");
         assert.equal(rowViewModel.getValueAt(2), "----------");
@@ -202,7 +203,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
         const sut = createBuilder([0, 4, 8, 5]);
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "");
         assert.equal(rowViewModel.getValueAt(1), "------");
         assert.equal(rowViewModel.getValueAt(2), "----------");
@@ -214,7 +215,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 
         const rowViewModel = sut.buildSeparator();
 
-        assert.equal(rowViewModel != null, true);
+        assertExt.isNotNull(rowViewModel);
         assert.equal(rowViewModel.getValueAt(0), "----");
         assert.equal(rowViewModel.getValueAt(1), "-----");
         assert.equal(rowViewModel.getValueAt(2), "-----");
