@@ -20,6 +20,8 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
         let message: string = null;
         let table: ITable = null;
 
+        const silent = this._isWholeDocumentFormatting(document, range);
+
         try {
             table = this._tableFactory.create(selection);
             if (table == null) {
@@ -29,13 +31,26 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
                 result.push(new vscode.TextEdit(range, formattedTable));
             }
         } catch (ex) {
-            this._logger.logError(ex);
-            console.error("Error: \n\n" + ex);
+            if (!silent)
+                this._logger.logError(ex);
+            console.error(`Error: ${ex}`);
         }
 
-        if (!!message)
+        if (!!message && !silent)
             this._logger.logInfo(message);
 
         return result;
+    }
+
+    private _isWholeDocumentFormatting(document: vscode.TextDocument, range: vscode.Range): boolean {
+        if (document.lineCount < 1)
+            return true;
+
+        const zeroPosition = new vscode.Position(0, 0);
+        const documentEndPosition = document.lineAt(document.lineCount - 1).range.end;
+        if (range.start.isEqual(zeroPosition) && range.end.isEqual(documentEndPosition))
+            return true;
+
+        return false;
     }
 }

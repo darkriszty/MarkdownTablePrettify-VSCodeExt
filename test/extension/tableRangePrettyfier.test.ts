@@ -21,16 +21,88 @@ suite("TableRangePrettyfier tests", () => {
         assert.equal(textEdits.length, 0);
     });
 
-    test("provideDocumentRangeFormattingEdits() table factory called with invalid table then logInfo() called", () => {
-        const tableText = `hello | world
-                            -|-
-                            new | line`;
+    test("provideDocumentRangeFormattingEdits() invalid table with whole document being formatted => logInfo() not called", () => {
+        const tableText = `row1
+                           row2
+                           row3`;
         const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
         const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
 
         const textDoc = new MockMarkdownTextDocument(tableText);
-        const range = textDoc.getRangeForLines(1, 3);
+        const range = textDoc.getRangeForLines(0, 3);
+        mockTableFactory
+            .setup(t => t.create(textDoc.getText(range)))
+            .returns(() => null)
+            .verifiable(Times.once());
+        mockLogger
+            .setup(t => t.logInfo(It.isAnyString()))
+            .verifiable(Times.never());
+
+        const textEdits = trp.provideDocumentRangeFormattingEdits(textDoc, range, null, null);
+
+        mockTableFactory.verifyAll();
+        mockLogger.verifyAll();
+    });
+
+    test("provideDocumentRangeFormattingEdits() error thrown with whole document being formatted => logError() not called", () => {
+        const tableText = `row1
+                           row2
+                           row3`;
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
+        const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
+
+        const textDoc = new MockMarkdownTextDocument(tableText);
+        const range = textDoc.getRangeForLines(0, 3);
+        mockTableFactory
+            .setup(t => t.create(textDoc.getText(range)))
+            .throws(new Error("expected error"))
+            .verifiable(Times.once());
+        mockLogger
+            .setup(t => t.logError(It.isAny()))
+            .verifiable(Times.never());
+
+        const textEdits = trp.provideDocumentRangeFormattingEdits(textDoc, range, null, null);
+
+        mockTableFactory.verifyAll();
+        mockLogger.verifyAll();
+    });
+
+    test("provideDocumentRangeFormattingEdits() error thrown without whole document being formatted => logError() called", () => {
+        const tableText = `row1
+                           row2
+                           row3`;
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
+        const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
+
+        const textDoc = new MockMarkdownTextDocument(tableText);
+        const range = textDoc.getRangeForLines(2, 3);
+        mockTableFactory
+            .setup(t => t.create(textDoc.getText(range)))
+            .throws(new Error("expected error"))
+            .verifiable(Times.once());
+        mockLogger
+            .setup(t => t.logError(It.isAny()))
+            .verifiable(Times.once());
+
+        const textEdits = trp.provideDocumentRangeFormattingEdits(textDoc, range, null, null);
+
+        mockTableFactory.verifyAll();
+        mockLogger.verifyAll();
+    });
+
+    test("provideDocumentRangeFormattingEdits() invalid table with not the whole document being formatted => logInfo() called", () => {
+        const tableText = `row1
+                           row2
+                           row3`;
+        const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
+        const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
+        const trp = new TableRangePrettyfier(mockTableFactory.object, mockLogger.object);
+
+        const textDoc = new MockMarkdownTextDocument(tableText);
+        const range = textDoc.getRangeForLines(2, 3);
         mockTableFactory
             .setup(t => t.create(textDoc.getText(range)))
             .returns(() => null)
@@ -46,9 +118,9 @@ suite("TableRangePrettyfier tests", () => {
     });
 
     test("provideDocumentRangeFormattingEdits() table prettyPrint() called and logInfo() not called", () => {
-        const tableText = `hello | world
-                            -|-
-                            new | line`;
+        const tableText = `row1
+                           row2
+                           row3`;
         const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
         const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const mockTable: typeMock.IMock<ITable> = typeMock.Mock.ofType<ITable>();
@@ -76,9 +148,9 @@ suite("TableRangePrettyfier tests", () => {
     });
 
     test("provideDocumentRangeFormattingEdits() the result of the prettyPrint() is returned", () => {
-        const tableText = `hello | world
-                            -|-
-                            new | line`;
+        const tableText = `row1
+                           row2
+                           row3`;
         const mockTableFactory: typeMock.IMock<ITableFactory> = typeMock.Mock.ofType<ITableFactory>();
         const mockLogger: typeMock.IMock<ILogger> = typeMock.Mock.ofType<ILogger>();
         const mockTable: typeMock.IMock<ITable> = typeMock.Mock.ofType<ITable>();
