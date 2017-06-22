@@ -225,5 +225,7 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
 });
 
 function createBuilder(columnMaxLengths: number[]): RowViewModelBuilder {
-    return new RowViewModelBuilder(columnMaxLengths);
+    var rowVmb = new RowViewModelBuilder();
+    rowVmb.setMaxTextLengthsPerColumn(columnMaxLengths);
+    return rowVmb;
 }

@@ -1,11 +1,15 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
 
 export class RowViewModelBuilder {
+    private _maxTextLengthsPerColumn: number[];
 
-    constructor(private _maxTextLengthsPerColumn: number[]) {
+    public setMaxTextLengthsPerColumn(maxTextLengthsPerColumn: number[]): void {
+        this._maxTextLengthsPerColumn = maxTextLengthsPerColumn;
     }
 
     public buildRow(rowValues: string[]): RowViewModel {
+        if (this._maxTextLengthsPerColumn == null)
+            throw new Error("Can't build row without knowing the expected lengths.");
         /*
             for each value, add a left padding and a right padding:
                 * first column:
@@ -23,6 +27,8 @@ export class RowViewModelBuilder {
     }
 
     public buildSeparator(): RowViewModel {
+        if (this._maxTextLengthsPerColumn == null)
+            throw new Error("Can't build separator without knowing the expected lengths.");
         /*
             for each value, add a left padding and a right padding:
                 * first column:
