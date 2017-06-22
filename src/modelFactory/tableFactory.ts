@@ -7,12 +7,18 @@ export class TableFactory {
     { }
 
     public getModel(text: string): string[][] {
-        /*
-            1) validate
-            2) remove empty rows
-            3) remove separator
-            4) return matrix
-        */
-        return null;
+        if (text == null)
+            throw new Error("Can't create table model from null table text.");
+
+        const rows = text.split(/\r\n|\r|\n/)
+            .map(l => l.split("|"))
+            .filter(arr => !(arr.length == 1 && /^\s*$/.test(arr[0])));
+
+        if (!this._validator.isValid(rows, true))
+            throw new Error("Can't create table model from invalid text.");
+
+        // remove the separator line from second line
+        const rowsWithoutSeparator = rows.filter((v, i) => i != 1);
+        return rowsWithoutSeparator;
     }
 }

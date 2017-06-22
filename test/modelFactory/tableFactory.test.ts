@@ -56,7 +56,7 @@ suite("TableFactory tests", () => {
         assert.equal(rows[0][1], " c2 ");
         assert.equal(rows[0][2], " ");
         assert.equal(rows[0][3], " c4");
-        assert.equal(rows[1][0], "            a ");
+        assert.equal(rows[1][0], "           a ");
         assert.equal(rows[1][1], " b ");
         assert.equal(rows[1][2], "");
         assert.equal(rows[1][3], " d");
