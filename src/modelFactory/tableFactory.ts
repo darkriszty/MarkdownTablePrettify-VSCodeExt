@@ -1,3 +1,4 @@
+import { Table } from "../models/table";
 import { TableValidator } from "./tableValidator";
 
 export class TableFactory {
@@ -6,7 +7,7 @@ export class TableFactory {
         private _validator: TableValidator)
     { }
 
-    public getModel(text: string): string[][] {
+    public getModel(text: string): Table {
         if (text == null)
             throw new Error("Can't create table model from null table text.");
 
@@ -14,11 +15,12 @@ export class TableFactory {
             .map(l => l.split("|"))
             .filter(arr => !(arr.length == 1 && /^\s*$/.test(arr[0])));
 
-        if (!this._validator.isValid(rows, true))
+        const table = new Table(rows);
+        if (!this._validator.isValid(table, true))
             throw new Error("Can't create table model from invalid text.");
 
         // remove the separator line from second line
         const rowsWithoutSeparator = rows.filter((v, i) => i != 1);
-        return rowsWithoutSeparator;
+        return new Table(rowsWithoutSeparator);
     }
 }

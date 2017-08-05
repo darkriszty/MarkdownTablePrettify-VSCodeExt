@@ -1,11 +1,12 @@
 import * as assert from "assert";
 import { assertExt } from "../assertExtensions";
 import { IMock, Mock, It, Times } from "typemoq";
-import { TableViewModelBuilder } from "../../src/viewModelBuilders/tableViewModelBuilder";
+import { Table } from "../../src/models/table";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
 import { TableViewModel } from "../../src/viewModels/tableViewModel";
-import { RowViewModelBuilder } from "../../src/viewModelBuilders/rowViewModelBuilder";
+import { TableViewModelBuilder } from "../../src/viewModelBuilders/tableViewModelBuilder";
 import { RowViewModel } from "../../src/viewModels/rowViewModel";
+import { RowViewModelBuilder } from "../../src/viewModelBuilders/rowViewModelBuilder";
 
 suite("TableViewModelBuilder tests", () => {
     let _validator: IMock<TableValidator>;
@@ -17,27 +18,27 @@ suite("TableViewModelBuilder tests", () => {
     });
 
     test("build() with invalid table calls validator and throws exception", () => {
-        const inputRows: string[][] = [];
+        const table = new Table([]);
         _validator
-            .setup(v => v.isValid(inputRows, false))
+            .setup(v => v.isValid(table, false))
             .returns(() => false)
             .verifiable(Times.once());
 
         const vmb = createViewModelBuilder();
 
-        assert.throws(() => vmb.build(inputRows));
+        assert.throws(() => vmb.build(table));
         _validator.verifyAll();
     });
 
     test("build() with valid table calls rowVmb methods", () => {
-        const inputRows: string[][] = [
+        const table = new Table([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ];
+        ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
-        _validator.setup(v => v.isValid(inputRows, false)).returns(() => true);
+        _validator.setup(v => v.isValid(table, false)).returns(() => true);
 
         _rowVmb
             .setup(m => m.buildSeparator())
@@ -49,24 +50,24 @@ suite("TableViewModelBuilder tests", () => {
             .verifiable(Times.exactly(4));
 
         const vmb = createViewModelBuilder();
-        vmb.build(inputRows);
+        vmb.build(table);
 
         _rowVmb.verifyAll();
     });
 
     test("build() with valid table returns expected view model properties", () => {
-        const inputRows: string[][] = [
+        const table = new Table([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ];
+        ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
-        _validator.setup(v => v.isValid(inputRows, false)).returns(() => true);
+        _validator.setup(v => v.isValid(table, false)).returns(() => true);
         _rowVmb.setup(m => m.buildSeparator()).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny())).returns(() => expectedRow);
 
-        const tableVm = createViewModelBuilder().build(inputRows);
+        const tableVm = createViewModelBuilder().build(table);
 
         assertExt.isNotNull(tableVm);
         assert.equal(tableVm.header, expectedRow);
@@ -83,16 +84,16 @@ suite("TableViewModelBuilder tests", () => {
     */
 
     test("build() valid table with CJK characters returns expected view model", () => {
-        const inputRows: string[][] = [
+        const table = new Table([
             ["h", "h"],
             ["𠁻", "𣄿 content"]
-        ];
+        ]);
         _validator
-            .setup(v => v.isValid(inputRows, false))
+            .setup(v => v.isValid(table, false))
             .returns(() => true)
             .verifiable(Times.once());
 
-        const vm = createViewModelBuilder().build(inputRows);
+        const vm = createViewModelBuilder().build(table);
 
         assertViewModelPropertiesSet(vm);
         assert.equal(vm.header.getValueAt(0), "h  ");

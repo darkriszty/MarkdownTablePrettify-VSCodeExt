@@ -40,4 +40,23 @@ suite("Table tests", () => {
 
         assert.equal(table.items, originalRows);
     });
+
+    test("isEmpty() returns true for null rows", () => {
+        const table = new Table(null);
+
+        assert.equal(table.isEmpty(), true);
+    });
+
+    test("isEmpty() returns true for empty rows", () => {
+        const table = new Table([]);
+
+        assert.equal(table.isEmpty(), true);
+    });
+
+    test("isEmpty() returns true false for a single element", () => {
+
+        const table = new Table([["test"]]);
+
+        assert.equal(table.isEmpty(), false);
+    });
 });

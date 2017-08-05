@@ -1,3 +1,4 @@
+import { Table } from "../models/table";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { TableValidator } from "../modelFactory/tableValidator";
 import { RowViewModelBuilder } from "./rowViewModelBuilder";
@@ -9,8 +10,8 @@ export class TableViewModelBuilder {
         private _rowViewModelBuilder: RowViewModelBuilder
     ) { }
 
-    public build(valuesWithoutSeparator: string[][]): TableViewModel {
-        if (!this._tableValidator.isValid(valuesWithoutSeparator, false))
+    public build(tableWithoutSeparator: Table): TableViewModel {
+        if (!this._tableValidator.isValid(tableWithoutSeparator, false))
             throw new Error("Invalid table values supplied.");
         /*
             1) validate without separator

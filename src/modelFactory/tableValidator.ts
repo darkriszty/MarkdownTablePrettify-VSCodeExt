@@ -1,5 +1,7 @@
+import { Table } from "../models/table";
+
 export class TableValidator {
-    public isValid(rows: string[][], checkSeparator: boolean = true): boolean {
+    public isValid(table: Table, checkSeparator: boolean = true): boolean {
         /*
             Check for:
                 * null
@@ -11,60 +13,29 @@ export class TableValidator {
                 * all dashes, or
                 * all dashes with border
         */
-        if (rows == null) 
+        if (table == null || table.isEmpty())
             return false;
 
         return checkSeparator
-            ? this.validateWithSeparator(rows)
-            : this.validateWithoutSeparator(rows);
+            ? this.validateWithSeparator(table)
+            : this.validateWithoutSeparator(table);
     }
 
-
-    private validateWithoutSeparator(rawRows: string[][]): boolean {
+    private validateWithoutSeparator(table: Table): boolean {
+        var rawRows = table.items;
         return rawRows.length > 1 && // at least two rows are required
                rawRows[0].length > 1 && // at least two columns are required
                rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
     }
 
-    private validateWithSeparator(rawRows: string[][]): boolean {
+    private validateWithSeparator(table: Table): boolean {
+        var rawRows = table.items;
         let sizeValid = rawRows.length > 2 && // at least two rows are required besides the separator
                         rawRows[0].length > 1 && // at least two columns are required
                         rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
 
-        const withoutEmptyColumns = this.removeEmptyColumns(rawRows);
+        const withoutEmptyColumns = table.withoutEmptyColumns().items;
         return sizeValid && this.hasValidSeparators(withoutEmptyColumns);
-    }
-
-    //TODO: make a model and put these method on it
-    private removeEmptyColumns(rows: string[][]): string[][] {
-        let emptyColumnIndexes: number[] = this.getEmptyColumnIndexes(rows);
-
-        let clonedRows = rows.map(arr => arr.slice(0));
-        for (let i = emptyColumnIndexes.length - 1; i >=0; i--)
-            this.removeColumn(clonedRows, emptyColumnIndexes[i]);
-
-        return clonedRows;
-    }
-
-    private getEmptyColumnIndexes(rows: string[][]): number[] {
-        let emptyColumnIndexes: number[] = [];
-        const colLength = rows[0].length;
-        for (let col = 0; col < colLength; col++)
-            if (this.isColumnEmpty(rows, col))
-                emptyColumnIndexes.push(col);
-        return emptyColumnIndexes;
-    }
-
-    private isColumnEmpty(rows: string[][], column: number): boolean {
-        for (let row = 0; row < rows.length; row++)
-            if (rows[row][column].trim() != "")
-                return false;
-        return true;
-    }
-
-    private removeColumn(rows: string[][], column: number): void {
-        for (let row = 0; row < rows.length; row++)
-            rows[row].splice(column, 1);
     }
 
     private hasValidSeparators(rawRows: string[][]): boolean {

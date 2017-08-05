@@ -31,7 +31,7 @@ suite("TableFactory tests", () => {
         _mockValidator.setup(m => m.isValid(It.isAny(), true)).returns(() => true).verifiable(Times.once());
         const sut = createFactory();
 
-        const rows: string[][] = sut.getModel(tableText);
+        const rows: string[][] = sut.getModel(tableText).items;
 
         assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
@@ -47,7 +47,7 @@ suite("TableFactory tests", () => {
         _mockValidator.setup(m => m.isValid(It.isAny(), true)).returns(() => true).verifiable(Times.once());
         const sut = createFactory();
 
-        const rows: string[][] = sut.getModel(tableText);
+        const rows: string[][] = sut.getModel(tableText).items;
 
         assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);

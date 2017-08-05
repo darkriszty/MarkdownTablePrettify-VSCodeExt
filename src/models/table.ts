@@ -10,6 +10,10 @@ export class Table {
         return new Table(this.removeEmptyColumns());
     }
 
+    public isEmpty(): boolean {
+        return this._rows == null || this._rows.length == 0;
+    }
+
     private removeEmptyColumns(): string[][] {
         let emptyColumnIndexes: number[] = this.getEmptyColumnIndexes();
 
