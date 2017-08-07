@@ -2,7 +2,7 @@ export class Table {
 
     constructor(private _rows: string[][]) { }
 
-    get items(): string[][] {
+    public get items(): string[][] {
         return this._rows;
     }
 

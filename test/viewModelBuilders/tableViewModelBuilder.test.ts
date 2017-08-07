@@ -41,7 +41,7 @@ suite("TableViewModelBuilder tests", () => {
         _validator.setup(v => v.isValid(table, false)).returns(() => true);
 
         _rowVmb
-            .setup(m => m.buildSeparator())
+            .setup(m => m.buildSeparator(It.isAny()))
             .returns(() => expectedSeparator)
             .verifiable(Times.once());
         _rowVmb
@@ -64,7 +64,7 @@ suite("TableViewModelBuilder tests", () => {
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
         _validator.setup(v => v.isValid(table, false)).returns(() => true);
-        _rowVmb.setup(m => m.buildSeparator()).returns(() => expectedSeparator)
+        _rowVmb.setup(m => m.buildSeparator(It.isAny())).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny())).returns(() => expectedRow);
 
         const tableVm = createViewModelBuilder().build(table);
