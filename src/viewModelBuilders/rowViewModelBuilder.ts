@@ -21,6 +21,10 @@ export class RowViewModelBuilder {
     }
 
     public buildSeparator(param: RowViewModelBuilderParam): RowViewModel {
+        if (param == null)
+            throw new Error("Paramter can't be null");
+        let resultArray = new Array(param.maxTextLengthsPerColumn);
+
         /*
             for each value, add a left padding and a right padding:
                 * first column:
@@ -37,5 +41,22 @@ export class RowViewModelBuilder {
                     - empty middle rows should have a length of 3 chars (dashes)
         */
         return null;
+    }
+
+    private getLeftPadding(paddingChar: string, builderParam: RowViewModelBuilderParam,
+        column: number): string {
+
+        let result;
+        if (column == 0) {
+            result = builderParam.tableHasLeftBorder
+                ? paddingChar
+                : "";
+        } else if (column == builderParam.numberOfColumns() - 1) {
+
+        } else {
+
+        }
+
+        return result;
     }
 }
