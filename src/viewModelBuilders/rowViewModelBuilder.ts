@@ -4,6 +4,10 @@ import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
 export class RowViewModelBuilder {
 
     public buildRow(param: RowViewModelBuilderParam): RowViewModel {
+        if (param == null)
+            throw new Error("Paramter can't be null");
+        if (param.rowValues == null)
+            throw new Error("Rows can't be null");
         /*
             for each value, add a left padding and a right padding:
                 * first column:
@@ -17,30 +21,27 @@ export class RowViewModelBuilder {
                     - has right padding of maxColLength + 1 space
                     - empty middle rows should have a length of 3 chars (spaces)
         */
-        return null;
+
+        let resultRow = new Array(param.numberOfColumns);
+        for (let i = 0; i < param.numberOfColumns; i++) {
+            const columnLength = param.maxTextLengthsPerColumn[i];
+            resultRow[i] = param.rowValues[i];
+        }
+
+        return new RowViewModel(resultRow);
     }
 
     public buildSeparator(param: RowViewModelBuilderParam): RowViewModel {
         if (param == null)
             throw new Error("Paramter can't be null");
-        let resultArray = new Array(param.maxTextLengthsPerColumn);
 
-        /*
-            for each value, add a left padding and a right padding:
-                * first column:
-                    - has no left padding
-                    - has no left or right padding if empty
-                    - has right padding of 1 dash otherwise
-                * last column:
-                    - has right padding with 1 extra dash
-                    - has left padding of 1 dash
-                    - has no left or right padding if empty
-                * middle column:
-                    - has left padding of 1 dash
-                    - has right padding of maxColLength + 1 dash
-                    - empty middle rows should have a length of 3 chars (dashes)
-        */
-        return null;
+        let resultRow = new Array(param.numberOfColumns);
+        for (let i = 0; i < param.numberOfColumns; i++) {
+            const columnLength = param.maxTextLengthsPerColumn[i];
+            resultRow[i] = new Array(columnLength).fill("-").join("");
+        }
+
+        return new RowViewModel(resultRow);
     }
 
     private getLeftPadding(paddingChar: string, builderParam: RowViewModelBuilderParam,
@@ -51,7 +52,7 @@ export class RowViewModelBuilder {
             result = builderParam.tableHasLeftBorder
                 ? paddingChar
                 : "";
-        } else if (column == builderParam.numberOfColumns() - 1) {
+        } else if (column == builderParam.numberOfColumns - 1) {
 
         } else {
 
