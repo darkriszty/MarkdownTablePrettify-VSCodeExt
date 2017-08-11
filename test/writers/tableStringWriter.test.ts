@@ -37,9 +37,9 @@ suite("TableStringWriter tests", () => {
         input.header = new RowViewModel(["c1", "c2"]);
         input.separator = new RowViewModel(["-", "-"]);
         input.rows = [ 
-            new RowViewModel(["v1", "v2", ""]),
-            new RowViewModel(["v3", "v4", " "]),
-            new RowViewModel(["", "v5", "v6", "  "])
+            new RowViewModel(["v1", "v2"]),
+            new RowViewModel(["v3", "v4"]),
+            new RowViewModel(["", "v5"])
         ];
 
         const tableText: string = createSut().writeTable(input);
@@ -47,9 +47,9 @@ suite("TableStringWriter tests", () => {
         assertExt.isNotNull(tableText);
         const lines = tableText.split(/\r\n|\r|\n/);
         assert.equal(lines.length, 5);
-        assert.equal(lines[2], "v1|v2|");
-        assert.equal(lines[3], "v3|v4| ");
-        assert.equal(lines[4], "|v5|v6|  ");
+        assert.equal(lines[2], "v1|v2");
+        assert.equal(lines[3], "v3|v4");
+        assert.equal(lines[4], "|v5");
     });
 
     test("writeTable() null table throws exception", () => {

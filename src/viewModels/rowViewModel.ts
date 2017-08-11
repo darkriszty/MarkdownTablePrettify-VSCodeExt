@@ -2,6 +2,8 @@ export class RowViewModel {
 
     constructor (private _values: string[]) { }
 
+    public get columnCount(): number { return this._values.length; }
+
     public getValueAt(index: number): string {
         const maxIndex = this._values.length - 1;
         if (index < 0 || index > maxIndex)
