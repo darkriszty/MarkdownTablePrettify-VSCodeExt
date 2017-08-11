@@ -47,7 +47,7 @@ suite("TableViewModelBuilder tests", () => {
         _rowVmb
             .setup(m => m.buildRow(It.isAny()))
             .returns(() => expectedRow)
-            .verifiable(Times.exactly(4));
+            .verifiable(Times.exactly(3));
 
         const vmb = createViewModelBuilder();
         vmb.build(table);
@@ -93,7 +93,8 @@ suite("TableViewModelBuilder tests", () => {
             .returns(() => true)
             .verifiable(Times.once());
 
-        const vm = createViewModelBuilder().build(table);
+        const vmb = new TableViewModelBuilder(_validator.object, new RowViewModelBuilder());
+        const vm = vmb.build(table);
 
         assertViewModelPropertiesSet(vm);
         assert.equal(vm.header.getValueAt(0), "h  ");

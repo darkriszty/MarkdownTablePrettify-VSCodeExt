@@ -2,9 +2,9 @@ export class Table {
 
     constructor(private _rows: string[][]) { }
 
-    public get items(): string[][] {
-        return this._rows;
-    }
+    public get rows(): string[][] { return this._rows; }
+    public get columnCount(): number { return this._rows[0].length; }
+    public get rowCount(): number { return this._rows.length; }
 
     public withoutEmptyColumns(): Table {
         return new Table(this.removeEmptyColumns());

@@ -22,19 +22,19 @@ export class TableValidator {
     }
 
     private validateWithoutSeparator(table: Table): boolean {
-        var rawRows = table.items;
+        var rawRows = table.rows;
         return rawRows.length > 1 && // at least two rows are required
                rawRows[0].length > 1 && // at least two columns are required
                rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
     }
 
     private validateWithSeparator(table: Table): boolean {
-        var rawRows = table.items;
+        var rawRows = table.rows;
         let sizeValid = rawRows.length > 2 && // at least two rows are required besides the separator
                         rawRows[0].length > 1 && // at least two columns are required
                         rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
 
-        const withoutEmptyColumns = table.withoutEmptyColumns().items;
+        const withoutEmptyColumns = table.withoutEmptyColumns().rows;
         return sizeValid && this.hasValidSeparators(withoutEmptyColumns);
     }
 

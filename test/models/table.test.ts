@@ -11,7 +11,7 @@ suite("Table tests", () => {
         ];
         const table = new Table(rows);
 
-        assert.equal(table.items, rows);
+        assert.equal(table.rows, rows);
     });
 
     test("withoutEmptyColumns() create instance without empty columns and leaves original intact", () => {
@@ -29,7 +29,7 @@ suite("Table tests", () => {
         const table = new Table(originalRows);
         const tableWithoutEmptyColumns = table.withoutEmptyColumns();
 
-        const actualNoEmptyColumnItems = tableWithoutEmptyColumns.items;
+        const actualNoEmptyColumnItems = tableWithoutEmptyColumns.rows;
         assert.equal(actualNoEmptyColumnItems.length, expectedNoEmptyColumns.length);
         for (let i = 0; i < actualNoEmptyColumnItems.length; i++) {
             assert.equal(actualNoEmptyColumnItems[i].length, expectedNoEmptyColumns[i].length);
@@ -38,7 +38,7 @@ suite("Table tests", () => {
                 assert.equal(actualNoEmptyColumnItems[i][j], expectedNoEmptyColumns[i][j]);
         }
 
-        assert.equal(table.items, originalRows);
+        assert.equal(table.rows, originalRows);
     });
 
     test("isEmpty() returns true for null rows", () => {
@@ -58,5 +58,27 @@ suite("Table tests", () => {
         const table = new Table([["test"]]);
 
         assert.equal(table.isEmpty(), false);
+    });
+
+    test("columnCount() returns number of columns", () => {
+        const rows = [ 
+            [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
+            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   "c"     ,   "  ",   "e"     , "" ]
+        ];
+        const table = new Table(rows);
+
+        assert.equal(table.columnCount, 5);
+    });
+
+    test("rowCount() returns number of rows", () => {
+        const rows = [ 
+            [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
+            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   "c"     ,   "  ",   "e"     , "" ]
+        ];
+        const table = new Table(rows);
+
+        assert.equal(table.rowCount, 3);
     });
 });

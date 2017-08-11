@@ -1,7 +1,9 @@
 import { Table } from "../models/table";
-import { TableViewModel } from "../viewModels/tableViewModel";
 import { TableValidator } from "../modelFactory/tableValidator";
+import { TableViewModel } from "../viewModels/tableViewModel";
+import { RowViewModel } from "../viewModels/rowViewModel";
 import { RowViewModelBuilder } from "./rowViewModelBuilder";
+import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
 
 export class TableViewModelBuilder {
 
@@ -23,6 +25,46 @@ export class TableViewModelBuilder {
             7) use the rest of the rows to get the contents via rowViewModelBuilder.buildRow
             8) return the view model
         */
-        return null;
+        const maxColLengths: number[] = this.getMaxLengths(tableWithoutSeparator);
+
+        let result = new TableViewModel();
+        result.header = this.buildHeader(tableWithoutSeparator, maxColLengths);
+        result.separator = this.buildSeparator(maxColLengths);
+        result.rows = this.buildRows(tableWithoutSeparator, maxColLengths);
+
+        return result;
+    }
+
+    private buildHeader(tableWithoutSeparator: Table, maxColLengths: number[]): RowViewModel {
+        let param = new RowViewModelBuilderParam(maxColLengths);
+        param.rowValues = tableWithoutSeparator.rows[0];
+        return this._rowViewModelBuilder.buildRow(param);
+    }
+
+    private buildSeparator(maxColLengths: number[]): RowViewModel {
+        let param = new RowViewModelBuilderParam(maxColLengths);
+        return this._rowViewModelBuilder.buildSeparator(param);
+    }
+
+    private buildRows(table: Table, maxColLengths: number[]): RowViewModel[] {
+        let result: RowViewModel[] = new Array(table.rowCount - 1);
+
+        for (let row = 1; row < table.rowCount; row++) {
+            let param = new RowViewModelBuilderParam(maxColLengths);
+            param.rowValues = table.rows[row];
+            result[row - 1] = this._rowViewModelBuilder.buildRow(param);
+        }
+
+        return result;
+    }
+
+    private getMaxLengths(table: Table): number[] {
+        let maxColLengths: number[] = new Array(table.columnCount).fill(0);
+
+        for (let col = 0; col < table.rows.length; col++)
+            for (let row = 0; row < table.rows[col].length; row++)
+                maxColLengths[col] = Math.max(table.rows[col][row].length, maxColLengths[col])
+
+        return maxColLengths;
     }
 }
