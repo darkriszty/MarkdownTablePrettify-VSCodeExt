@@ -17,13 +17,13 @@ suite("Table tests", () => {
     test("withoutEmptyColumns() create instance without empty columns and leaves original intact", () => {
         const originalRows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
-            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   " - "   ,   "-"  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
         const expectedNoEmptyColumns = [ 
-            [ "  h1  ", "  h3  " ],
-            [ " - "   , "---"    ],
-            [ "c"     , "e"      ]
+            [ "  h1  ",  " " , "  h3  " ],
+            [ " - "   ,  "-" , "---"    ],
+            [ "c"     ,  "  ", "e"      ]
         ];
 
         const table = new Table(originalRows);

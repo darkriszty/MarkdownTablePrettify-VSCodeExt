@@ -7,7 +7,7 @@ export class Table {
     public get rowCount(): number { return this._rows.length; }
 
     public withoutEmptyColumns(): Table {
-        return new Table(this.removeEmptyColumns());
+        return new Table(this.removeEmptyColumns(this.getEmptyFirstAndLastColumnIndexes()));
     }
 
     public trimValues(): Table {
@@ -18,9 +18,7 @@ export class Table {
         return this._rows == null || this._rows.length == 0;
     }
 
-    private removeEmptyColumns(): string[][] {
-        let emptyColumnIndexes: number[] = this.getEmptyColumnIndexes();
-
+    private removeEmptyColumns(emptyColumnIndexes: number[]): string[][] {
         let clonedRows = this._rows.map(arr => arr.slice(0));
         for (let i = emptyColumnIndexes.length - 1; i >=0; i--)
             this.removeColumn(clonedRows, emptyColumnIndexes[i]);
@@ -28,12 +26,13 @@ export class Table {
         return clonedRows;
     }
 
-    private getEmptyColumnIndexes(): number[] {
+    private getEmptyFirstAndLastColumnIndexes(): number[] {
         let emptyColumnIndexes: number[] = [];
+
         const colLength = this._rows[0].length;
-        for (let col = 0; col < colLength; col++)
-            if (this.isColumnEmpty(col))
-                emptyColumnIndexes.push(col);
+        if (this.isColumnEmpty(0)) emptyColumnIndexes.push(0);
+        if (this.isColumnEmpty(colLength - 1)) emptyColumnIndexes.push(colLength - 1);
+
         return emptyColumnIndexes;
     }
 
