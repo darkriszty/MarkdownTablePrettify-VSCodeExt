@@ -10,6 +10,10 @@ export class Table {
         return new Table(this.removeEmptyColumns());
     }
 
+    public trimValues(): Table {
+        return new Table(this.trimColumnValues());
+    }
+
     public isEmpty(): boolean {
         return this._rows == null || this._rows.length == 0;
     }
@@ -43,5 +47,12 @@ export class Table {
     private removeColumn(rows: string[][], column: number): void {
         for (let row = 0; row < rows.length; row++)
             rows[row].splice(column, 1);
+    }
+
+    private trimColumnValues(): string[][] {
+        let result: string[][] = [];
+        for (let i = 0; i < this._rows.length; i++)
+            result.push(this._rows[i].map(r => r.trim()));
+        return result;
     }
 }
