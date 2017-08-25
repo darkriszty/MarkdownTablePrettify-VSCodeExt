@@ -1,13 +1,22 @@
+import { Alignment } from "./alignment";
+
 export class Table {
 
-    constructor(private _rows: string[][]) { }
+    constructor(
+        private _rows: string[][],
+        private _alignments: Alignment[]) 
+    {
+        if (this._rows != null && this._rows[0].length != this._alignments.length)
+            throw new Error("The number of rows must match the number of alignments");
+    }
 
     public get rows(): string[][] { return this._rows; }
+    public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this._rows[0].length; }
     public get rowCount(): number { return this._rows.length; }
 
     public withoutEmptyColumns(): Table {
-        return new Table(this.removeEmptyColumns());
+        return new Table(this.removeEmptyColumns(), this.alignmentsWithoutEmptyColumns());
     }
 
     public isEmpty(): boolean {
@@ -22,6 +31,15 @@ export class Table {
             this.removeColumn(clonedRows, emptyColumnIndexes[i]);
 
         return clonedRows;
+    }
+
+    private alignmentsWithoutEmptyColumns(): Alignment[] {
+        let emptyColumnIndexes: number[] = this.getEmptyColumnIndexes();
+        let result: Alignment[] = [];
+        for (let i = 0; i < this._rows[0].length; i++)
+            if (emptyColumnIndexes.indexOf(i) != -1)
+                result.push(this._alignments[i]);
+        return result;
     }
 
     private getEmptyColumnIndexes(): number[] {

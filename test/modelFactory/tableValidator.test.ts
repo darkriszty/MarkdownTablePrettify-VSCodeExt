@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import { Table } from "../../src/models/table";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
+import { Alignment } from "../../src/models/alignment";
 
 suite("TableValidator tests", () => {
 
@@ -23,9 +24,10 @@ suite("TableValidator tests", () => {
     });
 
     test("isValid() with less than two rows with separator check returns false", () => {
-        const table = new Table([
-            [ "a", "b" ]
-        ]);
+        const table = new Table(
+            [ [ "a", "b" ] ],
+            [ Alignment.Left, Alignment.Left ]
+        );
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -34,9 +36,10 @@ suite("TableValidator tests", () => {
     });
 
     test("isValid() with less than two rows without separator check returns false", () => {
-        const table = new Table([
-            [ "a", "b" ]
-        ]);
+        const table = new Table(
+            [ [ "a", "b" ] ],
+            [ Alignment.Left, Alignment.Left ]
+        );
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -48,7 +51,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "a" ],
             [ "b" ]
-        ]);
+        ], [ Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -60,7 +63,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "a" ],
             [ "b" ]
-        ]);
+        ], [ Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -72,7 +75,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "a", "b" ],
             [ "c", "d" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -84,7 +87,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "a", "b" ],
             [ "c", "d" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -97,7 +100,20 @@ suite("TableValidator tests", () => {
             [ "a", "b" ],
             [ "-", "-" ],
             [ "c", "d" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
+        const sut = createSut();
+
+        const isValid: boolean = sut.isValid(table);
+
+        assert.equal(isValid, true);
+    });
+
+    test("isValid() with separator alignment options returns true", () => {
+        const table = new Table([
+            [ "a", "b", "c"],
+            [ "-:", ":-:", ":-" ],
+            [ "1", "2", "3" ]
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -110,7 +126,7 @@ suite("TableValidator tests", () => {
             [ "a", "b" ],
             [ "-", "-" ],
             [ "c", "d" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -123,7 +139,7 @@ suite("TableValidator tests", () => {
             [ "a", "b" ],
             [ "-x-", "--" ],
             [ "c", "d" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -136,7 +152,7 @@ suite("TableValidator tests", () => {
             [ "a", "b" ],
             [ "-x-", "--" ],
             [ "c", "d" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -149,7 +165,7 @@ suite("TableValidator tests", () => {
             [ "a", "b" ],
             [ "-", "-" ],
             [ "c", "d", "e" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -162,7 +178,7 @@ suite("TableValidator tests", () => {
             [ "a", "b" ],
             [ "-", "-", "-" ],
             [ "c", "d", "e" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -175,7 +191,7 @@ suite("TableValidator tests", () => {
             [ "",   "  h1  ",   "  h2  ",   "  h3  " ],
             [ "",   " - "   ,   "--"    ,   "---"    ],
             [ "",   "c"     ,   "d"     ,   "e"      ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -187,7 +203,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "",   "  h1  ",   "  h2  ",   "  h3  " ],
             [ "",   "c"     ,   "d"     ,   "e"      ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -200,7 +216,7 @@ suite("TableValidator tests", () => {
             [ "  h1  ",   "  h2  ",   "  h3  ", "" ],
             [ " - "   ,   "--"    ,   "---"   , "" ],
             [ "c"     ,   "d"     ,   "e"     , "" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -212,7 +228,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "  h1  ",   "  h2  ",   "  h3  ", "" ],
             [ "c"     ,   "d"     ,   "e"     , "" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -225,7 +241,7 @@ suite("TableValidator tests", () => {
             [ "",   "  h1  ",   "  h2  ",   "  h3  ", "" ],
             [ "",   " - "   ,   "--"    ,   "---"   , "" ],
             [ "",   "c"     ,   "d"     ,   "e"     , "" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -237,7 +253,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "",   "  h1  ",   "  h2  ",   "  h3  ", "" ],
             [ "",   "c"     ,   "d"     ,   "e"     , "" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);
@@ -250,7 +266,7 @@ suite("TableValidator tests", () => {
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table);
@@ -262,7 +278,7 @@ suite("TableValidator tests", () => {
         const table = new Table([
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
-        ]);
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();
 
         const isValid: boolean = sut.isValid(table, false);

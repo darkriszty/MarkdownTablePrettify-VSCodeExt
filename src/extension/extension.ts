@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { TableRangePrettyfier } from "./tableRangePrettyfier";
 import { VsWindowLogger } from "../diagnostics/logger";
 import { TableFactory } from "../modelFactory/tableFactory";
+import { AlignmentFactory } from "../modelFactory/alignmentFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModelBuilder } from "../viewModelBuilders/tableViewModelBuilder";
 import { TableStringWriter } from "../writers/tableStringWriter";
@@ -16,7 +17,7 @@ export function activate(context: vscode.ExtensionContext): void {
     const validator = new TableValidator();
     let disposable = vscode.languages.registerDocumentRangeFormattingEditProvider(
         MD_MODE, new TableRangePrettyfier(
-            new TableFactory(validator),
+            new TableFactory(validator, new AlignmentFactory()),
             new TableViewModelBuilder(validator, new RowViewModelBuilder()),
             new TableStringWriter(),
             new VsWindowLogger())

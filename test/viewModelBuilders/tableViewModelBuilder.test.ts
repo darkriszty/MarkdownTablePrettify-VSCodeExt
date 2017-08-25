@@ -2,6 +2,7 @@ import * as assert from "assert";
 import { assertExt } from "../assertExtensions";
 import { IMock, Mock, It, Times } from "typemoq";
 import { Table } from "../../src/models/table";
+import { Alignment } from "../../src/models/alignment";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
 import { TableViewModel } from "../../src/viewModels/tableViewModel";
 import { TableViewModelBuilder } from "../../src/viewModelBuilders/tableViewModelBuilder";
@@ -18,7 +19,7 @@ suite("TableViewModelBuilder tests", () => {
     });
 
     test("build() with invalid table calls validator and throws exception", () => {
-        const table = new Table([]);
+        const table = new Table([], []);
         _validator
             .setup(v => v.isValid(table, false))
             .returns(() => false)
@@ -35,7 +36,7 @@ suite("TableViewModelBuilder tests", () => {
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
         _validator.setup(v => v.isValid(table, false)).returns(() => true);
@@ -60,7 +61,7 @@ suite("TableViewModelBuilder tests", () => {
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
         _validator.setup(v => v.isValid(table, false)).returns(() => true);
@@ -87,7 +88,7 @@ suite("TableViewModelBuilder tests", () => {
         const table = new Table([
             ["h", "h"],
             ["𠁻", "𣄿 content"]
-        ]);
+        ], [ Alignment.Left, Alignment.Left ]);
         _validator
             .setup(v => v.isValid(table, false))
             .returns(() => true)

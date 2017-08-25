@@ -44,7 +44,7 @@ export class TableValidator {
 
         // if all columns are dashes, then it is valid
         const secondRow = rawRows[1];
-        const allCellsDash = secondRow.every(cell => this.composedOfDashes(cell));
+        const allCellsDash = secondRow.every(cell => this.validSeparator(cell));
         if (allCellsDash)
             return true;
 
@@ -52,11 +52,18 @@ export class TableValidator {
         return this.allDashesWithBorder(secondRow);
     }
 
-    private composedOfDashes(cellValue: string): boolean {
-        const trimmedSpace = cellValue.trim();
+    private validSeparator(cellValue: string): boolean {
+        let trimmedSpace = cellValue.trim();
+        // alignment options with dash are allowed
+        if (trimmedSpace[0] == ":")
+            trimmedSpace = trimmedSpace.slice(1);
+        if (trimmedSpace[trimmedSpace.length - 1] == ":")
+            trimmedSpace = trimmedSpace.slice(0, -1);
+
         const firstDash = trimmedSpace.replace(/(?!^)-/g, "");
         if (firstDash === "-")
             return true;
+        
         return false;
     }
 
@@ -68,7 +75,7 @@ export class TableValidator {
         let endIndex = hasEndingBorder ? secondRow.length - 2 : secondRow.length - 1;
 
         const middleColumns = secondRow.filter((v, i) => i >= startIndex && i <= endIndex);
-        const middleColumnsAllDash = middleColumns.every(cell => this.composedOfDashes(cell));
+        const middleColumnsAllDash = middleColumns.every(cell => this.validSeparator(cell));
         if (middleColumnsAllDash && (hasStartingBorder || hasEndingBorder))
             return true;
         return false;
