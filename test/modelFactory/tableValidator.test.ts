@@ -264,7 +264,7 @@ suite("TableValidator tests", () => {
     test("isValid() with empty first, middle and last columns with separator check returns true", () => {
         const table = new Table([
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
-            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   " - "   ,   "-"  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const sut = createSut();

@@ -18,27 +18,19 @@ suite("Table tests", () => {
     test("withoutEmptyColumns() create instance without empty columns and leaves original intact", () => {
         const originalRows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
-            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   " - "   ,   "-"  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
         const expectedNoEmptyColumns = [ 
-            [ "  h1  ", "  h3  " ],
-            [ " - "   , "---"    ],
-            [ "c"     , "e"      ]
+            [ "  h1  ",  " " , "  h3  " ],
+            [ " - "   ,  "-" , "---"    ],
+            [ "c"     ,  "  ", "e"      ]
         ];
 
         const table = new Table(originalRows, [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const tableWithoutEmptyColumns = table.withoutEmptyColumns();
 
-        const actualNoEmptyColumnItems = tableWithoutEmptyColumns.rows;
-        assert.equal(actualNoEmptyColumnItems.length, expectedNoEmptyColumns.length);
-        for (let i = 0; i < actualNoEmptyColumnItems.length; i++) {
-            assert.equal(actualNoEmptyColumnItems[i].length, expectedNoEmptyColumns[i].length);
-
-            for (let j = 0; j < actualNoEmptyColumnItems[i].length; j++)
-                assert.equal(actualNoEmptyColumnItems[i][j], expectedNoEmptyColumns[i][j]);
-        }
-
+        assertModelEquals(tableWithoutEmptyColumns, new Table(expectedNoEmptyColumns));
         assert.equal(table.rows, originalRows);
     });
 
@@ -94,4 +86,33 @@ suite("Table tests", () => {
 
         assert.equal(table.alignments, expectedAlignments);
     });
+
+    test("trimColumnValues() removes spaces from beginning and end of each cell", () => {
+        const rows = [ 
+            [ "   ",   "  h1  ",   " " ,   "  h3  ", "    expected   3   spaces   " ],
+            [ "			",   " - "   ,   ""  ,   "---"   , "     " ],
+            [ "  	  	",   "c"     ,   "  ",   "e f  "     , "" ]
+        ];
+        const expectedColumns = [ 
+            [ "", "h1", "", "h3",  "expected   3   spaces" ],
+            [ "", "-",  "", "---", "" ],
+            [ "", "c",  "", "e f", "" ]
+        ];
+        const table = new Table(rows).trimValues();
+
+        assertModelEquals(table, new Table(expectedColumns));
+    });
+
+    function assertModelEquals(actual: Table, expected: Table) {
+        const actualNoEmptyColumnItems = actual.rows;
+        const expectedNoEmptyColumns = expected.rows;
+
+        assert.equal(actualNoEmptyColumnItems.length, expectedNoEmptyColumns.length);
+        for (let i = 0; i < actualNoEmptyColumnItems.length; i++) {
+            assert.equal(actualNoEmptyColumnItems[i].length, expectedNoEmptyColumns[i].length);
+
+            for (let j = 0; j < actualNoEmptyColumnItems[i].length; j++)
+                assert.equal(actualNoEmptyColumnItems[i][j], expectedNoEmptyColumns[i][j]);
+        }
+    }
 });
