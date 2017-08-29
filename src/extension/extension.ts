@@ -14,11 +14,11 @@ import { RowViewModelBuilder } from "../viewModelBuilders/rowViewModelBuilder";
 export function activate(context: vscode.ExtensionContext): void {
     const MD_MODE: vscode.DocumentFilter = { language: "markdown", scheme: "file" };
 
-    const validator = new TableValidator();
     let disposable = vscode.languages.registerDocumentRangeFormattingEditProvider(
         MD_MODE, new TableRangePrettyfier(
-            new TableFactory(validator, new AlignmentFactory()),
-            new TableViewModelBuilder(validator, new RowViewModelBuilder()),
+            new TableFactory(new AlignmentFactory()),
+            new TableValidator(),
+            new TableViewModelBuilder(new RowViewModelBuilder()),
             new TableStringWriter(),
             new VsWindowLogger())
     );

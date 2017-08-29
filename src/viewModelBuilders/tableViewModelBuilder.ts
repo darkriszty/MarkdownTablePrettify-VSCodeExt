@@ -8,13 +8,10 @@ import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
 export class TableViewModelBuilder {
 
     constructor(
-        private _tableValidator: TableValidator,
         private _rowViewModelBuilder: RowViewModelBuilder
     ) { }
 
     public build(tableWithoutSeparator: Table): TableViewModel {
-        if (!this._tableValidator.isValid(tableWithoutSeparator, false))
-            throw new Error("Invalid table values supplied.");
         /*
             1) validate without separator
             2) trim values

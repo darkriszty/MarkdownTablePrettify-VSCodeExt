@@ -7,21 +7,10 @@ import { TableValidator } from "../../src/modelFactory/tableValidator";
 import { assertExt } from "../assertExtensions";
 
 suite("TableFactory tests", () => {
-    let _validatorMock: IMock<TableValidator>;
     let _alignmentFactoryMock: IMock<AlignmentFactory>;
 
     setup(() => {
-        _validatorMock = Mock.ofType<TableValidator>();
         _alignmentFactoryMock = Mock.ofType<AlignmentFactory>();
-    });
-
-    test("getModel() with invalid table throws error and calls validator", () => {
-        const tableText = "invalid";
-        _validatorMock.setup(m => m.isValid(It.isAny(), true)).returns(() => false).verifiable(Times.once());
-        const sut = createFactory();
-
-        assert.throws(() => sut.getModel(tableText))
-        _validatorMock.verifyAll();
     });
 
     test("getModel() removes empty rows", () => {
@@ -32,15 +21,16 @@ suite("TableFactory tests", () => {
            a | b || d
            
            `;
-        _validatorMock.setup(m => m.isValid(It.isAny(), true)).returns(() => true).verifiable(Times.once());
         const sut = createFactory();
+        _alignmentFactoryMock
+            .setup(m => m.createAlignments(It.isAny()))
+            .returns(() => [ Alignment. Left, Alignment.Left, Alignment.Left, Alignment.Left]);
 
         const rows: string[][] = sut.getModel(tableText).rows;
 
         assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
         assert.equal(rows.every(r => r.length == 4), true);
-        _validatorMock.verifyAll();
     });
 
     test("getModel() removes separator row and returns expected cells", () => {
@@ -48,9 +38,10 @@ suite("TableFactory tests", () => {
         ` c1 | c2 | | c4
             -|-|-|-
            a | b || d`;
-        _validatorMock.setup(m => m.isValid(It.isAny(), true)).returns(() => true).verifiable(Times.once());
         const sut = createFactory();
-
+        _alignmentFactoryMock
+            .setup(m => m.createAlignments(It.isAny()))
+            .returns(() => [ Alignment. Left, Alignment.Left, Alignment.Left, Alignment.Left]);
         const rows: string[][] = sut.getModel(tableText).rows;
 
         assertExt.isNotNull(rows);
@@ -64,7 +55,6 @@ suite("TableFactory tests", () => {
         assert.equal(rows[1][1], " b ");
         assert.equal(rows[1][2], "");
         assert.equal(rows[1][3], " d");
-        _validatorMock.verifyAll();
     });
 
     test("getModel() calls alignmentFactory to create alignments for the table columns", () => {
@@ -72,17 +62,19 @@ suite("TableFactory tests", () => {
           | c1 | c2 |   | c4
           |:---|--- |:-:|-:
           | a  | b  |   | d`;
-        const expectedAlignmets: Alignment[] = [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ];
-        _validatorMock.setup(m => m.isValid(It.isAny(), true)).returns(() => true);
-        _alignmentFactoryMock.setup(m => m.createAlignments(It.isAny())).returns(() => expectedAlignmets).verifiable(Times.once());
+        const expectedAlignmets: Alignment[] = [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ];
+        _alignmentFactoryMock
+            .setup(m => m.createAlignments(It.isAny()))
+            .returns(() => expectedAlignmets)
+            .verifiable(Times.once());
         const sut = createFactory();
 
-        const alignments: Alignment[] = sut.getModel(tableText).alignments;
-        assert.equal(alignments, expectedAlignmets);
+        const actualAlignments: Alignment[] = sut.getModel(tableText).alignments;
+        assert.equal(actualAlignments, expectedAlignmets);
         _alignmentFactoryMock.verifyAll();
     });
 
     function createFactory(): TableFactory {
-        return new TableFactory(_validatorMock.object, _alignmentFactoryMock.object);
+        return new TableFactory(_alignmentFactoryMock.object);
     }
 });

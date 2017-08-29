@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { ILogger } from "../diagnostics/logger";
 import { Table } from "../models/table";
 import { TableFactory } from "../modelFactory/tableFactory";
+import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { TableViewModelBuilder } from "../viewModelBuilders/tableViewModelBuilder";
 import { TableStringWriter } from "../writers/tableStringWriter";
@@ -10,6 +11,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
 
     constructor(
         private _tableFactory: TableFactory,
+        private _tableValidator: TableValidator,
         private _viewModelBuilder: TableViewModelBuilder,
         private _writer: TableStringWriter,
         private _logger: ILogger
@@ -25,9 +27,13 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
         let message: string = null;
         try {
             const table: Table = this._tableFactory.getModel(selection);
-            const tableVm: TableViewModel = this._viewModelBuilder.build(table);
-            const formattedTable: string = this._writer.writeTable(tableVm);
-            result.push(new vscode.TextEdit(range, formattedTable));
+            if (this._tableValidator.isValid(table)) {
+                const tableVm: TableViewModel = this._viewModelBuilder.build(table);
+                const formattedTable: string = this._writer.writeTable(tableVm);
+                result.push(new vscode.TextEdit(range, formattedTable));
+            } else {
+                message = "Can't parse table from invalid text."
+            }
         } catch (ex) {
             this._logger.logError(ex);
             console.error("Error: \n\n" + ex);

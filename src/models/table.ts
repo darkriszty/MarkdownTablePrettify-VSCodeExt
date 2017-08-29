@@ -3,43 +3,46 @@ import { Alignment } from "./alignment";
 export class Table {
 
     constructor(
-        private _rows: string[][],
-        private _alignments: Alignment[]) 
+        private _rowsWithSeparator: string[][],
+        private _alignments: Alignment[])
     {
-        if (this._rows != null && this._rows[0].length != this._alignments.length)
-            throw new Error("The number of rows must match the number of alignments");
+        if (_rowsWithSeparator != null && _rowsWithSeparator[0] != null && _rowsWithSeparator[0].length != _alignments.length)
+            throw new Error("The number of columns must match the number of alignments.");
     }
 
-    public get rows(): string[][] { return this._rows; }
+    public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : null; }
+    public get separator(): string[] { return this._rowsWithSeparator[1]; }
     public get alignments(): Alignment[] { return this._alignments; }
-    public get columnCount(): number { return this._rows[0].length; }
-    public get rowCount(): number { return this._rows.length; }
+    public get columnCount(): number { return this.rows[0].length; }
+    public get rowCount(): number { return this.rows.length; }
 
     public withoutEmptyColumns(): Table {
-        return new Table(this.removeEmptyColumns(this.getEmptyFirstAndLastColumnIndexes()), this.alignmentsWithoutEmptyColumns());
+        return new Table(
+            this.removeEmptyColumns(this.getEmptyFirstAndLastColumnIndexes()),
+            this.alignmentsWithoutEmptyColumns(this.getEmptyFirstAndLastColumnIndexes())
+        );
     }
 
     public trimValues(): Table {
-        return new Table(this.trimColumnValues());
+        return new Table(this.trimColumnValues(), this._alignments);
     }
 
     public isEmpty(): boolean {
-        return this._rows == null || this._rows.length == 0;
+        return this.rows == null || this.rows.length == 0;
     }
 
     private removeEmptyColumns(emptyColumnIndexes: number[]): string[][] {
-        let clonedRows = this._rows.map(arr => arr.slice(0));
+        let clonedRows = this._rowsWithSeparator.map(arr => arr.slice(0));
         for (let i = emptyColumnIndexes.length - 1; i >=0; i--)
             this.removeColumn(clonedRows, emptyColumnIndexes[i]);
 
         return clonedRows;
     }
 
-    private alignmentsWithoutEmptyColumns(): Alignment[] {
-        let emptyColumnIndexes: number[] = this.getEmptyColumnIndexes();
+    private alignmentsWithoutEmptyColumns(emptyColumnIndexes: number[]): Alignment[] {
         let result: Alignment[] = [];
-        for (let i = 0; i < this._rows[0].length; i++)
-            if (emptyColumnIndexes.indexOf(i) != -1)
+        for (let i = 0; i < this._alignments.length; i++)
+            if (emptyColumnIndexes.indexOf(i) == -1)
                 result.push(this._alignments[i]);
         return result;
     }
@@ -47,7 +50,7 @@ export class Table {
     private getEmptyFirstAndLastColumnIndexes(): number[] {
         let emptyColumnIndexes: number[] = [];
 
-        const colLength = this._rows[0].length;
+        const colLength = this.rows[0].length;
         if (this.isColumnEmpty(0)) emptyColumnIndexes.push(0);
         if (this.isColumnEmpty(colLength - 1)) emptyColumnIndexes.push(colLength - 1);
 
@@ -55,8 +58,8 @@ export class Table {
     }
 
     private isColumnEmpty(column: number): boolean {
-        for (let row = 0; row < this._rows.length; row++)
-            if (this._rows[row][column].trim() != "")
+        for (let row = 0; row < this.rows.length; row++)
+            if (this.rows[row][column].trim() != "")
                 return false;
         return true;
     }
@@ -68,8 +71,8 @@ export class Table {
 
     private trimColumnValues(): string[][] {
         let result: string[][] = [];
-        for (let i = 0; i < this._rows.length; i++)
-            result.push(this._rows[i].map(r => r.trim()));
+        for (let i = 0; i < this._rowsWithSeparator.length; i++)
+            result.push(this._rowsWithSeparator[i].map(r => r.trim()));
         return result;
     }
 }
