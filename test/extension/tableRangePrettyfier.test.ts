@@ -9,7 +9,7 @@ import { MockMarkdownTextDocument } from "../mocks/mockMarkdownTextDocument";
 suite("TableRangePrettyfier tests", () => {
 
     test("TODO", () => {
-        assert.fail(0, 1, "Write unit tests!")
+        assert.fail(0, 1, "Write unit tests!", "");
     });
 
 });
