@@ -8,6 +8,7 @@ import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModelBuilder } from "../viewModelBuilders/tableViewModelBuilder";
 import { TableStringWriter } from "../writers/tableStringWriter";
 import { RowViewModelBuilder } from "../viewModelBuilders/rowViewModelBuilder";
+import { PadCalculator } from "../viewModelBuilders/padCalculator";
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
@@ -18,7 +19,7 @@ export function activate(context: vscode.ExtensionContext): void {
         MD_MODE, new TableRangePrettyfier(
             new TableFactory(new AlignmentFactory()),
             new TableValidator(),
-            new TableViewModelBuilder(new RowViewModelBuilder()),
+            new TableViewModelBuilder(new RowViewModelBuilder(new PadCalculator())),
             new TableStringWriter(),
             new VsWindowLogger())
     );

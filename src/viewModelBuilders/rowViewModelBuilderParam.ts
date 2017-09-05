@@ -1,7 +1,9 @@
 export class RowViewModelBuilderParam {
 
     constructor(
-        private _maxTextLengthsPerColumn: number[]
+        private _maxTextLengthsPerColumn: number[],
+        public tableHasLeftBorder: boolean,
+        tableHasRightBorder: boolean
     ) {
         if (_maxTextLengthsPerColumn == null)
             throw new Error("Can't build row without knowing the expected lengths.");

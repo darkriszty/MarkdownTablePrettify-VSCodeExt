@@ -28,20 +28,20 @@ export class TableViewModelBuilder {
         result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
         result.hasRightBorder = tableWithoutSeparator.hasRightBorder;
         result.header = this.buildHeader(tableWithoutSeparator, maxColLengths);
-        result.separator = this.buildSeparator(maxColLengths);
+        result.separator = this.buildSeparator(tableWithoutSeparator, maxColLengths);
         result.rows = this.buildRows(tableWithoutSeparator, maxColLengths);
 
         return result;
     }
 
-    private buildHeader(tableWithoutSeparator: Table, maxColLengths: number[]): RowViewModel {
-        let param = new RowViewModelBuilderParam(maxColLengths);
-        param.rowValues = tableWithoutSeparator.rows[0];
+    private buildHeader(table: Table, maxColLengths: number[]): RowViewModel {
+        let param = new RowViewModelBuilderParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
+        param.rowValues = table.rows[0];
         return this._rowViewModelBuilder.buildRow(param);
     }
 
-    private buildSeparator(maxColLengths: number[]): RowViewModel {
-        let param = new RowViewModelBuilderParam(maxColLengths);
+    private buildSeparator(table: Table, maxColLengths: number[]): RowViewModel {
+        let param = new RowViewModelBuilderParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
         return this._rowViewModelBuilder.buildSeparator(param);
     }
 
@@ -49,7 +49,7 @@ export class TableViewModelBuilder {
         let result: RowViewModel[] = new Array(table.rowCount - 1);
 
         for (let row = 1; row < table.rowCount; row++) {
-            let param = new RowViewModelBuilderParam(maxColLengths);
+            let param = new RowViewModelBuilderParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
             param.rowValues = table.rows[row];
             result[row - 1] = this._rowViewModelBuilder.buildRow(param);
         }

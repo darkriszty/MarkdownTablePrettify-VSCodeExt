@@ -8,6 +8,7 @@ import { TableViewModel } from "../../src/viewModels/tableViewModel";
 import { TableViewModelBuilder } from "../../src/viewModelBuilders/tableViewModelBuilder";
 import { RowViewModel } from "../../src/viewModels/rowViewModel";
 import { RowViewModelBuilder } from "../../src/viewModelBuilders/rowViewModelBuilder";
+import { PadCalculator } from "../../src/viewModelBuilders/padCalculator";
 
 suite("TableViewModelBuilder tests", () => {
     let _rowVmb: IMock<RowViewModelBuilder>;
@@ -131,7 +132,7 @@ suite("TableViewModelBuilder tests", () => {
             ["h", "h"],
             ["𠁻", "𣄿 content"]
         ], [ Alignment.Left, Alignment.Left ]);
-        const vmb = new TableViewModelBuilder(new RowViewModelBuilder());
+        const vmb = new TableViewModelBuilder(new RowViewModelBuilder(new PadCalculator()));
         const vm = vmb.build(table);
 
         assertViewModelPropertiesSet(vm);

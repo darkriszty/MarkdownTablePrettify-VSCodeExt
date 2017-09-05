@@ -1,13 +1,18 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
 import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
+import { PadCalculator } from "./padCalculator";
 
 export class RowViewModelBuilder {
+    private readonly _padChar = " ";
+    private readonly _separator = "-";
+
+    constructor(
+        private _padCalculator: PadCalculator)
+    { }
 
     public buildRow(param: RowViewModelBuilderParam): RowViewModel {
-        if (param == null)
-            throw new Error("Paramter can't be null");
-        if (param.rowValues == null)
-            throw new Error("Rows can't be null");
+        if (param == null) throw new Error("Paramter can't be null");
+        if (param.rowValues == null) throw new Error("Rows can't be null");
         /*
             for each value, add a left padding and a right padding:
                 * first column:
@@ -22,18 +27,21 @@ export class RowViewModelBuilder {
                     - empty middle rows should have a length of 3 chars (spaces)
         */
 
+        const padChar = " ";
         let resultRow = new Array(param.numberOfColumns);
         for (let i = 0; i < param.numberOfColumns; i++) {
             const columnLength = param.maxTextLengthsPerColumn[i];
-            resultRow[i] = param.rowValues[i];
+            resultRow[i] = 
+                this._padCalculator.getLeftPadding(this._padChar, param, i) + 
+                param.rowValues[i] + 
+                this._padCalculator.getRightPadding(this._padChar, param, i);
         }
 
         return new RowViewModel(resultRow);
     }
 
     public buildSeparator(param: RowViewModelBuilderParam): RowViewModel {
-        if (param == null)
-            throw new Error("Paramter can't be null");
+        if (param == null) throw new Error("Paramter can't be null");
 
         let resultRow = new Array(param.numberOfColumns);
         for (let i = 0; i < param.numberOfColumns; i++) {
