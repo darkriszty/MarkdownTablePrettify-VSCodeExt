@@ -149,11 +149,6 @@ suite("RowViewModelBuilder.buildRow() tests", () => {
         assert.equal(rowViewModel.getValueAt(2), " c3  ");
         assert.equal(rowViewModel.getValueAt(3), "");
     });
-
-    test("TODO: add tests when there is left border and right border", () => {
-        assert.equal(1, 0);
-    });
-
 });
 
 suite("RowViewModelBuilder.buildSeparator() tests", () => {
@@ -246,10 +241,6 @@ suite("RowViewModelBuilder.buildSeparator() tests", () => {
         assert.equal(rowViewModel.getValueAt(1), "-----");
         assert.equal(rowViewModel.getValueAt(2), "-----");
         assert.equal(rowViewModel.getValueAt(3), "");
-    });
-
-    test("TODO: add tests when there is left border and right border", () => {
-        assert.equal(1, 0);
     });
 });
 

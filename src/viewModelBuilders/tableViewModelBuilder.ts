@@ -25,6 +25,8 @@ export class TableViewModelBuilder {
         const maxColLengths: number[] = this.getMaxLengths(tableWithoutSeparator);
 
         let result = new TableViewModel();
+        result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
+        result.hasRightBorder = tableWithoutSeparator.hasRightBorder;
         result.header = this.buildHeader(tableWithoutSeparator, maxColLengths);
         result.separator = this.buildSeparator(maxColLengths);
         result.rows = this.buildRows(tableWithoutSeparator, maxColLengths);

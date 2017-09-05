@@ -62,6 +62,65 @@ suite("TableViewModelBuilder tests", () => {
         assert.equal(tableVm.rows[1], expectedRow);
     });
 
+    test("build() with table having left border sets hasLeftBorder on viewModel", () => {
+        const table = new Table([
+            ["", "c1", "c2"],
+            ["", "v1", "v2"],
+            ["", "v3", "v4"],
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const expectedSeparator = new RowViewModel([]);
+        const expectedRow = new RowViewModel([]);
+
+        const tableVm = createViewModelBuilder().build(table);
+
+        assertExt.isNotNull(tableVm);
+        assert.equal(tableVm.hasLeftBorder, true);
+    });
+
+    test("build() with table without left border sets hasLeftBorder on viewModel to false", () => {
+        const table = new Table([
+            ["c1", "c2"],
+            ["v1", "v2"],
+            ["v3", "v4"],
+        ], [ Alignment.Left, Alignment.Left ]);
+        const expectedSeparator = new RowViewModel([]);
+        const expectedRow = new RowViewModel([]);
+
+        const tableVm = createViewModelBuilder().build(table);
+
+        assertExt.isNotNull(tableVm);
+        assert.equal(tableVm.hasLeftBorder, false);
+    });
+
+    test("build() with table having right border sets hasRightBorder on viewModel", () => {
+        const table = new Table([
+            ["c1", "c2", ""],
+            ["v1", "v2", ""],
+            ["v3", "v4", ""],
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const expectedSeparator = new RowViewModel([]);
+        const expectedRow = new RowViewModel([]);
+
+        const tableVm = createViewModelBuilder().build(table);
+
+        assertExt.isNotNull(tableVm);
+        assert.equal(tableVm.hasRightBorder, true);
+    });
+
+    test("build() with table without right border sets hasRightBorder on viewModel to false", () => {
+        const table = new Table([
+            ["c1", "c2"],
+            ["v1", "v2"],
+            ["v3", "v4"],
+        ], [ Alignment.Left, Alignment.Left ]);
+        const expectedSeparator = new RowViewModel([]);
+        const expectedRow = new RowViewModel([]);
+
+        const tableVm = createViewModelBuilder().build(table);
+
+        assertExt.isNotNull(tableVm);
+        assert.equal(tableVm.hasRightBorder, false);
+    });
 
     /* TODO: 
         Move the CJK test from this class to somewhere else when possible.

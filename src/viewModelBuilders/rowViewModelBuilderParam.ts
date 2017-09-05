@@ -11,7 +11,4 @@ export class RowViewModelBuilderParam {
     public get numberOfColumns(): number { return this.maxTextLengthsPerColumn.length; }
 
     public rowValues: string[];
-    public tableHasLeftBorder: boolean;
-    public tableHasRightBorder: boolean;
-
 }

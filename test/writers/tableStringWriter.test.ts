@@ -97,6 +97,48 @@ suite("TableStringWriter tests", () => {
         assert.throws(() => writer.writeTable(input));
     });
 
+    test("writeTable() writes left borders on all rows for viewModel having hasLeftBorderSet", () => {
+        const input : TableViewModel = new TableViewModel();
+        input.hasLeftBorder = true;
+        input.header = new RowViewModel(["c1", "c2"]);
+        input.separator = new RowViewModel(["-", "-"]);
+        input.rows = [ 
+            new RowViewModel(["v1", "v2"]),
+            new RowViewModel(["v3", "v4"]),
+            new RowViewModel(["v5", "v6"])
+        ];
+
+        const tableText: string = createSut().writeTable(input);
+
+        assertExt.isNotNull(tableText);
+        const lines = tableText.split(/\r\n|\r|\n/);
+        assert.equal(lines.length, 5);
+        assert.equal(lines[2], "|v1|v2");
+        assert.equal(lines[3], "|v3|v4");
+        assert.equal(lines[4], "|v5|v6");
+    });
+
+    test("writeTable() writes right borders on all rows for viewModel having hasRightBorderSet", () => {
+        const input : TableViewModel = new TableViewModel();
+        input.hasRightBorder = true;
+        input.header = new RowViewModel(["c1", "c2"]);
+        input.separator = new RowViewModel(["-", "-"]);
+        input.rows = [ 
+            new RowViewModel(["v1", "v2"]),
+            new RowViewModel(["v3", "v4"]),
+            new RowViewModel(["v5", "v6"])
+        ];
+
+        const tableText: string = createSut().writeTable(input);
+
+        assertExt.isNotNull(tableText);
+        const lines = tableText.split(/\r\n|\r|\n/);
+        assert.equal(lines.length, 5);
+        assert.equal(lines[2], "v1|v2|");
+        assert.equal(lines[3], "v3|v4|");
+        assert.equal(lines[4], "v5|v6|");
+    });
+
     function createSut() : TableStringWriter {
         return new TableStringWriter();
     }

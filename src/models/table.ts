@@ -15,6 +15,8 @@ export class Table {
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.rows[0].length; }
     public get rowCount(): number { return this.rows.length; }
+    public get hasLeftBorder(): boolean { return this.isColumnEmpty(0); }
+    public get hasRightBorder(): boolean { return this.isColumnEmpty(this.columnCount - 1); }
 
     public withoutEmptyColumns(): Table {
         return new Table(

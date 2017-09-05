@@ -10,7 +10,7 @@ suite("Table tests", () => {
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
-        const table = new Table(rows, [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const table = new Table(rows, getAlignmentsFor(rows));
 
         const rowsWithoutSeparator = rows.filter((v, i) => i != 1);
         assertRowsMatch(table.rows, rowsWithoutSeparator);
@@ -28,7 +28,7 @@ suite("Table tests", () => {
             [ "c"     ,  "  ", "e"      ]
         ];
 
-        const table = new Table(originalRows, [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const table = new Table(originalRows, getAlignmentsFor(originalRows));
         const tableWithoutEmptyColumns = table.withoutEmptyColumns();
 
         const expectedTable = new Table(expectedNoEmptyColumns, [ Alignment.Left, Alignment.Left, Alignment.Left ]);
@@ -62,7 +62,7 @@ suite("Table tests", () => {
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
-        const table = new Table(rows, [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const table = new Table(rows, getAlignmentsFor(rows));
 
         assert.equal(table.columnCount, 5);
     });
@@ -73,7 +73,7 @@ suite("Table tests", () => {
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
-        const table = new Table(rows, [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const table = new Table(rows, getAlignmentsFor(rows));
 
         assert.equal(table.rowCount, 2);
     });
@@ -84,7 +84,7 @@ suite("Table tests", () => {
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
-        const expectedAlignments = [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]
+        const expectedAlignments = getAlignmentsFor(rows);
         const table = new Table(rows, expectedAlignments);
 
         assert.equal(table.alignments, expectedAlignments);
@@ -101,7 +101,7 @@ suite("Table tests", () => {
             [ "", "-",  "", "---", "" ],
             [ "", "c",  "", "e f", "" ]
         ];
-        const alignments = [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ];
+        const alignments = getAlignmentsFor(rows);
         const table = new Table(rows, alignments).trimValues();
 
         assertModelEquals(table, new Table(expectedColumns, alignments));
@@ -113,13 +113,61 @@ suite("Table tests", () => {
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
             [ "",   "c"     ,   "  ",   "e"     , "" ]
         ];
-        const table = new Table(rows, [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
+        const table = new Table(rows, getAlignmentsFor(rows));
 
         const separator = [ "",   " - "   ,   ""  ,   "---"   , "" ];
         assert.equal(table.separator.length, separator.length);
         for (let i = 0; i < separator.length; i++)
             assert.equal(table.separator[i], separator[i]);
     });
+
+    test("hasLeftBorder() returns true for empty first column", () => {
+        const rows = [ 
+            [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
+            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   "c"     ,   "  ",   "e"     , "" ]
+        ];
+        const table = new Table(rows, getAlignmentsFor(rows));
+
+        assert.equal(table.hasLeftBorder, true);
+    });
+
+    test("hasLeftBorder() returns false for non-empty first column", () => {
+        const rows = [ 
+            [ "  h1  ",   " " ,   "  h3  ", "" ],
+            [ " - "   ,   ""  ,   "---"   , "" ],
+            [ "c"     ,   "  ",   "e"     , "" ]
+        ];
+        const table = new Table(rows, getAlignmentsFor(rows));
+
+        assert.equal(table.hasLeftBorder, false);
+    });
+
+    test("hasRightBorder() returns true for empty last column", () => {
+        const rows = [ 
+            [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
+            [ "",   " - "   ,   ""  ,   "---"   , "" ],
+            [ "",   "c"     ,   "  ",   "e"     , "" ]
+        ];
+        const table = new Table(rows, getAlignmentsFor(rows));
+
+        assert.equal(table.hasRightBorder, true);
+    });
+
+    test("hasRightBorder() returns false for non empty last column", () => {
+        const rows = [ 
+            [ "",   "  h1  ",   " " ,   "  h3  " ],
+            [ "",   " - "   ,   ""  ,   "---"    ],
+            [ "",   "c"     ,   "  ",   "e"      ]
+        ];
+        const table = new Table(rows, getAlignmentsFor(rows));
+
+        assert.equal(table.hasRightBorder, false);
+    });
+
+    function getAlignmentsFor(rows: string[][], alignment: Alignment = Alignment.Left): Alignment[] {
+        return rows[0].map(col => alignment);
+    }
 
     function assertModelEquals(actual: Table, expected: Table) {
         assertRowsMatch(actual.rows, expected.rows)

@@ -43,21 +43,4 @@ export class RowViewModelBuilder {
 
         return new RowViewModel(resultRow);
     }
-
-    private getLeftPadding(paddingChar: string, builderParam: RowViewModelBuilderParam,
-        column: number): string {
-
-        let result;
-        if (column == 0) {
-            result = builderParam.tableHasLeftBorder
-                ? paddingChar
-                : "";
-        } else if (column == builderParam.numberOfColumns - 1) {
-
-        } else {
-
-        }
-
-        return result;
-    }
 }
