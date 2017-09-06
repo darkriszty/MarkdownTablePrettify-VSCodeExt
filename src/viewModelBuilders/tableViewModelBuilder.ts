@@ -4,6 +4,7 @@ import { TableViewModel } from "../viewModels/tableViewModel";
 import { RowViewModel } from "../viewModels/rowViewModel";
 import { RowViewModelBuilder } from "./rowViewModelBuilder";
 import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
+import { CellLengthCalculator } from "./cellLengthCalculator";
 
 export class TableViewModelBuilder {
 
@@ -22,8 +23,9 @@ export class TableViewModelBuilder {
             7) use the rest of the rows to get the contents via rowViewModelBuilder.buildRow
             8) return the view model
         */
-        const maxColLengths: number[] = this.getMaxLengths(tableWithoutSeparator);
-
+        const maxColLengths: number[] = CellLengthCalculator.getMaxLengths(tableWithoutSeparator);
+        //TODO: consider passing the entire table to the rowVmb.BuildRow method with the row index. 
+        // Then the RowViewModelBuilderParam class can be deleted.
         let result = new TableViewModel();
         result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
         result.hasRightBorder = tableWithoutSeparator.hasRightBorder;
@@ -55,15 +57,5 @@ export class TableViewModelBuilder {
         }
 
         return result;
-    }
-
-    private getMaxLengths(table: Table): number[] {
-        let maxColLengths: number[] = new Array(table.columnCount).fill(0);
-
-        for (let col = 0; col < table.rows.length; col++)
-            for (let row = 0; row < table.rows[col].length; row++)
-                maxColLengths[col] = Math.max(table.rows[col][row].length, maxColLengths[col])
-
-        return maxColLengths;
     }
 }
