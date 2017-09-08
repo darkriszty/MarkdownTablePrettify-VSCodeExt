@@ -7,7 +7,7 @@ export class CellLengthCalculator {
 
         for (let col = 0; col < table.rows.length; col++)
             for (let row = 0; row < table.rows[col].length; row++)
-                maxColLengths[col] = Math.max(this.getLength(table.rows[col][row]), maxColLengths[col])
+                maxColLengths[col] = Math.max(this.getLength(table.rows[row][col]), maxColLengths[col])
 
         return maxColLengths;
     }
