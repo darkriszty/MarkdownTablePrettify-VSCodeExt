@@ -15,6 +15,15 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "");
     });
 
+    test("getLeftPadding() First column left padded with 1 character if there is a left border", () => {
+        const sut = createCalculator();
+        let param = new RowViewModelBuilderParam([5, 5, 5], true, false);
+
+        const pad = sut.getLeftPadding(" ", param, 0);
+
+        assert.equal(pad, " ");
+    });
+
     test("getLeftPadding() Middle column left padded with 1 character", () => {
         const sut = createCalculator();
         let param = new RowViewModelBuilderParam([5, 5, 5], false, false);
@@ -197,9 +206,9 @@ suite("PadCalculator tests", () => {
     test("getRightPadding() Last column 2 char shorter than maxColLength gets right padded with 3 characters if there is right border", () => {
         const sut = createCalculator();
         let param = new RowViewModelBuilderParam([5, 5, 4], false, true);
-        param.rowValues = [ "a", "ab", "c" ];
+        param.rowValues = [ "a", "b", "ab" ];
 
-        const pad = sut.getRightPadding(" ", param, 1);
+        const pad = sut.getRightPadding(" ", param, 2);
 
         assert.equal(pad, "   ");
     });
@@ -207,9 +216,9 @@ suite("PadCalculator tests", () => {
     test("getRightPadding() Last column 3 char shorter than maxColLength gets right padded with 4 characters if there is right border", () => {
         const sut = createCalculator();
         let param = new RowViewModelBuilderParam([5, 5, 4], false, true);
-        param.rowValues = [ "a", "a", "c" ];
+        param.rowValues = [ "a", "b", "a" ];
 
-        const pad = sut.getRightPadding(" ", param, 1);
+        const pad = sut.getRightPadding(" ", param, 2);
 
         assert.equal(pad, "    ");
     });
@@ -217,41 +226,33 @@ suite("PadCalculator tests", () => {
     test("getRightPadding() Last column is empty string gets right padded with 5 characters if there is right border", () => {
         const sut = createCalculator();
         let param = new RowViewModelBuilderParam([5, 5, 4], false, true);
-        param.rowValues = [ "a", "", "c" ];
+        param.rowValues = [ "a", "b", "" ];
 
-        const pad = sut.getRightPadding(" ", param, 1);
+        const pad = sut.getRightPadding(" ", param, 2);
 
         assert.equal(pad, "     ");
     });
 
     test("getRightPadding() ??? Last column with 0 maxLength gets right padded with 2 characters if there is right border", () => {
         const sut = createCalculator();
-        let param = new RowViewModelBuilderParam([5, 5, 4], false, true);
-        param.rowValues = [ "a", "", "c" ];
+        let param = new RowViewModelBuilderParam([5, 5, 0], false, true);
+        param.rowValues = [ "a", "b", "" ];
 
         const pad = sut.getRightPadding(" ", param, 1);
 
         assert.equal(pad, "  ");
     });
 
-    test("getRightPadding() First column has no right padding if empty", () => {
+    test("Regular middle gets padded both left and right with expected amount", () => {
         const sut = createCalculator();
-        let param = new RowViewModelBuilderParam([0, 5, 5], false, false);
-
-        const pad = sut.getRightPadding(" ", param, 0);
-
-        assert.equal(pad, "");
-    });
-
-    test("Regular middle gets padded both left and right with 1 space", () => {
-        const sut = createCalculator();
-        let param = new RowViewModelBuilderParam([0, 5, 5], false, false);
+        let param = new RowViewModelBuilderParam([5, 5, 5], false, false);
+        param.rowValues = [ "a", "b", "c" ];
 
         const leftPad = sut.getLeftPadding(" ", param, 1);
         const rightPad = sut.getRightPadding(" ", param, 1);
 
         assert.equal(leftPad, " ");
-        assert.equal(rightPad, "    ");
+        assert.equal(rightPad, "     ");
     });
 
     function createCalculator(): PadCalculator { 

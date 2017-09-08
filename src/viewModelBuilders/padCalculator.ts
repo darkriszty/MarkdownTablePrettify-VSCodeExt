@@ -23,7 +23,7 @@ export class PadCalculator {
     public getRightPadding(paddingChar: string, builderParam: RowViewModelBuilderParam, column: number): string {
         let result;
         const cellTextLength = CellLengthCalculator.getLength(builderParam.rowValues[column]);
-        if (column < builderParam.numberOfColumns - 1) {
+        if (column < builderParam.numberOfColumns - 1 || builderParam.tableHasRightBorder) {
             const rightPadCount = builderParam.maxTextLengthsPerColumn[column] > 0
                 ? builderParam.maxTextLengthsPerColumn[column] - cellTextLength
                 : 1;
