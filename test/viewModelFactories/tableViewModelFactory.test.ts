@@ -20,6 +20,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() with calls rowVmb methods", () => {
         const table = new Table([
             ["c1", "c2"],
+            ["--", "--"],
             ["v1", "v2"],
             ["v3", "v4"],
         ], [ Alignment.Left, Alignment.Left ]);
@@ -44,6 +45,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() returns expected view model properties", () => {
         const table = new Table([
             ["c1", "c2"],
+            ["--", "--"],
             ["v1", "v2"],
             ["v3", "v4"],
         ], [ Alignment.Left, Alignment.Left ]);
@@ -66,6 +68,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() with table having left border sets hasLeftBorder on viewModel", () => {
         const table = new Table([
             ["", "c1", "c2"],
+            ["", "--", "--"],
             ["", "v1", "v2"],
             ["", "v3", "v4"],
         ], [ Alignment.Left, Alignment.Left, Alignment.Left ]);
@@ -81,6 +84,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() with table without left border sets hasLeftBorder on viewModel to false", () => {
         const table = new Table([
             ["c1", "c2"],
+            ["--", "--"],
             ["v1", "v2"],
             ["v3", "v4"],
         ], [ Alignment.Left, Alignment.Left ]);
@@ -96,6 +100,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() with table having right border sets hasRightBorder on viewModel", () => {
         const table = new Table([
             ["c1", "c2", ""],
+            ["--", "--", ""],
             ["v1", "v2", ""],
             ["v3", "v4", ""],
         ], [ Alignment.Left, Alignment.Left, Alignment.Left ]);
@@ -111,6 +116,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() with table without right border sets hasRightBorder on viewModel to false", () => {
         const table = new Table([
             ["c1", "c2"],
+            ["--", "--"],
             ["v1", "v2"],
             ["v3", "v4"],
         ], [ Alignment.Left, Alignment.Left ]);
@@ -130,6 +136,7 @@ suite("TableViewModelFactory tests", () => {
     test("build() with CJK characters returns expected view model", () => {
         const table = new Table([
             ["h", "h"],
+            ["--", "--"],
             ["𠁻", "𣄿 content"]
         ], [ Alignment.Left, Alignment.Left ]);
         const vmb = new TableViewModelFactory(new RowViewModelFactory(new PadCalculator()));
