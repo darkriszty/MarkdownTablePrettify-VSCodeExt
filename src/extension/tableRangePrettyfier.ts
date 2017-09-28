@@ -4,7 +4,7 @@ import { Table } from "../models/table";
 import { TableFactory } from "../modelFactory/tableFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModel } from "../viewModels/tableViewModel";
-import { TableViewModelBuilder } from "../viewModelBuilders/tableViewModelBuilder";
+import { TableViewModelFactory } from "../viewModelFactories/tableViewModelFactory";
 import { TableStringWriter } from "../writers/tableStringWriter";
 
 export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditProvider {
@@ -12,7 +12,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
     constructor(
         private _tableFactory: TableFactory,
         private _tableValidator: TableValidator,
-        private _viewModelBuilder: TableViewModelBuilder,
+        private _viewModelFactory: TableViewModelFactory,
         private _writer: TableStringWriter,
         private _logger: ILogger
     ) { }
@@ -28,7 +28,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
         try {
             const table: Table = this._tableFactory.getModel(selection);
             if (this._tableValidator.isValid(table)) {
-                const tableVm: TableViewModel = this._viewModelBuilder.build(table);
+                const tableVm: TableViewModel = this._viewModelFactory.build(table);
                 const formattedTable: string = this._writer.writeTable(tableVm);
                 result.push(new vscode.TextEdit(range, formattedTable));
             } else {

@@ -5,16 +5,16 @@ import { Table } from "../../src/models/table";
 import { Alignment } from "../../src/models/alignment";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
 import { TableViewModel } from "../../src/viewModels/tableViewModel";
-import { TableViewModelBuilder } from "../../src/viewModelBuilders/tableViewModelBuilder";
 import { RowViewModel } from "../../src/viewModels/rowViewModel";
-import { RowViewModelBuilder } from "../../src/viewModelBuilders/rowViewModelBuilder";
-import { PadCalculator } from "../../src/viewModelBuilders/padCalculator";
+import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
+import { PadCalculator } from "../../src/viewModelFactories/padCalculator";
+import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
 
-suite("TableViewModelBuilder tests", () => {
-    let _rowVmb: IMock<RowViewModelBuilder>;
+suite("TableViewModelFactory tests", () => {
+    let _rowVmb: IMock<RowViewModelFactory>;
 
     setup(() => {
-        _rowVmb = Mock.ofType<RowViewModelBuilder>();
+        _rowVmb = Mock.ofType<RowViewModelFactory>();
     });
 
     test("build() with calls rowVmb methods", () => {
@@ -35,7 +35,7 @@ suite("TableViewModelBuilder tests", () => {
             .returns(() => expectedRow)
             .verifiable(Times.exactly(3));
 
-        const vmb = createViewModelBuilder();
+        const vmb = createViewModelFactory();
         vmb.build(table);
 
         _rowVmb.verifyAll();
@@ -52,7 +52,7 @@ suite("TableViewModelBuilder tests", () => {
         _rowVmb.setup(m => m.buildSeparator(It.isAny())).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny())).returns(() => expectedRow);
 
-        const tableVm = createViewModelBuilder().build(table);
+        const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
         assert.equal(tableVm.header, expectedRow);
@@ -72,7 +72,7 @@ suite("TableViewModelBuilder tests", () => {
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
-        const tableVm = createViewModelBuilder().build(table);
+        const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
         assert.equal(tableVm.hasLeftBorder, true);
@@ -87,7 +87,7 @@ suite("TableViewModelBuilder tests", () => {
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
-        const tableVm = createViewModelBuilder().build(table);
+        const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
         assert.equal(tableVm.hasLeftBorder, false);
@@ -102,7 +102,7 @@ suite("TableViewModelBuilder tests", () => {
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
-        const tableVm = createViewModelBuilder().build(table);
+        const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
         assert.equal(tableVm.hasRightBorder, true);
@@ -117,7 +117,7 @@ suite("TableViewModelBuilder tests", () => {
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
-        const tableVm = createViewModelBuilder().build(table);
+        const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
         assert.equal(tableVm.hasRightBorder, false);
@@ -132,7 +132,7 @@ suite("TableViewModelBuilder tests", () => {
             ["h", "h"],
             ["𠁻", "𣄿 content"]
         ], [ Alignment.Left, Alignment.Left ]);
-        const vmb = new TableViewModelBuilder(new RowViewModelBuilder(new PadCalculator()));
+        const vmb = new TableViewModelFactory(new RowViewModelFactory(new PadCalculator()));
         const vm = vmb.build(table);
 
         assertViewModelPropertiesSet(vm);
@@ -152,7 +152,7 @@ suite("TableViewModelBuilder tests", () => {
         assertExt.isNotNull(viewModel.rows);
     }
 
-    function createViewModelBuilder(): TableViewModelBuilder {
-        return new TableViewModelBuilder(_rowVmb.object);
+    function createViewModelFactory(): TableViewModelFactory {
+        return new TableViewModelFactory(_rowVmb.object);
     }
 });

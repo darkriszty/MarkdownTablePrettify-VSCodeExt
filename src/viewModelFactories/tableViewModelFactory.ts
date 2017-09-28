@@ -2,14 +2,14 @@ import { Table } from "../models/table";
 import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { RowViewModel } from "../viewModels/rowViewModel";
-import { RowViewModelBuilder } from "./rowViewModelBuilder";
-import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
+import { RowViewModelFactory } from "./rowViewModelFactory";
+import { RowViewModelFactoryParam } from "./rowViewModelFactoryParam";
 import { CellLengthCalculator } from "./cellLengthCalculator";
 
-export class TableViewModelBuilder {
+export class TableViewModelFactory {
 
     constructor(
-        private _rowViewModelBuilder: RowViewModelBuilder
+        private _rowViewModelFactory: RowViewModelFactory
     ) { }
 
     public build(tableWithoutSeparator: Table): TableViewModel {
@@ -18,14 +18,14 @@ export class TableViewModelBuilder {
             2) trim values
             3) create intermediary columns
             4) obtain max length for each column
-            5) use first row to get header from rowViewModelBuilder.buildRow
-            6) use dummy column to build separator from rowViewModelBuilder.buildSeparator
-            7) use the rest of the rows to get the contents via rowViewModelBuilder.buildRow
+            5) use first row to get header from rowViewModelFactory.buildRow
+            6) use dummy column to build separator from rowViewModelFactory.buildSeparator
+            7) use the rest of the rows to get the contents via rowViewModelFactory.buildRow
             8) return the view model
         */
         const maxColLengths: number[] = CellLengthCalculator.getMaxLengths(tableWithoutSeparator);
         //TODO: consider passing the entire table to the rowVmb.BuildRow method with the row index. 
-        // Then the RowViewModelBuilderParam class can be deleted.
+        // Then the RowViewModelFactoryParam class can be deleted.
         let result = new TableViewModel();
         result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
         result.hasRightBorder = tableWithoutSeparator.hasRightBorder;
@@ -37,23 +37,23 @@ export class TableViewModelBuilder {
     }
 
     private buildHeader(table: Table, maxColLengths: number[]): RowViewModel {
-        let param = new RowViewModelBuilderParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
+        let param = new RowViewModelFactoryParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
         param.rowValues = table.rows[0];
-        return this._rowViewModelBuilder.buildRow(param);
+        return this._rowViewModelFactory.buildRow(param);
     }
 
     private buildSeparator(table: Table, maxColLengths: number[]): RowViewModel {
-        let param = new RowViewModelBuilderParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
-        return this._rowViewModelBuilder.buildSeparator(param);
+        let param = new RowViewModelFactoryParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
+        return this._rowViewModelFactory.buildSeparator(param);
     }
 
     private buildRows(table: Table, maxColLengths: number[]): RowViewModel[] {
         let result: RowViewModel[] = new Array(table.rowCount - 1);
 
         for (let row = 1; row < table.rowCount; row++) {
-            let param = new RowViewModelBuilderParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
+            let param = new RowViewModelFactoryParam(maxColLengths, table.hasLeftBorder, table.hasRightBorder);
             param.rowValues = table.rows[row];
-            result[row - 1] = this._rowViewModelBuilder.buildRow(param);
+            result[row - 1] = this._rowViewModelFactory.buildRow(param);
         }
 
         return result;

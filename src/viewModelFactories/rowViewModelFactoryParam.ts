@@ -1,4 +1,4 @@
-export class RowViewModelBuilderParam {
+export class RowViewModelFactoryParam {
 
     constructor(
         private _maxTextLengthsPerColumn: number[],

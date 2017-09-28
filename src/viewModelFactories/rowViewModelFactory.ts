@@ -1,25 +1,25 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
-import { RowViewModelBuilderParam } from "./rowViewModelBuilderParam";
+import { RowViewModelFactoryParam } from "./rowViewModelFactoryParam";
 import { PadCalculator } from "./padCalculator";
 
-export class RowViewModelBuilder {
+export class RowViewModelFactory {
     constructor(
         private _padCalculator: PadCalculator)
     { }
 
-    public buildRow(param: RowViewModelBuilderParam): RowViewModel {
+    public buildRow(param: RowViewModelFactoryParam): RowViewModel {
         if (param == null) throw new Error("Paramter can't be null");
         if (param.rowValues == null) throw new Error("Rows can't be null");
         return this.makeRow(param, " ");
     }
 
-    public buildSeparator(param: RowViewModelBuilderParam): RowViewModel {
+    public buildSeparator(param: RowViewModelFactoryParam): RowViewModel {
         //TODO: don't modify the parameter
         param.rowValues = new Array(param.numberOfColumns).fill("-");
         return this.makeRow(param, "-");
     }
 
-    private makeRow(param: RowViewModelBuilderParam, padChar: string) {
+    private makeRow(param: RowViewModelFactoryParam, padChar: string) {
         let resultRow = new Array(param.numberOfColumns);
         for(let i = 0; i<param.numberOfColumns; i++) {
             const columnLength = param.maxTextLengthsPerColumn[i];
