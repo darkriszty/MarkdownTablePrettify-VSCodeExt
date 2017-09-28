@@ -233,12 +233,12 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() ??? Last column with 0 maxLength gets right padded with 2 characters if there is right border", () => {
+    test("getRightPadding() Last column with 0 maxLength gets right padded with 2 characters if there is right border", () => {
         const sut = createCalculator();
         let param = new RowViewModelFactoryParam([5, 5, 0], false, true);
         param.rowValues = [ "a", "b", "" ];
 
-        const pad = sut.getRightPadding(" ", param, 1);
+        const pad = sut.getRightPadding(" ", param, 2);
 
         assert.equal(pad, "  ");
     });

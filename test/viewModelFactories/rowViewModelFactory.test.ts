@@ -159,6 +159,5 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
 });
 
 function createFactory(padCalculator: PadCalculator): RowViewModelFactory {
-    var rowVmb = new RowViewModelFactory(padCalculator);
-    return rowVmb;
+    return new RowViewModelFactory(padCalculator);
 }

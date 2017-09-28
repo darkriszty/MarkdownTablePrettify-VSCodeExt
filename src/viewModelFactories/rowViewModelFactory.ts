@@ -14,18 +14,21 @@ export class RowViewModelFactory {
     }
 
     public buildSeparator(param: RowViewModelFactoryParam): RowViewModel {
-        //TODO: don't modify the parameter
-        param.rowValues = new Array(param.numberOfColumns).fill("-");
+        let paramForSeparator = RowViewModelFactoryParam.createFrom(param)
+        paramForSeparator.rowValues = new Array(param.numberOfColumns).fill("-");
         return this.makeRow(param, "-");
     }
 
     private makeRow(param: RowViewModelFactoryParam, padChar: string) {
         let resultRow = new Array(param.numberOfColumns);
-        for(let i = 0; i<param.numberOfColumns; i++) {
+        for(let i = 0; i< param.numberOfColumns; i++) {
             const columnLength = param.maxTextLengthsPerColumn[i];
+            const text = param.rowValues[i] == ""
+                ? padChar
+                : param.rowValues[i];
             resultRow[i] =
                 this._padCalculator.getLeftPadding(padChar, param, i) +
-                param.rowValues[i] +
+                text +
                 this._padCalculator.getRightPadding(padChar, param, i);
         }
         return new RowViewModel(resultRow);
