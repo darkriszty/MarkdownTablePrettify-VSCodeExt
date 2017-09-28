@@ -16,7 +16,7 @@ export class RowViewModelFactory {
     public buildSeparator(param: RowViewModelFactoryParam): RowViewModel {
         let paramForSeparator = RowViewModelFactoryParam.createFrom(param)
         paramForSeparator.rowValues = new Array(param.numberOfColumns).fill("-");
-        return this.makeRow(param, "-");
+        return this.makeRow(paramForSeparator, "-");
     }
 
     private makeRow(param: RowViewModelFactoryParam, padChar: string) {
