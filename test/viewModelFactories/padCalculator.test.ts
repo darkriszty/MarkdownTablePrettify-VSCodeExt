@@ -173,7 +173,8 @@ suite("PadCalculator tests", () => {
     test("getRightPadding() Last column not right padded if there's no border", () => {
         const sut = createCalculator();
         let param = new RowViewModelFactoryParam([5, 5, 5], false, false);
-
+        param.rowValues = [ "a", "b", "c" ];
+        
         const pad = sut.getRightPadding(" ", param, 2);
 
         assert.equal(pad, "");

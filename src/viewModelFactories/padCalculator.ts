@@ -28,6 +28,8 @@ export class PadCalculator {
                 ? factoryParam.maxTextLengthsPerColumn[column] - cellTextLength
                 : 1;
             result = paddingChar.repeat(rightPadCount + 1);
+        } else if (column == factoryParam.numberOfColumns - 1 && !factoryParam.tableHasRightBorder) {
+            return "";
         } else {
             result = paddingChar;
         }
