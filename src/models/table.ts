@@ -34,12 +34,12 @@ export class Table {
         return this.rows == null || this.rows.length == 0;
     }
 
-    public getMaxLengths(): number[] {
+    public getLongestColumnLength(): number[] {
         let maxColLengths: number[] = new Array(this.columnCount).fill(0);
 
-        for (let col = 0; col < this.rows.length; col++)
-            for (let row = 0; row < this.rows[col].length; row++)
-                maxColLengths[col] = Math.max(CellLengthCalculator.getLength(this.rows[col][row]), maxColLengths[col])
+        for (let row = 0; row < this.rows.length; row++)
+            for (let col = 0; col < this.rows[row].length; col++)
+                maxColLengths[col] = Math.max(CellLengthCalculator.getLength(this.rows[row][col]), maxColLengths[col])
 
         return maxColLengths;
     }

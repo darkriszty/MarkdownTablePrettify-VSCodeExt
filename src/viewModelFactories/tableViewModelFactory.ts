@@ -22,7 +22,7 @@ export class TableViewModelFactory {
             7) use the rest of the rows to get the contents via rowViewModelFactory.buildRow
             8) return the view model
         */
-        const maxColLengths: number[] = tableWithoutSeparator.getMaxLengths();
+        const maxColLengths: number[] = tableWithoutSeparator.getLongestColumnLength();
         //TODO: consider passing the entire table to the rowVmb.BuildRow method with the row index. 
         // Then the RowViewModelFactoryParam class can be deleted.
         let result = new TableViewModel();

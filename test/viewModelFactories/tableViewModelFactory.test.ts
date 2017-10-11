@@ -129,29 +129,6 @@ suite("TableViewModelFactory tests", () => {
         assert.equal(tableVm.hasRightBorder, false);
     });
 
-    /* TODO: 
-        Move the CJK test from this class to somewhere else when possible.
-    */
-
-    test("build() with CJK characters returns expected view model", () => {
-        const table = new Table([
-            ["h", "h"],
-            ["--", "--"],
-            ["𠁻", "𣄿 content"]
-        ], [ Alignment.Left, Alignment.Left ]);
-        const vmb = new TableViewModelFactory(new RowViewModelFactory(new PadCalculator()));
-        const vm = vmb.build(table);
-
-        assertViewModelPropertiesSet(vm);
-        assert.equal(vm.header.getValueAt(0), "h  ");
-        assert.equal(vm.header.getValueAt(1), " h");
-        assert.equal(vm.separator.getValueAt(0), "---");
-        assert.equal(vm.separator.getValueAt(1), "------------");
-        assert.equal(vm.rows.length, 1);
-        assert.equal(vm.rows[0].getValueAt(0), "𠁻 ");
-        assert.equal(vm.rows[0].getValueAt(1), " 𣄿 content");
-    });
-
     function assertViewModelPropertiesSet(viewModel: TableViewModel) {
         assertExt.isNotNull(viewModel);
         assertExt.isNotNull(viewModel.header);

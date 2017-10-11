@@ -165,8 +165,19 @@ suite("Table tests", () => {
         assert.equal(table.hasRightBorder, false);
     });
 
-    test("getMaxLengths() TODO add tests", () => {
-        assert.equal(1, 0, "TODO");
+    test("getLongestColumnLength() mixed CJK and english chars returns longest row length for each column", () => {
+        const table = new Table([
+            ["a", "b"],
+            ["-", "-"],
+            ["cd", "efgh"],
+            ["𠁻 test", "𣄿 content"]
+        ], [ Alignment.Left, Alignment.Left ]);
+        
+        const maxLengths: number[] = table.getLongestColumnLength();
+
+        assert.equal(maxLengths.length, 2);
+        assert.equal(maxLengths[0], 7);
+        assert.equal(maxLengths[1], 10);
     });
 
     function getAlignmentsFor(rows: string[][], alignment: Alignment = Alignment.Left): Alignment[] {
