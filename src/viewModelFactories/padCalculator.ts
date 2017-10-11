@@ -1,5 +1,5 @@
 import { RowViewModelFactoryParam } from "./rowViewModelFactoryParam";
-import { CellLengthCalculator } from "./cellLengthCalculator";
+import { CellLengthCalculator } from "../cellLengthCalculator";
 
 export class PadCalculator {
 

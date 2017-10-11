@@ -1,4 +1,5 @@
 import { Alignment } from "./alignment";
+import { CellLengthCalculator } from "../cellLengthCalculator";
 
 export class Table {
 
@@ -31,6 +32,16 @@ export class Table {
 
     public isEmpty(): boolean {
         return this.rows == null || this.rows.length == 0;
+    }
+
+    public getMaxLengths(): number[] {
+        let maxColLengths: number[] = new Array(this.columnCount).fill(0);
+
+        for (let col = 0; col < this.rows.length; col++)
+            for (let row = 0; row < this.rows[col].length; row++)
+                maxColLengths[col] = Math.max(CellLengthCalculator.getLength(this.rows[col][row]), maxColLengths[col])
+
+        return maxColLengths;
     }
 
     private removeEmptyColumns(emptyColumnIndexes: number[]): string[][] {

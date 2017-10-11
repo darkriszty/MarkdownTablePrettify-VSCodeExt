@@ -165,6 +165,10 @@ suite("Table tests", () => {
         assert.equal(table.hasRightBorder, false);
     });
 
+    test("getMaxLengths() TODO add tests", () => {
+        assert.equal(1, 0, "TODO");
+    });
+
     function getAlignmentsFor(rows: string[][], alignment: Alignment = Alignment.Left): Alignment[] {
         return rows[0].map(col => alignment);
     }
