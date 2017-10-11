@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export class MockTextLine implements vscode.TextLine {
+export class TextLineStub implements vscode.TextLine {
     constructor(lineNumber: number, text: string, range: vscode.Range) {
         this.lineNumber = lineNumber;
         this.text = text;

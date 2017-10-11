@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 import * as os from "os";
-import { MockTextLine } from "./mockTextLine";
+import { TextLineStub } from "./textLineStub";
 
-export class MockMarkdownTextDocument implements vscode.TextDocument {
+export class MarkdownTextDocumentStub implements vscode.TextDocument {
     private _lines: string[];
     uri: vscode.Uri;
     fileName: string;
@@ -39,7 +39,7 @@ export class MockMarkdownTextDocument implements vscode.TextDocument {
     lineAt(param: any) {
         const lineNumber = param * 1;
         const lineRange = this.getRangeForLines(lineNumber, lineNumber + 1);
-        return new MockTextLine(lineNumber, this._lines[lineNumber], lineRange);
+        return new TextLineStub(lineNumber, this._lines[lineNumber], lineRange);
     }
 
     getText(range?: vscode.Range): string {
