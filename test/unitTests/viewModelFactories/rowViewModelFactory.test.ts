@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import { IMock, Mock, It, Times } from "typemoq";
 import { IFunc2 } from 'typemoq/Common/Func';
-import { assertExt } from "../assertExtensions";
-import { PadCalculator } from '../../src/viewModelFactories/padCalculator';
-import { RowViewModelFactoryParam } from '../../src/viewModelFactories/rowViewModelFactoryParam';
-import { RowViewModelFactory } from '../../src/viewModelFactories/rowViewModelFactory';
+import { assertExt } from "../../assertExtensions";
+import { PadCalculator } from '../../../src/viewModelFactories/padCalculator';
+import { RowViewModelFactoryParam } from '../../../src/viewModelFactories/rowViewModelFactoryParam';
+import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewModelFactory';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _padCalculator: IMock<PadCalculator>;

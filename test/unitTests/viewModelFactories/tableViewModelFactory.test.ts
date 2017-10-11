@@ -1,14 +1,14 @@
 import * as assert from "assert";
-import { assertExt } from "../assertExtensions";
+import { assertExt } from "../../assertExtensions";
 import { IMock, Mock, It, Times } from "typemoq";
-import { Table } from "../../src/models/table";
-import { Alignment } from "../../src/models/alignment";
-import { TableValidator } from "../../src/modelFactory/tableValidator";
-import { TableViewModel } from "../../src/viewModels/tableViewModel";
-import { RowViewModel } from "../../src/viewModels/rowViewModel";
-import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
-import { PadCalculator } from "../../src/viewModelFactories/padCalculator";
-import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
+import { Table } from "../../../src/models/table";
+import { Alignment } from "../../../src/models/alignment";
+import { TableValidator } from "../../../src/modelFactory/tableValidator";
+import { TableViewModel } from "../../../src/viewModels/tableViewModel";
+import { RowViewModel } from "../../../src/viewModels/rowViewModel";
+import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
+import { PadCalculator } from "../../../src/viewModelFactories/padCalculator";
+import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 
 suite("TableViewModelFactory tests", () => {
     let _rowVmb: IMock<RowViewModelFactory>;

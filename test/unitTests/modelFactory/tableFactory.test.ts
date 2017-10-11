@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import { IMock, Mock, It, Times } from "typemoq";
-import { Alignment } from "../../src/models/alignment";
-import { TableFactory } from "../../src/modelFactory/tableFactory";
-import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
-import { TableValidator } from "../../src/modelFactory/tableValidator";
-import { assertExt } from "../assertExtensions";
+import { Alignment } from "../../../src/models/alignment";
+import { TableFactory } from "../../../src/modelFactory/tableFactory";
+import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
+import { TableValidator } from "../../../src/modelFactory/tableValidator";
+import { assertExt } from "../../assertExtensions";
 
 suite("TableFactory tests", () => {
     let _alignmentFactoryMock: IMock<AlignmentFactory>;

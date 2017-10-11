@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { assertExt } from "./assertExtensions";
-import { CellLengthCalculator } from '../src/cellLengthCalculator';
+import { assertExt } from "../assertExtensions";
+import { CellLengthCalculator } from '../../src/cellLengthCalculator';
 
 suite("CellLengthCalculator tests", () => {
 

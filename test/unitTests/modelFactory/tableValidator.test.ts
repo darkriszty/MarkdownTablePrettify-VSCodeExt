@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import { Table } from "../../src/models/table";
-import { TableValidator } from "../../src/modelFactory/tableValidator";
-import { Alignment } from "../../src/models/alignment";
+import { Table } from "../../../src/models/table";
+import { TableValidator } from "../../../src/modelFactory/tableValidator";
+import { Alignment } from "../../../src/models/alignment";
 
 suite("TableValidator tests", () => {
 

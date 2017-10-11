@@ -1,7 +1,7 @@
 import * as assert from 'assert';
-import { assertExt } from "../assertExtensions";
-import { RowViewModelFactoryParam } from '../../src/viewModelFactories/rowViewModelFactoryParam';
-import { PadCalculator } from '../../src/viewModelFactories/padCalculator';
+import { assertExt } from "../../assertExtensions";
+import { RowViewModelFactoryParam } from '../../../src/viewModelFactories/rowViewModelFactoryParam';
+import { PadCalculator } from '../../../src/viewModelFactories/padCalculator';
 
 suite("PadCalculator tests", () => {
 

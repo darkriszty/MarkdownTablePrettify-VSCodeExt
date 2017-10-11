@@ -1,8 +1,8 @@
 import * as assert from 'assert';
-import { assertExt } from "../assertExtensions";
-import { TableViewModel } from "../../src/viewModels/tableViewModel";
-import { TableStringWriter } from "../../src/writers/tableStringWriter";
-import { RowViewModel } from "../../src/viewModels/rowViewModel";
+import { assertExt } from "../../assertExtensions";
+import { TableViewModel } from "../../../src/viewModels/tableViewModel";
+import { TableStringWriter } from "../../../src/writers/tableStringWriter";
+import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 
 suite("TableStringWriter tests", () => {
 
