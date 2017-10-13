@@ -13,7 +13,7 @@ suite("Prettyfier system tests", () => {
     });
 
     test("Empty middle column added", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("empty-middle-column"));
+        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("emptyMiddleColumn"));
     });
 
     test("Redundant table ending removed if table doesn't start with border", () => {
