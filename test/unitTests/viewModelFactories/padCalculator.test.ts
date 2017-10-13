@@ -160,14 +160,14 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() Middle column with 0 maxLength gets right padded with 2 characters", () => {
+    test("getRightPadding() Middle column with 0 maxLength gets right padded with 1 character", () => {
         const sut = createCalculator();
         let param = new RowViewModelFactoryParam([5, 0, 5], false, false);
         param.rowValues = [ "a", "", "c" ];
 
         const pad = sut.getRightPadding(" ", param, 1);
 
-        assert.equal(pad, "  ");
+        assert.equal(pad, " ");
     });
 
     test("getRightPadding() Last column not right padded if there's no border", () => {
@@ -233,14 +233,18 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() Last column with 0 maxLength gets right padded with 2 characters if there is right border", () => {
+    test("getRightPadding() Last column with 0 maxLength gets right padded with 1 characters if there is right border", () => {
         const sut = createCalculator();
         let param = new RowViewModelFactoryParam([5, 5, 0], false, true);
         param.rowValues = [ "a", "b", "" ];
 
         const pad = sut.getRightPadding(" ", param, 2);
 
-        assert.equal(pad, "  ");
+        assert.equal(pad, " ");
+    });
+
+    test("getRightPaddingForSeparator() TODO", () => {
+        assert.equal(1, 0, "TODO");
     });
 
     test("Regular middle gets padded both left and right with expected amount", () => {
