@@ -4,7 +4,7 @@ import { Alignment } from "../../../src/models/alignment";
 
 suite("Table tests", () => {
 
-    test("items() returns parameter given to constructor except for separator row", () => {
+    test("items() returns trimmed parameter given to constructor except for separator row", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
@@ -12,8 +12,11 @@ suite("Table tests", () => {
         ];
         const table = new Table(rows, getAlignmentsFor(rows));
 
-        const rowsWithoutSeparator = rows.filter((v, i) => i != 1);
-        assertRowsMatch(table.rows, rowsWithoutSeparator);
+        const trimmedRowsWithoutSeparator = [
+            [ "", "h1", "", "h3", "" ],
+            [ "", "c",  "", "e",  "" ]
+        ];
+        assertRowsMatch(table.rows, trimmedRowsWithoutSeparator);
     });
 
     test("withoutEmptyColumns() create instance without empty columns and leaves original intact", () => {
@@ -34,7 +37,10 @@ suite("Table tests", () => {
         const expectedTable = new Table(expectedNoEmptyColumns, [ Alignment.Left, Alignment.Left, Alignment.Left ]);
 
         assertModelEquals(tableWithoutEmptyColumns, expectedTable);
-        assertRowsMatch(table.rows, originalRows.filter((v, i) => i != 1));
+        assertRowsMatch(table.rows, [ 
+            [ "", "h1", "" , "h3", "" ],
+            [ "", "c", "", "e", "" ]
+        ]);
     });
 
     test("isEmpty() returns true for null rows", () => {
@@ -90,23 +96,6 @@ suite("Table tests", () => {
         assert.equal(table.alignments, expectedAlignments);
     });
 
-    test("trimColumnValues() removes spaces from beginning and end of each cell", () => {
-        const rows = [ 
-            [ "   ",   "  h1  ",   " " ,   "  h3  ", "    expected   3   spaces   " ],
-            [ "			",   " - "   ,   ""  ,   "---"   , "     " ],
-            [ "  	  	",   "c"     ,   "  ",   "e f  "     , "" ]
-        ];
-        const expectedColumns = [ 
-            [ "", "h1", "", "h3",  "expected   3   spaces" ],
-            [ "", "-",  "", "---", "" ],
-            [ "", "c",  "", "e f", "" ]
-        ];
-        const alignments = getAlignmentsFor(rows);
-        const table = new Table(rows, alignments).trimValues();
-
-        assertModelEquals(table, new Table(expectedColumns, alignments));
-    });
-
     test("separator() returns the second row", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
@@ -115,7 +104,7 @@ suite("Table tests", () => {
         ];
         const table = new Table(rows, getAlignmentsFor(rows));
 
-        const separator = [ "",   " - "   ,   ""  ,   "---"   , "" ];
+        const separator = [ "", "-" , "", "---" , "" ];
         assert.equal(table.separator.length, separator.length);
         for (let i = 0; i < separator.length; i++)
             assert.equal(table.separator[i], separator[i]);
@@ -171,6 +160,21 @@ suite("Table tests", () => {
             ["-", "-"],
             ["cd", "efgh"],
             ["𠁻 test", "𣄿 content"]
+        ], [ Alignment.Left, Alignment.Left ]);
+        
+        const maxLengths: number[] = table.getLongestColumnLength();
+
+        assert.equal(maxLengths.length, 2);
+        assert.equal(maxLengths[0], 7);
+        assert.equal(maxLengths[1], 10);
+    });
+
+    test("getLongestColumnLength() does not consider extra white spaces", () => {
+        const table = new Table([
+            ["a", "   b"],
+            ["-", "-"],
+            ["cd", "efgh                                        "],
+            ["𠁻 test                ", "𣄿 content"]
         ], [ Alignment.Left, Alignment.Left ]);
         
         const maxLengths: number[] = table.getLongestColumnLength();

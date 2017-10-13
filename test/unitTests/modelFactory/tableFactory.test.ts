@@ -47,14 +47,14 @@ suite("TableFactory tests", () => {
         assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
         assert.equal(rows.every(r => r.length == 4), true);
-        assert.equal(rows[0][0], " c1 ");
-        assert.equal(rows[0][1], " c2 ");
-        assert.equal(rows[0][2], " ");
-        assert.equal(rows[0][3], " c4");
-        assert.equal(rows[1][0], "           a ");
-        assert.equal(rows[1][1], " b ");
+        assert.equal(rows[0][0], "c1");
+        assert.equal(rows[0][1], "c2");
+        assert.equal(rows[0][2], "");
+        assert.equal(rows[0][3], "c4");
+        assert.equal(rows[1][0], "a");
+        assert.equal(rows[1][1], "b");
         assert.equal(rows[1][2], "");
-        assert.equal(rows[1][3], " d");
+        assert.equal(rows[1][3], "d");
     });
 
     test("getModel() calls alignmentFactory to create alignments for the table columns", () => {

@@ -2,13 +2,15 @@ import { Alignment } from "./alignment";
 import { CellLengthCalculator } from "../cellLengthCalculator";
 
 export class Table {
+    private readonly _rowsWithSeparator: string[][];
 
     constructor(
-        private _rowsWithSeparator: string[][],
+        rowsWithSeparator: string[][],
         private _alignments: Alignment[])
     {
-        if (_rowsWithSeparator != null && _rowsWithSeparator[0] != null && _rowsWithSeparator[0].length != _alignments.length)
+        if (rowsWithSeparator != null && rowsWithSeparator[0] != null && rowsWithSeparator[0].length != _alignments.length)
             throw new Error("The number of columns must match the number of alignments.");
+        this._rowsWithSeparator = this.trimColumnValues(rowsWithSeparator);
     }
 
     public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : null; }
@@ -24,10 +26,6 @@ export class Table {
             this.removeEmptyColumns(this.getEmptyFirstAndLastColumnIndexes()),
             this.alignmentsWithoutEmptyColumns(this.getEmptyFirstAndLastColumnIndexes())
         );
-    }
-
-    public trimValues(): Table {
-        return new Table(this.trimColumnValues(), this._alignments);
     }
 
     public isEmpty(): boolean {
@@ -82,10 +80,11 @@ export class Table {
             rows[row].splice(column, 1);
     }
 
-    private trimColumnValues(): string[][] {
+    private trimColumnValues(rows: string[][]): string[][] {
+        if (rows == null) return null;
         let result: string[][] = [];
-        for (let i = 0; i < this._rowsWithSeparator.length; i++)
-            result.push(this._rowsWithSeparator[i].map(r => r.trim()));
+        for (let i = 0; i < rows.length; i++)
+            result.push(rows[i].map(r => r.trim()));
         return result;
     }
 }
