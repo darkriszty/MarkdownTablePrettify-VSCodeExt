@@ -33,6 +33,6 @@
                 "focus": false
             },
             "command": "npm run compile --loglevel silent && gulp copy-systemTest-resources"
-        },
+        }
     ]
 }

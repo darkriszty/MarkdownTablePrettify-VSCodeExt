@@ -30,7 +30,7 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
+    "test": "gulp copy-systemTest-resources && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
