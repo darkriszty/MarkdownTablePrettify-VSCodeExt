@@ -82,9 +82,9 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), 1), Times.once());
         _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), 2), Times.once());
 
-        _padCalculator.verify(_ => _.getRightPadding("-", It.isAny(), 0), Times.once());
-        _padCalculator.verify(_ => _.getRightPadding("-", It.isAny(), 1), Times.once());
-        _padCalculator.verify(_ => _.getRightPadding("-", It.isAny(), 2), Times.once());
+        _padCalculator.verify(_ => _.getRightPaddingForSeparator("-", It.isAny(), 0), Times.once());
+        _padCalculator.verify(_ => _.getRightPaddingForSeparator("-", It.isAny(), 1), Times.once());
+        _padCalculator.verify(_ => _.getRightPaddingForSeparator("-", It.isAny(), 2), Times.once());
     });
 
     test("value returned from padCalculator.getLeftPadding is used to start the row value", () => {
@@ -100,7 +100,7 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
     test("value returned from padCalculator.getRightPadding is used to end the row value", () => {
         const sut = createFactory(_padCalculator.object);
         let param = new RowViewModelFactoryParam([5, 5, 5], false, false);
-        _padCalculator.setup(_ => _.getRightPadding("-", It.isAny(), 0)).returns(() => "test");
+        _padCalculator.setup(_ => _.getRightPaddingForSeparator("-", It.isAny(), 0)).returns(() => "test");
 
         const separatorRowViewModel = sut.buildSeparator(param);
 
@@ -111,7 +111,7 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const sut = createFactory(_padCalculator.object);
         let param = new RowViewModelFactoryParam([5, 0, 5], false, false);
         _padCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), 1)).returns(() => "L");
-        _padCalculator.setup(_ => _.getRightPadding("-", It.isAny(), 1)).returns(() => "R");
+        _padCalculator.setup(_ => _.getRightPaddingForSeparator("-", It.isAny(), 1)).returns(() => "R");
 
         const separatorRowViewModel = sut.buildSeparator(param);
 
