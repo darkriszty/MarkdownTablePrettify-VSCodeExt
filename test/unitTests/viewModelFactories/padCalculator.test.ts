@@ -32,6 +32,16 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, " ");
     });
 
+    test("getLeftPadding() Middle column is empty cell gets left padded with one character", () => {
+        const sut = createCalculator();
+        let param = new RowViewModelFactoryParam([3, 4, 5], false, false);
+        param.rowValues = [ "a", "", "c" ];
+
+        const pad = sut.getLeftPadding(" ", param, 1);
+
+        assert.equal(pad, " ");
+    });
+
     test("getLeftPadding() Last column left padded with 1 character", () => {
         const sut = createCalculator();
         let param = new RowViewModelFactoryParam([5, 5, 5], false, false);
@@ -108,6 +118,16 @@ suite("PadCalculator tests", () => {
         const pad = sut.getRightPadding(" ", param, 0);
 
         assert.equal(pad, "      ");
+    });
+
+    test("getRightPadding() Middle column is empty cell gets right padded with 4 characters", () => {
+        const sut = createCalculator();
+        let param = new RowViewModelFactoryParam([3, 4, 5], false, false);
+        param.rowValues = [ "a", "", "c" ];
+
+        const pad = sut.getRightPadding(" ", param, 1);
+
+        assert.equal(pad, "    ");
     });
 
     test("getRightPadding() Middle column equal to maxColLength gets right padded with one character", () => {

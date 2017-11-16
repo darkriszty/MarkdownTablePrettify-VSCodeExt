@@ -4,6 +4,14 @@ import { CellLengthCalculator } from '../../src/cellLengthCalculator';
 
 suite("CellLengthCalculator tests", () => {
 
+    test("getLength() for empty cell returns 0", () => {
+        assert.equal(CellLengthCalculator.getLength(""), 0);
+    });
+
+    test("getLength() for 3 spaces returns 3", () => {
+        assert.equal(CellLengthCalculator.getLength("   "), 3);
+    });
+
     test("getLength() for single english character returns 1", () => {
         assert.equal(CellLengthCalculator.getLength("a"), 1);
     });
