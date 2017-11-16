@@ -9,7 +9,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "taskName": "compile",
+            "label": "compile",
             "type": "shell",
             "problemMatcher": [ "$tsc" ],
             "isBackground": false,
@@ -22,7 +22,7 @@
             "command": "npm run compile --loglevel silent"
         },
         {
-            "taskName": "compileAndCopyTestResources",
+            "label": "compileAndCopyTestResources",
             "type": "shell",
             "problemMatcher": [ "$tsc" ],
             "isBackground": false,
