@@ -6,7 +6,7 @@ import { TableFactory } from "../modelFactory/tableFactory";
 import { AlignmentFactory } from "../modelFactory/alignmentFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
 import { TableStringWriter } from "../writers/tableStringWriter";
-import { PadCalculator } from '../viewModelFactories/padCalculator';
+import { PadCalculator } from '../padCalculator';
 import { TableViewModelFactory } from '../viewModelFactories/tableViewModelFactory';
 import { RowViewModelFactory } from '../viewModelFactories/rowViewModelFactory';
 

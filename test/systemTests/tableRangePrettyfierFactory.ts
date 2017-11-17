@@ -9,7 +9,7 @@ import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
 import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
 import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
-import { PadCalculator } from "../../src/viewModelFactories/padCalculator";
+import { PadCalculator } from "../../src/padCalculator";
 import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { ILogger } from "../../src/diagnostics/logger";
 import { MarkdownTextDocumentStub } from "../stubs/markdownTextDocumentStub";

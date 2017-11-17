@@ -7,7 +7,7 @@ import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { TableViewModel } from "../../../src/viewModels/tableViewModel";
 import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
-import { PadCalculator } from "../../../src/viewModelFactories/padCalculator";
+import { PadCalculator } from "../../../src/padCalculator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 
 suite("TableViewModelFactory tests", () => {
@@ -32,7 +32,7 @@ suite("TableViewModelFactory tests", () => {
             .returns(() => expectedSeparator)
             .verifiable(Times.once());
         _rowVmb
-            .setup(m => m.buildRow(It.isAny()))
+            .setup(m => m.buildRow(It.isAny(), It.isAny()))
             .returns(() => expectedRow)
             .verifiable(Times.exactly(3));
 
@@ -52,7 +52,7 @@ suite("TableViewModelFactory tests", () => {
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
         _rowVmb.setup(m => m.buildSeparator(It.isAny())).returns(() => expectedSeparator)
-        _rowVmb.setup(m => m.buildRow(It.isAny())).returns(() => expectedRow);
+        _rowVmb.setup(m => m.buildRow(It.isAny(), It.isAny())).returns(() => expectedRow);
 
         const tableVm = createViewModelFactory().build(table);
 

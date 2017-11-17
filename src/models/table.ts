@@ -3,6 +3,7 @@ import { CellLengthCalculator } from "../cellLengthCalculator";
 
 export class Table {
     private readonly _rowsWithSeparator: string[][];
+    private _longestColumnLengths: number[] = null;
 
     constructor(
         rowsWithSeparator: string[][],
@@ -33,13 +34,16 @@ export class Table {
     }
 
     public getLongestColumnLength(): number[] {
-        let maxColLengths: number[] = new Array(this.columnCount).fill(0);
+        if (this._longestColumnLengths == null) {
+            let maxColLengths: number[] = new Array(this.columnCount).fill(0);
 
-        for (let row = 0; row < this.rows.length; row++)
-            for (let col = 0; col < this.rows[row].length; col++)
-                maxColLengths[col] = Math.max(CellLengthCalculator.getLength(this.rows[row][col]), maxColLengths[col])
+            for (let row = 0; row < this.rows.length; row++)
+                for (let col = 0; col < this.rows[row].length; col++)
+                    maxColLengths[col] = Math.max(CellLengthCalculator.getLength(this.rows[row][col]), maxColLengths[col])
 
-        return maxColLengths;
+            this._longestColumnLengths = maxColLengths;
+        }
+        return this._longestColumnLengths;
     }
 
     private removeEmptyColumns(emptyColumnIndexes: number[]): string[][] {

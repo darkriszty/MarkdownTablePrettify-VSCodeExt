@@ -1,40 +1,41 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
-import { RowViewModelFactoryParam } from "./rowViewModelFactoryParam";
-import { PadCalculator } from "./padCalculator";
+import { PadCalculator } from "../padCalculator";
+import { Table } from "../models/table";
 
 export class RowViewModelFactory {
     constructor(
         private _padCalculator: PadCalculator)
     { }
 
-    public buildRow(param: RowViewModelFactoryParam): RowViewModel {
-        if (param == null) throw new Error("Paramter can't be null");
-        if (param.rowValues == null) throw new Error("Rows can't be null");
-        return this.makeRow(param, " ", 
-            this._padCalculator.getRightPadding.bind(this._padCalculator));
+    public buildRow(row: number, table: Table): RowViewModel {
+        if (table == null) throw new Error("Paramter can't be null");
+
+        return this.makeRow(table, " ", row, this._padCalculator.getRightPadding.bind(this._padCalculator));
     }
 
-    public buildSeparator(param: RowViewModelFactoryParam): RowViewModel {
-        let paramForSeparator = RowViewModelFactoryParam.createFrom(param)
-        paramForSeparator.rowValues = new Array(param.numberOfColumns).fill("-");
-        return this.makeRow(paramForSeparator, "-", 
-            this._padCalculator.getRightPaddingForSeparator.bind(this._padCalculator));
+    public buildSeparator(table: Table): RowViewModel {
+        let rows: string[][] = [ new Array(table.columnCount).fill("-") ];
+
+        return this.makeRow(
+            new Table(rows, table.alignments), "-", 0, 
+            this._padCalculator.getRightPaddingForSeparator.bind(this._padCalculator)
+        );
     }
 
-    private makeRow(param: RowViewModelFactoryParam, 
-        padChar: string,
-        rightPadFunc: (string, RowViewModelFactoryParam, number) => string) 
+    private makeRow(table: Table, 
+        padChar: string, row: number,
+        rightPadFunc: (paddingChar: string, table: Table, row: number, column: number) => string) 
     {
-        let resultRow = new Array(param.numberOfColumns);
-        for(let i = 0; i< param.numberOfColumns; i++) {
-            const columnLength = param.maxTextLengthsPerColumn[i];
-            const text = param.rowValues[i] == ""
+        let resultRow = new Array(table.columnCount);
+        for(let col = 0; col < table.columnCount; col++) {
+            const columnLength = table.getLongestColumnLength()[col];
+            const text = table.rows[row][col] == ""
                 ? padChar
-                : param.rowValues[i];
-            resultRow[i] =
-                this._padCalculator.getLeftPadding(padChar, param, i) +
+                : table.rows[row][col];
+            resultRow[col] =
+                this._padCalculator.getLeftPadding(padChar, table, col) +
                 text +
-                rightPadFunc(padChar, param, i);
+                rightPadFunc(padChar, table, row, col);
         }
         return new RowViewModel(resultRow);
     }
