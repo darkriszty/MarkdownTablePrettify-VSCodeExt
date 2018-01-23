@@ -14,17 +14,22 @@ export class RowViewModelFactory {
     }
 
     public buildSeparator(table: Table): RowViewModel {
-        let rows: string[][] = [ new Array(table.columnCount).fill("-") ];
+        let resultRow = new Array(table.columnCount);
+        const padChar = "-";
 
-        return this.makeRow(
-            new Table(rows, table.alignments), "-", 0, 
-            this._padCalculator.getRightPaddingForSeparator.bind(this._padCalculator)
-        );
+        for(let col = 0; col < table.columnCount; col++) {
+            const columnLength = table.getLongestColumnLength()[col];
+            resultRow[col] =
+                this._padCalculator.getLeftPadding(padChar, table, col) +
+                padChar +
+                this._padCalculator.getRightPaddingForSeparator(padChar, table, col);
+        }
+        return new RowViewModel(resultRow);
     }
 
     private makeRow(table: Table, 
         padChar: string, row: number,
-        rightPadFunc: (paddingChar: string, table: Table, row: number, column: number) => string) 
+        rightPadFunc: (paddingChar: string, table: Table, row: number, column: number) => string): RowViewModel
     {
         let resultRow = new Array(table.columnCount);
         for(let col = 0; col < table.columnCount; col++) {

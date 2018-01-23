@@ -12,9 +12,6 @@ export class TableViewModelFactory {
 
     public build(tableWithoutSeparator: Table): TableViewModel {
 
-        //TODO: consider passing the entire table to the rowVmb.BuildRow method with the row index. 
-        // Then the RowViewModelFactoryParam class can be deleted.
-
         let result = new TableViewModel();
         result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
         result.hasRightBorder = tableWithoutSeparator.hasRightBorder;

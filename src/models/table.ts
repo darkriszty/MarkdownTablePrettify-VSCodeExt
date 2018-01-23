@@ -11,7 +11,9 @@ export class Table {
     {
         if (rowsWithSeparator != null && rowsWithSeparator[0] != null && rowsWithSeparator[0].length != _alignments.length)
             throw new Error("The number of columns must match the number of alignments.");
+
         this._rowsWithSeparator = this.trimColumnValues(rowsWithSeparator);
+        this.addRemoveComplementaryColumns();
     }
 
     public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : null; }
@@ -22,11 +24,18 @@ export class Table {
     public get hasLeftBorder(): boolean { return this.isColumnEmpty(0); }
     public get hasRightBorder(): boolean { return this.isColumnEmpty(this.columnCount - 1); }
 
-    public withoutEmptyColumns(): Table {
-        return new Table(
-            this.removeEmptyColumns(this.getEmptyFirstAndLastColumnIndexes()),
-            this.alignmentsWithoutEmptyColumns(this.getEmptyFirstAndLastColumnIndexes())
-        );
+    private addRemoveComplementaryColumns(): void {
+        if (this.hasToRemoveLastColumn()) {
+            // if the first column is not empty, but the last one is, then remove the last one
+            this.removeColumn(this._rowsWithSeparator, 0);
+            this._alignments.shift();
+            
+        } else if (this.hasToAddEmptyLastColumn()) {
+            // add an empty column at the end if the first one is an empty column but the last one isn't
+            for (let i = 0; i < this._rowsWithSeparator.length; i++)
+                this._rowsWithSeparator[i].push("");
+            this._alignments.push(Alignment.Left);
+        }
     }
 
     public isEmpty(): boolean {
@@ -46,30 +55,12 @@ export class Table {
         return this._longestColumnLengths;
     }
 
-    private removeEmptyColumns(emptyColumnIndexes: number[]): string[][] {
-        let clonedRows = this._rowsWithSeparator.map(arr => arr.slice(0));
-        for (let i = emptyColumnIndexes.length - 1; i >=0; i--)
-            this.removeColumn(clonedRows, emptyColumnIndexes[i]);
-
-        return clonedRows;
+    private hasToRemoveLastColumn(): boolean {
+        return !this.hasLeftBorder && this.hasRightBorder;
     }
 
-    private alignmentsWithoutEmptyColumns(emptyColumnIndexes: number[]): Alignment[] {
-        let result: Alignment[] = [];
-        for (let i = 0; i < this._alignments.length; i++)
-            if (emptyColumnIndexes.indexOf(i) == -1)
-                result.push(this._alignments[i]);
-        return result;
-    }
-
-    private getEmptyFirstAndLastColumnIndexes(): number[] {
-        let emptyColumnIndexes: number[] = [];
-
-        const colLength = this.rows[0].length;
-        if (this.isColumnEmpty(0)) emptyColumnIndexes.push(0);
-        if (this.isColumnEmpty(colLength - 1)) emptyColumnIndexes.push(colLength - 1);
-
-        return emptyColumnIndexes;
+    private hasToAddEmptyLastColumn(): boolean {
+        return this.hasLeftBorder && !this.hasRightBorder;
     }
 
     private isColumnEmpty(column: number): boolean {

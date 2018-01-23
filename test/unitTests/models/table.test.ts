@@ -19,30 +19,6 @@ suite("Table tests", () => {
         assertRowsMatch(table.rows, trimmedRowsWithoutSeparator);
     });
 
-    test("withoutEmptyColumns() create instance without empty columns and leaves original intact", () => {
-        const originalRows = [ 
-            [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
-            [ "",   " - "   ,   "-"  ,   "---"   , "" ],
-            [ "",   "c"     ,   "  ",   "e"     , "" ]
-        ];
-        const expectedNoEmptyColumns = [ 
-            [ "  h1  ",  " " , "  h3  " ],
-            [ " - "   ,  "-" , "---"    ],
-            [ "c"     ,  "  ", "e"      ]
-        ];
-
-        const table = new Table(originalRows, getAlignmentsFor(originalRows));
-        const tableWithoutEmptyColumns = table.withoutEmptyColumns();
-
-        const expectedTable = new Table(expectedNoEmptyColumns, [ Alignment.Left, Alignment.Left, Alignment.Left ]);
-
-        assertModelEquals(tableWithoutEmptyColumns, expectedTable);
-        assertRowsMatch(table.rows, [ 
-            [ "", "h1", "" , "h3", "" ],
-            [ "", "c", "", "e", "" ]
-        ]);
-    });
-
     test("isEmpty() returns true for null rows", () => {
         const table = new Table(null, null);
 

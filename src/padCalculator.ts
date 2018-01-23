@@ -27,7 +27,18 @@ export class PadCalculator {
     }
 
     public getRightPaddingForSeparator(paddingChar: string, table: Table, column: number): string {
-        return this.getRightPaddingInner(paddingChar, table, 0, column);
+        let result;
+        const cellTextLength = CellLengthCalculator.getLength(table.rows[0][column]);
+        if (column <= table.columnCount - 1 || table.hasRightBorder) {
+            let rightPadCount = cellTextLength + 1;
+            if (table.getLongestColumnLength()[column] > 0)
+                rightPadCount++;
+            result = paddingChar.repeat(rightPadCount);
+        } else {
+            result = paddingChar;
+        }
+
+        return result;
     }
 
     private getRightPaddingInner(paddingChar: string, table: Table, row: number, column: number): string {
