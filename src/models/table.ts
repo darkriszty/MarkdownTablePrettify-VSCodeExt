@@ -13,7 +13,9 @@ export class Table {
             throw new Error("The number of columns must match the number of alignments.");
 
         this._rowsWithSeparator = this.trimColumnValues(rowsWithSeparator);
-        this.addRemoveComplementaryColumns();
+        this.setBorders();
+        this.removeEmptyFirstAndLastColumns();
+        this.setComplementaryBorders();
     }
 
     public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : null; }
@@ -21,21 +23,32 @@ export class Table {
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.rows[0].length; }
     public get rowCount(): number { return this.rows.length; }
-    public get hasLeftBorder(): boolean { return this.isColumnEmpty(0); }
-    public get hasRightBorder(): boolean { return this.isColumnEmpty(this.columnCount - 1); }
+    public hasLeftBorder: boolean;
+    public hasRightBorder: boolean;
+    private get isFirstColumnEmpty(): boolean { return this.isColumnEmpty(0); }
+    private get isLastColumnEmpty(): boolean { return this.isColumnEmpty(this.columnCount - 1); }
 
-    private addRemoveComplementaryColumns(): void {
-        if (this.hasToRemoveLastColumn()) {
-            // if the first column is not empty, but the last one is, then remove the last one
+    private setBorders(): void {
+        this.hasLeftBorder = this.isFirstColumnEmpty;
+        this.hasRightBorder = this.isLastColumnEmpty;
+    }
+
+    private removeEmptyFirstAndLastColumns(): void {
+        if (this.isFirstColumnEmpty) {
             this.removeColumn(this._rowsWithSeparator, 0);
             this._alignments.shift();
-            
-        } else if (this.hasToAddEmptyLastColumn()) {
-            // add an empty column at the end if the first one is an empty column but the last one isn't
-            for (let i = 0; i < this._rowsWithSeparator.length; i++)
-                this._rowsWithSeparator[i].push("");
-            this._alignments.push(Alignment.Left);
         }
+        if (this.isLastColumnEmpty) {
+            this.removeColumn(this._rowsWithSeparator, this.columnCount - 1);
+            this._alignments.pop();
+        }
+    }
+
+    private setComplementaryBorders(): void {
+        if (this.hasLeftBorder && !this.hasRightBorder)
+            this.hasRightBorder = true;
+        if (this.hasRightBorder && !this.hasLeftBorder)
+            this.hasRightBorder = false;
     }
 
     public isEmpty(): boolean {
@@ -53,14 +66,6 @@ export class Table {
             this._longestColumnLengths = maxColLengths;
         }
         return this._longestColumnLengths;
-    }
-
-    private hasToRemoveLastColumn(): boolean {
-        return !this.hasLeftBorder && this.hasRightBorder;
-    }
-
-    private hasToAddEmptyLastColumn(): boolean {
-        return this.hasLeftBorder && !this.hasRightBorder;
     }
 
     private isColumnEmpty(column: number): boolean {
