@@ -1,4 +1,6 @@
 ABC    | DEF         | Ghijklmnopq                | test
 -------|-------------|----------------------------|---------
-qwerty |             | Lorem ipsum dolor sit amet |
        | hello world | def                        | foo bar
+qwerty |             | Lorem ipsum dolor sit amet | 12345
+qwerty | 1234        | Lorem ipsum dolor sit amet |
+       |             |                            |

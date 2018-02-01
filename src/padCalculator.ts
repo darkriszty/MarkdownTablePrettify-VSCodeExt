@@ -43,7 +43,7 @@ export class PadCalculator {
             let rightPadCount = table.getLongestColumnLength()[column] > 0
                 ? table.getLongestColumnLength()[column] - cellTextLength
                 : 1;
-            if (table.getLongestColumnLength()[column] > 0)
+            if (table.getLongestColumnLength()[column] > 0 && cellTextLength > 0)
                 rightPadCount++;
             result = paddingChar.repeat(rightPadCount);
         } else {
