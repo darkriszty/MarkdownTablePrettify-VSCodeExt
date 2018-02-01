@@ -1,7 +1,7 @@
 'use strict';
 import * as vscode from 'vscode';
 import { TableRangePrettyfier } from "./tableRangePrettyfier";
-import { VsWindowLogger } from "../diagnostics/logger";
+import { VsWindowLogger } from '../diagnostics/VsWindowLogger';
 import { TableFactory } from "../modelFactory/tableFactory";
 import { AlignmentFactory } from "../modelFactory/alignmentFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
