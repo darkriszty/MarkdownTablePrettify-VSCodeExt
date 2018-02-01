@@ -32,7 +32,6 @@ export class RowViewModelFactory {
     {
         let resultRow = new Array(table.columnCount);
         for(let col = 0; col < table.columnCount; col++) {
-            const columnLength = table.getLongestColumnLength()[col];
             const text = table.rows[row][col] == ""
                 ? padChar
                 : table.rows[row][col];
