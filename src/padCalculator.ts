@@ -10,7 +10,7 @@ export class PadCalculator {
                 ? paddingChar
                 : "";
         } else if (column == table.columnCount - 1) {
-            result = table.getLongestColumnLength()[column] == 0
+            result = (table.getLongestColumnLength()[column] == 0 && !table.hasRightBorder)
                 ? ""
                 : paddingChar;
         } else {
@@ -32,7 +32,8 @@ export class PadCalculator {
 
     private getRightPadCountForSeparator(table: Table, column: number): number {
         const cellLength = table.getLongestColumnLength()[column];
-        return Math.max(cellLength, 1) + 1;
+        const minLength = cellLength == 0 ? 1 : 0;
+        return Math.max(cellLength, minLength) + 1;
     }
 
     private getRightPaddingInner(paddingChar: string, table: Table, row: number, column: number): string {
