@@ -21,9 +21,9 @@ suite("RowViewModelFactory.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(row, table);
 
-        _padCalculator.verify(_ => _.getLeftPadding(" ", table, 0), Times.once());
-        _padCalculator.verify(_ => _.getLeftPadding(" ", table, 1), Times.once());
-        _padCalculator.verify(_ => _.getLeftPadding(" ", table, 2), Times.once());
+        _padCalculator.verify(_ => _.getLeftPadding(" ", table, row, 0), Times.once());
+        _padCalculator.verify(_ => _.getLeftPadding(" ", table, row, 1), Times.once());
+        _padCalculator.verify(_ => _.getLeftPadding(" ", table, row, 2), Times.once());
 
         _padCalculator.verify(_ => _.getRightPadding(" ", table, row, 0), Times.once());
         _padCalculator.verify(_ => _.getRightPadding(" ", table, row, 1), Times.once());
@@ -34,7 +34,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const sut = createFactory(_padCalculator.object);
         const row = 1;
         const table = threeColumnTable();
-        _padCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
+        _padCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
         
         const rowViewModel = sut.buildRow(row, table);
 
@@ -56,7 +56,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const sut = createFactory(_padCalculator.object);
         const row = 1;
         const table = threeColumnTableWithEmptyMiddleColumn();
-        _padCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
+        _padCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
         _padCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), row, It.isAny())).returns(() => "R");
         
         const rowViewModel = sut.buildRow(row, table);
@@ -79,9 +79,9 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
 
         const separatorRowViewModel = sut.buildSeparator(table);
 
-        _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), 0), Times.once());
-        _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), 1), Times.once());
-        _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), 2), Times.once());
+        _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 0), Times.once());
+        _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 1), Times.once());
+        _padCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 2), Times.once());
 
         _padCalculator.verify(_ => _.getRightPaddingForSeparator("-", It.isAny(), 0), Times.once());
         _padCalculator.verify(_ => _.getRightPaddingForSeparator("-", It.isAny(), 1), Times.once());
@@ -91,7 +91,7 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
     test("value returned from padCalculator.getLeftPadding is used to start the row value", () => {
         const sut = createFactory(_padCalculator.object);
         const table = threeColumnTable();
-        _padCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), 0)).returns(() => "test");
+        _padCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 0)).returns(() => "test");
 
         const separatorRowViewModel = sut.buildSeparator(table);
 
@@ -111,7 +111,7 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
     test("Empty middle column is tranformed into a single separator dash", () => {
         const sut = createFactory(_padCalculator.object);
         const table = threeColumnTableWithEmptyMiddleColumn();
-        _padCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), It.isAny())).returns(() => "L");
+        _padCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
         _padCalculator.setup(_ => _.getRightPaddingForSeparator("-", It.isAny(), It.isAny())).returns(() => "R");
 
         const separatorRowViewModel = sut.buildSeparator(table);

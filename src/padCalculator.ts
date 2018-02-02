@@ -3,14 +3,14 @@ import { CellLengthCalculator } from "./cellLengthCalculator";
 
 export class PadCalculator {
 
-    public getLeftPadding(paddingChar: string, table: Table, column: number): string {
+    public getLeftPadding(paddingChar: string, table: Table, row: number, column: number): string {
         let result;
         if (column == 0) {
             result = table.hasLeftBorder
                 ? paddingChar
                 : "";
         } else if (column == table.columnCount - 1) {
-            result = (table.getLongestColumnLength()[column] == 0 && !table.hasRightBorder)
+            result = (table.rows[row][column] == "" && !table.hasRightBorder)
                 ? ""
                 : paddingChar;
         } else {

@@ -17,7 +17,7 @@ suite("PadCalculator tests", () => {
             [ Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
-        const pad = sut.getLeftPadding(" ", table, 0);
+        const pad = sut.getLeftPadding(" ", table, 1, 0);
 
         assert.equal(pad, "");
     });
@@ -33,7 +33,7 @@ suite("PadCalculator tests", () => {
             [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
-        const pad = sut.getLeftPadding(" ", table, 1);
+        const pad = sut.getLeftPadding(" ", table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -49,7 +49,7 @@ suite("PadCalculator tests", () => {
             [ Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
-        const pad = sut.getLeftPadding(" ", table, 1);
+        const pad = sut.getLeftPadding(" ", table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -65,7 +65,7 @@ suite("PadCalculator tests", () => {
             [ Alignment.Left, Alignment.Left, Alignment.Left ]
         );
 
-        const pad = sut.getLeftPadding(" ", table, 1);
+        const pad = sut.getLeftPadding(" ", table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -81,7 +81,7 @@ suite("PadCalculator tests", () => {
             [ Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
-        const pad = sut.getLeftPadding("X", table, 2);
+        const pad = sut.getLeftPadding("X", table, 1, 2);
 
         assert.equal(pad, "X");
     });
@@ -96,7 +96,7 @@ suite("PadCalculator tests", () => {
             ],
             [ Alignment.Left, Alignment.Left, Alignment.Left ]);
 
-        const pad = sut.getLeftPadding(" ", table, 2);
+        const pad = sut.getLeftPadding(" ", table, 1, 2);
 
         assert.equal(pad, "");
     });
@@ -439,7 +439,7 @@ suite("PadCalculator tests", () => {
             [ Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
-        const leftPad = sut.getLeftPadding(" ", table, 1);
+        const leftPad = sut.getLeftPadding(" ", table, 1, 1);
         const rightPad = sut.getRightPadding(" ", table, 1, 1);
 
         assert.equal(leftPad, " ");
