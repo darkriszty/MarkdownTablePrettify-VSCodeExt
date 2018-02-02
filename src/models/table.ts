@@ -69,6 +69,7 @@ export class Table {
     }
 
     private isColumnEmpty(column: number): boolean {
+        if (this.rows == null) return true;
         for (let row = 0; row < this.rows.length; row++) {
             const value = this.rows[row][column];
             if (value != null && value.trim() != "")
