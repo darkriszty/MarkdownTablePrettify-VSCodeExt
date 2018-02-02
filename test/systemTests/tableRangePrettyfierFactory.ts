@@ -12,13 +12,14 @@ import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFa
 import { PadCalculator } from "../../src/padCalculator";
 import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { ILogger } from "../../src/diagnostics/logger";
+import { ConsoleLogger } from '../../src/diagnostics/consoleLogger';
 import { MarkdownTextDocumentStub } from "../stubs/markdownTextDocumentStub";
 
 export class PrettyfierFromFile {
     private readonly _logger: ILogger;
 
     constructor(logger: ILogger = null) {
-        this._logger = logger == null ? Mock.ofType<ILogger>().object : logger;
+        this._logger = logger == null ? new ConsoleLogger() : logger;
     }
 
     public assertPrettyfiedAsExpected(fileNamePrefix: string): void {

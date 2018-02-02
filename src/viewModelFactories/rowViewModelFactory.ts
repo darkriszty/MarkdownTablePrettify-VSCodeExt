@@ -21,7 +21,6 @@ export class RowViewModelFactory {
             const columnLength = table.getLongestColumnLength()[col];
             resultRow[col] =
                 this._padCalculator.getLeftPadding(padChar, table, col) +
-                padChar +
                 this._padCalculator.getRightPaddingForSeparator(padChar, table, col);
         }
         return new RowViewModel(resultRow);
@@ -33,7 +32,6 @@ export class RowViewModelFactory {
     {
         let resultRow = new Array(table.columnCount);
         for(let col = 0; col < table.columnCount; col++) {
-            const columnLength = table.getLongestColumnLength()[col];
             const text = table.rows[row][col] == ""
                 ? padChar
                 : table.rows[row][col];

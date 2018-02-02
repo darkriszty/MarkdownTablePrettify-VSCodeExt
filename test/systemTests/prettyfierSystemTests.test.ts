@@ -20,6 +20,10 @@ suite("Prettyfier system tests", () => {
         new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("emptyCell"));
     });
 
+    test("[emptyCellWithBorder] Empty cells' length maintained in table with borders", () => {
+        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("emptyCellWithBorder"));
+    });
+
     test("[redundantTableEnding] Redundant table ending removed if table doesn't start with border", () => {
         new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("redundantTableEnding"));
     });

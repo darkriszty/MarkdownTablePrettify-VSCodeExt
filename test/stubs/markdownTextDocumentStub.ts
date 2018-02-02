@@ -53,8 +53,11 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
                 buffer = line.substring(range.start.character);
             else if (isFirstRow && isLastRow)
                 break;
-            else
+            else if (!isLastRow)
+                buffer += line;
+            else if (isLastRow)
                 buffer += line.substring(0, range.end.character);
+
             if (!isLastRow)
                 buffer += os.EOL;
         }
