@@ -1,34 +1,19 @@
-import * as assert from 'assert';
-import * as vscode from "vscode";
+import * as fs from 'fs';
+import * as path from 'path';
 import { PrettyfierFromFile } from './tableRangePrettyfierFactory';
 
-suite("Prettyfier system tests", () => {
+fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
+    suite("Prettyfier system tests", () => {
+        let distinctTests: string[] = files.map(f => f.split("-")[0]).filter((item, i, s) => s.lastIndexOf(item) == i);
 
-    test("[addMissingTableEnding] Ending table border added if the table starts with border", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("addMissingTableEnding"));
+        for (let fileNameRoot of distinctTests) {
+            test(`[${fileNameRoot}]`, () => {
+                new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir(fileNameRoot));
+            });
+        }
+
+        function nameWithDir(fileName: string) {
+            return `resources/${fileName}`;
+        }
     });
-
-    test("[cjk] CJK characters have lengths of 2", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("cjk"));
-    });
-
-    test("[emptyMiddleColumn] Empty middle column added", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("emptyMiddleColumn"));
-    });
-
-    test("[emptyCell] Empty cells' length maintained", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("emptyCell"));
-    });
-
-    test("[emptyCellWithBorder] Empty cells' length maintained in table with borders", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("emptyCellWithBorder"));
-    });
-
-    test("[redundantTableEnding] Redundant table ending removed if table doesn't start with border", () => {
-        new PrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir("redundantTableEnding"));
-    });
-
-    function nameWithDir(fileName: string) {
-        return `resources/${fileName}`;
-    }
 });
