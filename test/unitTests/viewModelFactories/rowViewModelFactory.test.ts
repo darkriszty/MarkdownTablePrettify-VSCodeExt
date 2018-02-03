@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 import { IMock, Mock, It, Times } from "typemoq";
-import { IFunc2 } from 'typemoq/Common/Func';
 import { assertExt } from "../../assertExtensions";
 import { PadCalculator } from '../../../src/padCalculator';
 import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewModelFactory';
