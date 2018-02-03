@@ -409,8 +409,100 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, " ");
     });
 
-    test("getRightPaddingForSeparator() TODO", () => {
-        assert.equal(1, 0, "TODO");
+    test("getRightPaddingForSeparator() First column gets right padded with maxColLength+1 dashes", () => {
+        const sut = createCalculator();
+        const table = new Table(
+            [
+                [ "aaaaa", "bbbbb", "ccccc" ],
+                [ "-", "-", "-" ],
+                [ "aaaaa", "bbbbb", "ccccc" ]
+            ], 
+            [ Alignment.Left, Alignment.Left, Alignment.Left]
+        );
+
+        const pad = sut.getRightPaddingForSeparator("-", table, 0);
+
+        assert.equal(pad, "------");
+    });
+
+    test("getRightPaddingForSeparator() First column with left border gets right padded with maxColLength+1 dashes", () => {
+        const sut = createCalculator();
+        const table = new Table(
+            [
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ]
+            ], 
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]
+        );
+
+        const pad = sut.getRightPaddingForSeparator("-", table, 0);
+
+        assert.equal(pad, "------");
+    });
+
+    test("getRightPaddingForSeparator() Middle column gets right padded with maxColLength+1 dashes", () => {
+        const sut = createCalculator();
+        const table = new Table(
+            [
+                [ "aaaaa", "bbbbb", "ccccc" ],
+                [ "-", "-", "-" ],
+                [ "aaaaa", "bbbbb", "ccccc" ]
+            ], 
+            [ Alignment.Left, Alignment.Left, Alignment.Left]
+        );
+
+        const pad = sut.getRightPaddingForSeparator("-", table, 1);
+
+        assert.equal(pad, "------");
+    });
+
+    test("getRightPaddingForSeparator() Empty middle column gets right padded with 2 dashes", () => {
+        const sut = createCalculator();
+        const table = new Table(
+            [
+                [ "aaaaa", "", "ccccc" ],
+                [ "-", "-", "-" ],
+                [ "aaaaa", "", "ccccc" ]
+            ], 
+            [ Alignment.Left, Alignment.Left, Alignment.Left]
+        );
+
+        const pad = sut.getRightPaddingForSeparator("-", table, 1);
+
+        assert.equal(pad, "--");
+    });
+
+    test("getRightPaddingForSeparator() Last column gets right padded with maxColLength+1 dashes", () => {
+        const sut = createCalculator();
+        const table = new Table(
+            [
+                [ "aaaaa", "bbbbb", "ccccc" ],
+                [ "-", "-", "-" ],
+                [ "aaaaa", "bbbbb", "ccccc" ]
+            ], 
+            [ Alignment.Left, Alignment.Left, Alignment.Left]
+        );
+
+        const pad = sut.getRightPaddingForSeparator("-", table, 2);
+
+        assert.equal(pad, "------");
+    });
+
+    test("getRightPaddingForSeparator() Last column with right border gets right padded with maxColLength+1 dashes", () => {
+        const sut = createCalculator();
+        const table = new Table(
+            [
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ]
+            ], 
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]
+        );
+
+        const pad = sut.getRightPaddingForSeparator("-", table, 2);
+
+        assert.equal(pad, "------");
     });
 
     test("Regular middle gets padded both left and right with expected amount", () => {
