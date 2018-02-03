@@ -14,7 +14,7 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
         private _tableValidator: TableValidator,
         private _viewModelFactory: TableViewModelFactory,
         private _writer: TableStringWriter,
-        private _logger: ILogger
+        private _loggers: ILogger[]
     ) { }
 
     provideDocumentRangeFormattingEdits(
@@ -35,12 +35,11 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
                 message = "Can't parse table from invalid text."
             }
         } catch (ex) {
-            this._logger.logError(ex);
-            console.error("Error: \n\n" + ex);
+            this._loggers.forEach(_ => _.logError(ex));
         }
 
         if (!!message)
-            this._logger.logInfo(message);
+            this._loggers.forEach(_ => _.logInfo(message));
 
         return result;
     }

@@ -1,7 +1,8 @@
 'use strict';
 import * as vscode from 'vscode';
 import { TableRangePrettyfier } from "./tableRangePrettyfier";
-import { VsWindowLogger } from '../diagnostics/VsWindowLogger';
+import { ConsoleLogger } from '../diagnostics/consoleLogger';
+import { VsWindowLogger } from '../diagnostics/vsWindowLogger';
 import { TableFactory } from "../modelFactory/tableFactory";
 import { AlignmentFactory } from "../modelFactory/alignmentFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
@@ -21,7 +22,7 @@ export function activate(context: vscode.ExtensionContext): void {
             new TableValidator(),
             new TableViewModelFactory(new RowViewModelFactory(new PadCalculator())),
             new TableStringWriter(),
-            new VsWindowLogger())
+            [ new VsWindowLogger(), new ConsoleLogger() ])
     );
 
     context.subscriptions.push(disposable);

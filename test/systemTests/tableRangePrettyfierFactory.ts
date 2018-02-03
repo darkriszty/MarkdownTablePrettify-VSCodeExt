@@ -49,7 +49,7 @@ export class PrettyfierFromFile {
             new TableValidator(),
             new TableViewModelFactory(new RowViewModelFactory(new PadCalculator())),
             new TableStringWriter(),
-            this._logger
+            [ this._logger ]
         );
     }
 }
