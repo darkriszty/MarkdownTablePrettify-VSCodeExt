@@ -86,21 +86,6 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "X");
     });
 
-    test("getLeftPadding() Last column has no left padding if empty", () => {
-        const sut = createCalculator();
-        const table = new Table(
-            [
-                [ "aaaaa", "bbbbb", "" ],
-                [ "-", "-", "" ],
-                [ "a", "b", "" ] 
-            ],
-            [ Alignment.Left, Alignment.Left, Alignment.Left ]);
-
-        const pad = sut.getLeftPadding(" ", table, 1, 2);
-
-        assert.equal(pad, "");
-    });
-
     test("getRightPadding() First column equal to maxColLength gets right padded with one character", () => {
         const sut = createCalculator();
         const table = new Table(
@@ -181,7 +166,7 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() First column is empty string gets right padded with 6 characters", () => {
+    test("getRightPadding() First column is empty string gets right padded with 5 characters", () => {
         const sut = createCalculator();
         const table = new Table(
             [
@@ -194,10 +179,10 @@ suite("PadCalculator tests", () => {
 
         const pad = sut.getRightPadding(" ", table, 1, 0);
 
-        assert.equal(pad, "      ");
+        assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() Middle column is empty cell gets right padded with maxColLength characters", () => {
+    test("getRightPadding() Middle column is empty cell gets right padded with maxColLength-1 characters", () => {
         const sut = createCalculator();
         const table = new Table(
             [
@@ -210,7 +195,7 @@ suite("PadCalculator tests", () => {
 
         const pad = sut.getRightPadding(" ", table, 1, 1);
 
-        assert.equal(pad, "      ");
+        assert.equal(pad, "     ");
     });
 
     test("getRightPadding() Middle column equal to maxColLength gets right padded with one character", () => {
@@ -277,7 +262,7 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "    ");
     });
 
-    test("getRightPadding() Middle column is empty string gets right padded with maxColLength+1 characters", () => {
+    test("getRightPadding() Middle column is empty string gets right padded with maxColLength characters", () => {
         const sut = createCalculator();
         const table = new Table(
             [
@@ -290,7 +275,7 @@ suite("PadCalculator tests", () => {
 
         const pad = sut.getRightPadding(" ", table, 1, 1);
 
-        assert.equal(pad, "      ");
+        assert.equal(pad, "     ");
     });
 
     test("getRightPadding() Middle column with 0 maxLength gets right padded with 1 character", () => {
@@ -315,7 +300,7 @@ suite("PadCalculator tests", () => {
             [
                 [ "aaaaa", "bbbbb", "ccccc" ],
                 [ "-", "-", "-" ],
-                [ "aaaaa", "bbbbb", "ccccc" ]
+                [ "aaaaa", "bbbbb", "c" ]
             ], 
             [ Alignment.Left, Alignment.Left, Alignment.Left]
         );
@@ -332,11 +317,11 @@ suite("PadCalculator tests", () => {
         const sut = createCalculator();
         const table = new Table(
             [
-                [ "aaaaa", "bbbbb", "ccccc", "" ],
-                [ "-", "-", "-", "" ],
-                [ "aaaaa", "bbbbb", "ccccc", "" ]
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ]
             ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
         const pad = sut.getRightPadding(" ", table, 1, 2);
@@ -348,11 +333,11 @@ suite("PadCalculator tests", () => {
         const sut = createCalculator();
         const table = new Table(
             [
-                [ "aaaaa", "bbbbb", "ccccc", "" ],
-                [ "-", "-", "-", "" ],
-                [ "aaaaa", "bbbbb", "cccc", "" ]
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "cccc", "" ]
             ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
         const pad = sut.getRightPadding(" ", table, 1, 2);
@@ -364,11 +349,11 @@ suite("PadCalculator tests", () => {
         const sut = createCalculator();
         const table = new Table(
             [
-                [ "aaaaa", "bbbbb", "ccccc", "" ],
-                [ "-", "-", "-", "" ],
-                [ "aaaaa", "bbbbb", "ccc", "" ]
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "ccc", "" ]
             ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
         const pad = sut.getRightPadding(" ", table, 1, 2);
@@ -380,11 +365,11 @@ suite("PadCalculator tests", () => {
         const sut = createCalculator();
         const table = new Table(
             [
-                [ "aaaaa", "bbbbb", "ccccc", "" ],
-                [ "-", "-", "-", "" ],
-                [ "aaaaa", "bbbbb", "cc", "" ]
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "cc", "" ]
             ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
         const pad = sut.getRightPadding(" ", table, 1, 2);
@@ -392,31 +377,31 @@ suite("PadCalculator tests", () => {
         assert.equal(pad, "    ");
     });
 
-    test("getRightPadding() Last column is empty string gets right padded with maxColLength+1 characters if there is right border", () => {
+    test("getRightPadding() Last column is empty string gets right padded with maxColLength characters if there is right border", () => {
         const sut = createCalculator();
         const table = new Table(
             [
-                [ "aaaaa", "bbbbb", "ccccc", "" ],
-                [ "-", "-", "-", "" ],
-                [ "aaaaa", "bbbbb", "", "" ]
+                [ "", "aaaaa", "bbbbb", "ccccc", "" ],
+                [ "", "-", "-", "-", "" ],
+                [ "", "aaaaa", "bbbbb", "", "" ]
             ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
         const pad = sut.getRightPadding(" ", table, 1, 2);
 
-        assert.equal(pad, "      ");
+        assert.equal(pad, "     ");
     });
 
     test("getRightPadding() Last column with 0 maxLength gets right padded with 1 characters if there is right border", () => {
         const sut = createCalculator();
         const table = new Table(
             [
-                [ "aaaaa", "bbbbb", "", "" ],
-                [ "-", "-", "", "" ],
-                [ "aaaaa", "bbbbb", "", "" ]
+                [ "", "aaaaa", "bbbbb", "", "" ],
+                [ "", "-", "-", "", "" ],
+                [ "", "aaaaa", "bbbbb", "", "" ]
             ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
+            [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left]
         );
 
         const pad = sut.getRightPadding(" ", table, 1, 2);
