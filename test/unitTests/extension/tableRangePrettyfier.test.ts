@@ -127,17 +127,6 @@ suite("TableRangePrettyfier tests", () => {
         _logger.verify(_ => _.logInfo(It.isAny()), Times.once());
     });
 
-    function threeColumnTable(): Table {
-        return new Table(
-            [
-                [ "aaaaa", "bbbbb", "ccccc" ],
-                [ "-", "-", "-" ],
-                [ "aaaaa", "bbbbb", "ccccc" ]
-            ], 
-            [ Alignment.Left, Alignment.Left, Alignment.Left]
-        );
-    }
-
     function makeDocument(fileContents) {
         return new MarkdownTextDocumentStub(fileContents);
     }
