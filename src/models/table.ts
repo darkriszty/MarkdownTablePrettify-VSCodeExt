@@ -16,7 +16,6 @@ export class Table {
     }
 
     public get rows(): string[][] { return this._rows != null ? this._rows : null; }
-    public get separator(): string[] { return this.hasRows ? this._rows[1] : []; }
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.hasRows ? this.rows[0].length : 0; }
     public get rowCount(): number { return this.hasRows ? this.rows.length : 0; }
