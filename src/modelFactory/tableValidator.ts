@@ -6,6 +6,8 @@ export class TableValidator {
     constructor(private _selectionInterpreter: SelectionInterpreter) { }
 
     public isValid(selection: string): boolean {
+        if (selection == null || selection === undefined)
+            return false;
         const rawRows = this._selectionInterpreter.allRows(selection);
         
         const sizeValid = rawRows.length > 2 && // at least two rows are required (besides the separator)
