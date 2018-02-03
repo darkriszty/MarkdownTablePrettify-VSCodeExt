@@ -5,7 +5,7 @@ export class TableValidator {
 
     constructor(private _selectionInterpreter: SelectionInterpreter) { }
 
-    public isValid2(selection: string): boolean {
+    public isValid(selection: string): boolean {
         const rawRows = this._selectionInterpreter.allRows(selection);
         
         const sizeValid = rawRows.length > 2 && // at least two rows are required (besides the separator)
@@ -13,33 +13,6 @@ export class TableValidator {
                           rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
 
         return sizeValid && this.hasValidSeparators(this._selectionInterpreter.separator(selection));
-    }
-
-    public isValid(table: Table): boolean {
-        /*
-            Check for:
-                * null
-                * at least 2 rows (besides the separator)
-                * at least two columns
-                * all rows of a column must match the length of the first row of that column
-                * empty first, middle and last columns are supported
-                * all dashes, or
-                * all dashes with border, or
-                * all dashes where first or last column can be colon
-        */
-        if (table == null || table.isEmpty())
-            return false;
-
-        return this.validateWithSeparator(table);
-    }
-
-    private validateWithSeparator(table: Table): boolean {
-        var rawRows = table.rows;
-        let sizeValid = rawRows.length >= 2 && // at least two rows are required (besides the separator)
-                        rawRows[0].length > 1 && // at least two columns are required
-                        rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
-
-        return sizeValid && this.hasValidSeparators(table.separator);
     }
 
     private hasValidSeparators(separator: string[]): boolean {

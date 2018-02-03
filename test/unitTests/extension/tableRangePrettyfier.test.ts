@@ -30,26 +30,25 @@ suite("TableRangePrettyfier tests", () => {
         _logger = Mock.ofType<ILogger>();
     });
 
-    test("provideDocumentRangeFormattingEdits() uses table factory to create table from range of selection", () => {
-        const sut = createSut();
-        const text = "hello world";
-        const document = makeDocument(text);
-
-        sut.provideDocumentRangeFormattingEdits(document, document.getFullRange(), null, null);
-
-        _tableFactory.verify(_ => _.getModel(text), Times.once());
-    });
-
     test("provideDocumentRangeFormattingEdits() calls table validator", () => {
         const sut = createSut();
         const text = "hello world";
         const document = makeDocument(text);
-        const table = threeColumnTable();
-        _tableFactory.setup(_ => _.getModel(text)).returns(() => table);
 
         sut.provideDocumentRangeFormattingEdits(document, document.getFullRange(), null, null);
 
-        _tableValidator.verify(_ => _.isValid(table), Times.once());
+        _tableValidator.verify(_ => _.isValid(text), Times.once());
+    });
+
+    test("provideDocumentRangeFormattingEdits() uses table factory to create table from range of selection for valid selection", () => {
+        const sut = createSut();
+        const text = "hello world";
+        const document = makeDocument(text);
+        _tableValidator.setup(_ => _.isValid(It.isAny())).returns(() => true);
+
+        sut.provideDocumentRangeFormattingEdits(document, document.getFullRange(), null, null);
+
+        _tableFactory.verify(_ => _.getModel(text), Times.once());
     });
 
     test("provideDocumentRangeFormattingEdits() calls view model factory for valid table", () => {
@@ -85,6 +84,17 @@ suite("TableRangePrettyfier tests", () => {
 
         assert.equal(edits.length, 1);
         assert.equal(edits[0].newText, "foo bar");
+    });
+
+    test("provideDocumentRangeFormattingEdits() doesn't call table factory for invalid table", () => {
+        const sut = createSut();
+        const text = "hello world";
+        const document = makeDocument(text);
+        _tableValidator.setup(_ => _.isValid(It.isAny())).returns(() => false);
+
+        sut.provideDocumentRangeFormattingEdits(document, document.getFullRange(), null, null);
+
+        _tableFactory.verify(_ => _.getModel(text), Times.never());
     });
 
     test("provideDocumentRangeFormattingEdits() doesn't call view model factory for invalid table", () => {
