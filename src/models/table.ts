@@ -1,12 +1,11 @@
+import { Cell } from "./cell";
 import { Alignment } from "./alignment";
-import { CellLengthCalculator } from "../cellLengthCalculator";
 
 export class Table {
-    private readonly _rows: string[][];
-    private _longestColumnLengths: number[] = null;
+    private readonly _rows: Cell[][];
 
     constructor(
-        rows: string[][],
+        rows: Cell[][],
         private _alignments: Alignment[])
     {
         if (rows != null && rows[0] != null && rows[0].length != _alignments.length)
@@ -15,7 +14,7 @@ export class Table {
         this._rows = rows;
     }
 
-    public get rows(): string[][] { return this._rows != null ? this._rows : null; }
+    public get rows(): Cell[][] { return this._rows != null ? this._rows : null; }
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.hasRows ? this.rows[0].length : 0; }
     public get rowCount(): number { return this.hasRows ? this.rows.length : 0; }
@@ -30,15 +29,12 @@ export class Table {
 
     public getLongestColumnLengths(): number[] {
         if (!this.hasRows) return [];
-        if (this._longestColumnLengths == null) {
-            let maxColLengths: number[] = new Array(this.columnCount).fill(0);
 
-            for (let row = 0; row < this.rows.length; row++)
-                for (let col = 0; col < this.rows[row].length; col++)
-                    maxColLengths[col] = Math.max(CellLengthCalculator.getLength(this.rows[row][col]), maxColLengths[col])
+        let maxColLengths: number[] = new Array(this.columnCount).fill(0);
+        for (let row = 0; row < this.rows.length; row++)
+            for (let col = 0; col < this.rows[row].length; col++)
+                maxColLengths[col] = Math.max(this.rows[row][col].getLength(), maxColLengths[col]);
 
-            this._longestColumnLengths = maxColLengths;
-        }
-        return this._longestColumnLengths;
+        return maxColLengths;
     }
 }

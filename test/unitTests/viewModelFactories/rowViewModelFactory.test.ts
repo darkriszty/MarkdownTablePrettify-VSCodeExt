@@ -5,6 +5,7 @@ import { PadCalculator } from '../../../src/padCalculator';
 import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewModelFactory';
 import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
+import { Cell } from '../../../src/models/cell';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _padCalculator: IMock<PadCalculator>;
@@ -121,23 +122,23 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
 });
 
 function threeColumnTable(): Table {
-    return new Table(
-        [
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaaa", "bbbbb", "ccccc" ]
-        ], 
-        [ Alignment.Left, Alignment.Left, Alignment.Left]
-    );
+    return tableFor([
+        [ "aaaaa", "bbbbb", "ccccc" ],
+        [ "aaaaa", "bbbbb", "ccccc" ]
+    ]);
 }
 
 function threeColumnTableWithEmptyMiddleColumn(): Table {
-    return new Table(
-        [
-            [ "aaaaa", "", "ccccc" ],
-            [ "aaaaa", "", "ccccc" ]
-        ], 
-        [ Alignment.Left, Alignment.Left, Alignment.Left]
-    );
+    return tableFor([
+        [ "aaaaa", "", "ccccc" ],
+        [ "aaaaa", "", "ccccc" ]
+    ]);
+}
+
+function tableFor(rows: string[][]) {
+    const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+    let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
+    return table;
 }
 
 function createFactory(padCalculator: PadCalculator): RowViewModelFactory {

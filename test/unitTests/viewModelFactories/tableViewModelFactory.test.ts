@@ -9,6 +9,7 @@ import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
 import { PadCalculator } from "../../../src/padCalculator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
+import { Cell } from "../../../src/models/cell";
 
 suite("TableViewModelFactory tests", () => {
     let _rowVmb: IMock<RowViewModelFactory>;
@@ -18,11 +19,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     test("build() with calls rowVmb methods", () => {
-        const table = new Table([
+        const table = tableFor([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ], [ Alignment.Left, Alignment.Left ]);
+        ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
@@ -42,11 +43,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     test("build() returns expected view model properties", () => {
-        const table = new Table([
+        const table = tableFor([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ], [ Alignment.Left, Alignment.Left ]);
+        ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
         _rowVmb.setup(m => m.buildSeparator(It.isAny())).returns(() => expectedSeparator)
@@ -64,11 +65,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     test("build() with table having left border sets hasLeftBorder on viewModel", () => {
-        const table = new Table([
+        const table = tableFor([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ], [ Alignment.Left, Alignment.Left ]);
+        ]);
         table.hasLeftBorder = true;
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
@@ -80,11 +81,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     test("build() with table without left border sets hasLeftBorder on viewModel to false", () => {
-        const table = new Table([
+        const table = tableFor([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ], [ Alignment.Left, Alignment.Left ]);
+        ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
@@ -95,11 +96,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     test("build() with table having right border sets hasRightBorder on viewModel", () => {
-        const table = new Table([
+        const table = tableFor([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ], [ Alignment.Left, Alignment.Left ]);
+        ]);
         table.hasRightBorder = true;
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
@@ -111,11 +112,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     test("build() with table without right border sets hasRightBorder on viewModel to false", () => {
-        const table = new Table([
+        const table = tableFor([
             ["c1", "c2"],
             ["v1", "v2"],
             ["v3", "v4"],
-        ], [ Alignment.Left, Alignment.Left ]);
+        ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
@@ -125,6 +126,12 @@ suite("TableViewModelFactory tests", () => {
         assert.equal(tableVm.hasRightBorder, false);
     });
 
+    function tableFor(rows: string[][]) {
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
+        return table;
+    }
+    
     function assertViewModelPropertiesSet(viewModel: TableViewModel) {
         assertExt.isNotNull(viewModel);
         assertExt.isNotNull(viewModel.header);

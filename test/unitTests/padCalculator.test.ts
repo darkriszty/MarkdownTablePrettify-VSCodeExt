@@ -3,6 +3,7 @@ import { assertExt } from "../assertExtensions";
 import { PadCalculator } from '../../src/padCalculator';
 import { Table } from '../../src/models/table';
 import { Alignment } from '../../src/models/alignment';
+import { Cell } from '../../src/models/cell';
 
 suite("PadCalculator tests", () => {
 
@@ -405,7 +406,7 @@ suite("PadCalculator tests", () => {
 
     function tableFor(rows: string[][]) {
         const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
-        let table = new Table(rows, alignments);
+        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
         return table;
     }
 

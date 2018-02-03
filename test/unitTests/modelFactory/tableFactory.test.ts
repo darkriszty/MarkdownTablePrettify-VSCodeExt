@@ -8,6 +8,7 @@ import { assertExt } from "../../assertExtensions";
 import { Transformer } from '../../../src/modelFactory/transformers/transformer';
 import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
 import { Table } from '../../../src/models/table';
+import { Cell } from '../../../src/models/cell';
 
 suite("TableFactory tests", () => {
     let _alignmentFactoryMock: IMock<AlignmentFactory>;
@@ -32,7 +33,7 @@ suite("TableFactory tests", () => {
             .returns(() => [ Alignment. Left, Alignment.Left, Alignment.Left, Alignment.Left]);
         _transformer.setup(_ => _.process(It.isAny())).returns((input) => input);
         
-        const rows: string[][] = sut.getModel(tableText).rows;
+        const rows: Cell[][] = sut.getModel(tableText).rows;
 
         assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
@@ -50,19 +51,19 @@ suite("TableFactory tests", () => {
             .returns(() => [ Alignment. Left, Alignment.Left, Alignment.Left, Alignment.Left]);
         _transformer.setup(_ => _.process(It.isAny())).returns((input) => input);
         
-        const rows: string[][] = sut.getModel(tableText).rows;
+        const rows: Cell[][] = sut.getModel(tableText).rows;
 
         assertExt.isNotNull(rows);
         assert.equal(rows.length, 2);
         assert.equal(rows.every(r => r.length == 4), true);
-        assert.equal(rows[0][0], " c1 ");
-        assert.equal(rows[0][1], " c2 ");
-        assert.equal(rows[0][2], " ");
-        assert.equal(rows[0][3], " c4");
-        assert.equal(rows[1][0], "           a ");
-        assert.equal(rows[1][1], " b ");
-        assert.equal(rows[1][2], "");
-        assert.equal(rows[1][3], " d");
+        assert.equal(rows[0][0].getValue(), " c1 ");
+        assert.equal(rows[0][1].getValue(), " c2 ");
+        assert.equal(rows[0][2].getValue(), " ");
+        assert.equal(rows[0][3].getValue(), " c4");
+        assert.equal(rows[1][0].getValue(), "           a ");
+        assert.equal(rows[1][1].getValue(), " b ");
+        assert.equal(rows[1][2].getValue(), "");
+        assert.equal(rows[1][3].getValue(), " d");
     });
 
     test("getModel() calls alignmentFactory to create alignments for the table columns", () => {
@@ -89,7 +90,7 @@ suite("TableFactory tests", () => {
           :---|--- |:-:|-:
            a  | b  |   | d`;
         const expectedAlignmets: Alignment[] = [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ];
-        const transformedTable = new Table([["c1", "c2", "", "c4"], ["a", "b", "", "d"]], expectedAlignmets);
+        const transformedTable = new Table([["c1", "c2", "", "c4"], ["a", "b", "", "d"]].map(row => row.map(c  => new Cell(c))), expectedAlignmets);
         _alignmentFactoryMock.setup(m => m.createAlignments(It.isAny())).returns(() => expectedAlignmets);
         _transformer.setup(_ => _.process(It.isAny())).returns(() => transformedTable);
         const sut = createFactory();

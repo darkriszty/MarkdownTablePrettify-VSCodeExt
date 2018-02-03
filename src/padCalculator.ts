@@ -1,5 +1,4 @@
 import { Table } from "./models/table";
-import { CellLengthCalculator } from "./cellLengthCalculator";
 
 export class PadCalculator {
 
@@ -10,7 +9,7 @@ export class PadCalculator {
                 ? paddingChar
                 : "";
         } else if (column == table.columnCount - 1) {
-            result = (table.rows[row][column] == "" && !table.hasRightBorder)
+            result = (table.rows[row][column].getValue() == "" && !table.hasRightBorder)
                 ? ""
                 : paddingChar;
         } else {
@@ -38,7 +37,7 @@ export class PadCalculator {
 
     private getRightPaddingInner(paddingChar: string, table: Table, row: number, column: number): string {
         let result;
-        const cellTextLength = CellLengthCalculator.getLength(table.rows[row][column]);
+        const cellTextLength = table.rows[row][column].getLength();
         if (column <= table.columnCount - 1 || table.hasRightBorder) {
             let rightPadCount = table.getLongestColumnLengths()[column] > 0
                 ? table.getLongestColumnLengths()[column] - cellTextLength

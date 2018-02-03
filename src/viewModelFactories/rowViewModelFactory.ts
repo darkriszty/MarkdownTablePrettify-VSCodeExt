@@ -16,20 +16,20 @@ export class RowViewModelFactory {
         for(let col = 0; col < table.columnCount; col++) {
             let text = "";
             if (col == table.columnCount - 1) {
-                if (table.rows[row][col] == "") {
+                if (table.rows[row][col].getValue() == "") {
                     if (!table.hasRightBorder)
                         text = "";
                     else
                         text = padChar;
                 }
                 else {
-                    text = table.rows[row][col];
+                    text = table.rows[row][col].getValue();
                 }
             }
             else {
-                text = table.rows[row][col] == ""
+                text = table.rows[row][col].getValue() == ""
                     ? padChar
-                    : table.rows[row][col];
+                    : table.rows[row][col].getValue();
             }
 
             resultRow[col] =

@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import { Table } from "../../../src/models/table";
 import { Alignment } from "../../../src/models/alignment";
 import { BorderTransformer } from '../../../src/modelFactory/transformers/borderTransformer';
+import { Cell } from '../../../src/models/cell';
 
 suite("BorderTransformer tests", () => {
     test("process() sets hasLeftBorder to true for empty first column", () => {
@@ -9,7 +10,7 @@ suite("BorderTransformer tests", () => {
             [ "", "  h1  ",   " " ,   "  h3  " ],
             [ "", "c"     ,   "  ",   "e"      ]
         ];
-        const table = createSut().process(new Table(rows, getAlignmentsFor(rows)));
+        const table = createSut().process(tableFor(rows));
 
         assert.equal(table.hasLeftBorder, true);
     });
@@ -19,7 +20,7 @@ suite("BorderTransformer tests", () => {
             [ "  h1  ",   " " ,   "  h3  " ],
             [ "c"     ,   "  ",   "e"      ]
         ];
-        const table = createSut().process(new Table(rows, getAlignmentsFor(rows)));
+        const table = createSut().process(tableFor(rows));
 
         assert.equal(table.hasLeftBorder, false);
     });
@@ -29,7 +30,7 @@ suite("BorderTransformer tests", () => {
             [ "", "  h1  ",   " " ,   "  h3  ", "" ],
             [ "", "c"     ,   "  ",   "e"     , "" ]
         ];
-        const table = createSut().process(new Table(rows, getAlignmentsFor(rows)));
+        const table = createSut().process(tableFor(rows));
 
         assert.equal(table.hasRightBorder, true);
     });
@@ -39,7 +40,7 @@ suite("BorderTransformer tests", () => {
             [ "", "  h1  ",   " " ,   "  h3  " ],
             [ "", "c"     ,   "  ",   "e"      ]
         ];
-        const table = createSut().process(new Table(rows, getAlignmentsFor(rows)));
+        const table = createSut().process(tableFor(rows));
 
         assert.equal(table.hasRightBorder, true);
     });
@@ -49,16 +50,18 @@ suite("BorderTransformer tests", () => {
             [ "  h1  ",   " " ,   "  h3  ", "" ],
             [ "c"     ,   "  ",   "e"     , "" ]
         ];
-        const table = createSut().process(new Table(rows, getAlignmentsFor(rows)));
+        const table = createSut().process(tableFor(rows));
 
         assert.equal(table.hasRightBorder, false);
     });
 
+    function tableFor(rows: string[][]) {
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
+        return table;
+    }
+    
     function createSut() {
         return new BorderTransformer(null);
-    }
-
-    function getAlignmentsFor(rows: string[][], alignment: Alignment = Alignment.Left): Alignment[] {
-        return rows[0].map(col => alignment);
     }
 });

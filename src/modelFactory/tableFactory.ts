@@ -3,6 +3,7 @@ import { AlignmentFactory } from "./alignmentFactory";
 import { Alignment } from "../models/alignment";
 import { Transformer } from "./transformers/transformer";
 import { SelectionInterpreter } from "./selectionInterpreter";
+import { Cell } from "../models/cell";
 
 export class TableFactory {
 
@@ -22,6 +23,8 @@ export class TableFactory {
             ? this._alignmentFactory.createAlignments(rowsWithoutSeparator[1]) 
             : [];
 
-        return this._transformer.process(new Table(rowsWithoutSeparator, alignments));
+        const cells = rowsWithoutSeparator.map(row => row.map(c  => new Cell(c)));
+
+        return this._transformer.process(new Table(cells, alignments));
     }
 }

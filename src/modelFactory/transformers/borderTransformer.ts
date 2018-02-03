@@ -1,6 +1,7 @@
 import { Transformer } from "./transformer";
 import { Table } from "../../models/table";
 import { Alignment } from "../../models/alignment";
+import { Cell } from "../../models/cell";
 
 export class BorderTransformer extends Transformer {
     
@@ -19,16 +20,16 @@ export class BorderTransformer extends Transformer {
         return result;
     }
 
-    private isColumnEmpty(rows: string[][], column: number): boolean {
+    private isColumnEmpty(rows: Cell[][], column: number): boolean {
         for (let row = 0; row < rows.length; row++) {
             const value = rows[row][column];
-            if (value != null && value.trim() != "")
+            if (value != null && value.getValue().trim() != "")
                 return false;
         }
         return true;
     }
 
-    private rowsWithoutEmptyFirstAndLastColumn(rows: string[][], hasLeftBorder: boolean, hasRightBorder: boolean): string[][] {
+    private rowsWithoutEmptyFirstAndLastColumn(rows: Cell[][], hasLeftBorder: boolean, hasRightBorder: boolean): Cell[][] {
         let newRows = rows;
         if (hasLeftBorder)
             this.removeColumn(newRows, 0);
@@ -37,7 +38,7 @@ export class BorderTransformer extends Transformer {
         return newRows;
     }
 
-    private removeColumn(rows: string[][], column: number): void {
+    private removeColumn(rows: Cell[][], column: number): void {
         for (let row = 0; row < rows.length; row++)
             rows[row].splice(column, 1);
     }
