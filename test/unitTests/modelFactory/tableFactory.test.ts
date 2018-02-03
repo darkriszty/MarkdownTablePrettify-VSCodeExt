@@ -5,12 +5,19 @@ import { TableFactory } from "../../../src/modelFactory/tableFactory";
 import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
 import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { assertExt } from "../../assertExtensions";
+import { Transformer } from '../../../src/modelFactory/transformers/transformer';
+import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
 
 suite("TableFactory tests", () => {
     let _alignmentFactoryMock: IMock<AlignmentFactory>;
+    let _transformer: IMock<Transformer>;
 
     setup(() => {
         _alignmentFactoryMock = Mock.ofType<AlignmentFactory>();
+        _transformer = Mock.ofType<Transformer>();
+
+        //TODO: adjust unit tests to verify the transformer behavior
+        _transformer.setup(_ => _.process(It.isAny())).returns((input) => input);
     });
 
     test("getModel() removes empty rows", () => {
@@ -70,11 +77,11 @@ suite("TableFactory tests", () => {
         const sut = createFactory();
 
         const actualAlignments: Alignment[] = sut.getModel(tableText).alignments;
-        assert.equal(actualAlignments, expectedAlignmets);
+        assert.equal(expectedAlignmets.length == actualAlignments.length && expectedAlignmets.every((l,i) => l === actualAlignments[i]), true);
         _alignmentFactoryMock.verifyAll();
     });
 
     function createFactory(): TableFactory {
-        return new TableFactory(_alignmentFactoryMock.object);
+        return new TableFactory(_alignmentFactoryMock.object, new SelectionInterpreter(), _transformer.object);
     }
 });

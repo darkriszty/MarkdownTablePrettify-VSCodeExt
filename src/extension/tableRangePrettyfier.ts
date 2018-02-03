@@ -26,8 +26,8 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
 
         let message: string = null;
         try {
-            const table: Table = this._tableFactory.getModel(selection);
-            if (this._tableValidator.isValid(table)) {
+            if (this._tableValidator.isValid2(selection)) {
+                const table: Table = this._tableFactory.getModel(selection);
                 const tableVm: TableViewModel = this._viewModelFactory.build(table);
                 const formattedTable: string = this._writer.writeTable(tableVm);
                 result.push(new vscode.TextEdit(range, formattedTable));

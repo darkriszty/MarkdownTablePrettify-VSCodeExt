@@ -141,7 +141,7 @@ suite("Table tests", () => {
         assert.equal(table.hasRightBorder, false);
     });
 
-    test("getLongestColumnLength() mixed CJK and english chars returns longest row length for each column", () => {
+    test("getLongestColumnLengths() mixed CJK and english chars returns longest row length for each column", () => {
         const table = new Table([
             ["a", "b"],
             ["-", "-"],
@@ -149,14 +149,14 @@ suite("Table tests", () => {
             ["𠁻 test", "𣄿 content"]
         ], [ Alignment.Left, Alignment.Left ]);
         
-        const maxLengths: number[] = table.getLongestColumnLength();
+        const maxLengths: number[] = table.getLongestColumnLengths();
 
         assert.equal(maxLengths.length, 2);
         assert.equal(maxLengths[0], 7);
         assert.equal(maxLengths[1], 10);
     });
 
-    test("getLongestColumnLength() does not consider extra white spaces", () => {
+    test("getLongestColumnLengths() does not consider extra white spaces", () => {
         const table = new Table([
             ["a", "   b"],
             ["-", "-"],
@@ -164,7 +164,7 @@ suite("Table tests", () => {
             ["𠁻 test                ", "𣄿 content"]
         ], [ Alignment.Left, Alignment.Left ]);
         
-        const maxLengths: number[] = table.getLongestColumnLength();
+        const maxLengths: number[] = table.getLongestColumnLengths();
 
         assert.equal(maxLengths.length, 2);
         assert.equal(maxLengths[0], 7);

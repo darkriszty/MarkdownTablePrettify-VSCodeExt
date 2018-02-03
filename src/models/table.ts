@@ -2,64 +2,34 @@ import { Alignment } from "./alignment";
 import { CellLengthCalculator } from "../cellLengthCalculator";
 
 export class Table {
-    private readonly _rowsWithSeparator: string[][];
+    private readonly _rows: string[][];
     private _longestColumnLengths: number[] = null;
 
     constructor(
-        rowsWithSeparator: string[][],
+        rows: string[][],
         private _alignments: Alignment[])
     {
-        if (rowsWithSeparator != null && rowsWithSeparator[0] != null && rowsWithSeparator[0].length != _alignments.length)
+        if (rows != null && rows[0] != null && rows[0].length != _alignments.length)
             throw new Error("The number of columns must match the number of alignments.");
 
-        this._rowsWithSeparator = this.trimColumnValues(rowsWithSeparator);
-        this.setBorders();
-        this.removeEmptyFirstAndLastColumns();
-        this.setComplementaryBorders();
+        this._rows = rows;
     }
 
-    public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : null; }
-    public get separator(): string[] { return this.hasRows ? this._rowsWithSeparator[1] : []; }
+    public get rows(): string[][] { return this._rows != null ? this._rows : null; }
+    public get separator(): string[] { return this.hasRows ? this._rows[1] : []; }
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.hasRows ? this.rows[0].length : 0; }
     public get rowCount(): number { return this.hasRows ? this.rows.length : 0; }
     public hasLeftBorder: boolean;
     public hasRightBorder: boolean;
 
-    private get isFirstColumnEmpty(): boolean { return this.isColumnEmpty(0); }
-    private get isLastColumnEmpty(): boolean { return this.isColumnEmpty(this.columnCount - 1); }
     private get hasRows(): boolean { return this.rows != null && this.rows.length > 0; }
-
-    private setBorders(): void {
-        this.hasLeftBorder = this.isFirstColumnEmpty;
-        this.hasRightBorder = this.isLastColumnEmpty;
-    }
-
-    private removeEmptyFirstAndLastColumns(): void {
-        if (!this.hasRows) return;
-        if (this.isFirstColumnEmpty) {
-            this.removeColumn(this._rowsWithSeparator, 0);
-            this._alignments.shift();
-        }
-        if (this.isLastColumnEmpty) {
-            this.removeColumn(this._rowsWithSeparator, this.columnCount - 1);
-            this._alignments.pop();
-        }
-    }
-
-    private setComplementaryBorders(): void {
-        if (!this.hasRows) return;
-        if (this.hasLeftBorder && !this.hasRightBorder)
-            this.hasRightBorder = true;
-        if (this.hasRightBorder && !this.hasLeftBorder)
-            this.hasRightBorder = false;
-    }
 
     public isEmpty(): boolean {
         return !this.hasRows;
     }
 
-    public getLongestColumnLength(): number[] {
+    public getLongestColumnLengths(): number[] {
         if (!this.hasRows) return [];
         if (this._longestColumnLengths == null) {
             let maxColLengths: number[] = new Array(this.columnCount).fill(0);
@@ -71,29 +41,5 @@ export class Table {
             this._longestColumnLengths = maxColLengths;
         }
         return this._longestColumnLengths;
-    }
-
-    private isColumnEmpty(column: number): boolean {
-        if (!this.hasRows) return true;
-        for (let row = 0; row < this.rows.length; row++) {
-            const value = this.rows[row][column];
-            if (value != null && value.trim() != "")
-                return false;
-        }
-        return true;
-    }
-
-    private removeColumn(rows: string[][], column: number): void {
-        if (!this.hasRows) return;
-        for (let row = 0; row < rows.length; row++)
-            rows[row].splice(column, 1);
-    }
-
-    private trimColumnValues(rows: string[][]): string[][] {
-        if (rows == null) return;
-        let result: string[][] = [];
-        for (let i = 0; i < rows.length; i++)
-            result.push(rows[i].map(r => r.trim()));
-        return result;
     }
 }

@@ -1,6 +1,20 @@
 import { Table } from "../models/table";
+import { SelectionInterpreter } from "./selectionInterpreter";
 
 export class TableValidator {
+
+    constructor(private _selectionInterpreter: SelectionInterpreter) { }
+
+    public isValid2(selection: string): boolean {
+        const rawRows = this._selectionInterpreter.allRows(selection);
+        
+        const sizeValid = rawRows.length > 2 && // at least two rows are required (besides the separator)
+                          rawRows[0].length > 1 && // at least two columns are required
+                          rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
+
+        return sizeValid && this.hasValidSeparators(this._selectionInterpreter.separator(selection));
+    }
+
     public isValid(table: Table): boolean {
         /*
             Check for:

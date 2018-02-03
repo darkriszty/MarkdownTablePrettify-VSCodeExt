@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import { Table } from "../../../src/models/table";
 import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { Alignment } from "../../../src/models/alignment";
+import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
 
 suite("TableValidator tests", () => {
 
@@ -155,6 +156,6 @@ suite("TableValidator tests", () => {
     });
 
     function createSut(): TableValidator {
-        return new TableValidator();
+        return new TableValidator(new SelectionInterpreter());
     }
 });

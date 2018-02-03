@@ -31,7 +31,7 @@ export class PadCalculator {
     }
 
     private getRightPadCountForSeparator(table: Table, column: number): number {
-        const cellLength = table.getLongestColumnLength()[column];
+        const cellLength = table.getLongestColumnLengths()[column];
         const minLength = cellLength == 0 ? 1 : 0;
         return Math.max(cellLength, minLength) + 1;
     }
@@ -40,10 +40,10 @@ export class PadCalculator {
         let result;
         const cellTextLength = CellLengthCalculator.getLength(table.rows[row][column]);
         if (column <= table.columnCount - 1 || table.hasRightBorder) {
-            let rightPadCount = table.getLongestColumnLength()[column] > 0
-                ? table.getLongestColumnLength()[column] - cellTextLength
+            let rightPadCount = table.getLongestColumnLengths()[column] > 0
+                ? table.getLongestColumnLengths()[column] - cellTextLength
                 : 1;
-            if (table.getLongestColumnLength()[column] > 0 && cellTextLength > 0)
+            if (table.getLongestColumnLengths()[column] > 0 && cellTextLength > 0)
                 rightPadCount++;
             result = paddingChar.repeat(rightPadCount);
         } else {

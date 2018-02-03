@@ -14,6 +14,9 @@ import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { ILogger } from "../../src/diagnostics/logger";
 import { ConsoleLogger } from '../../src/diagnostics/consoleLogger';
 import { MarkdownTextDocumentStub } from "../stubs/markdownTextDocumentStub";
+import { TrimmerTransformer } from '../../src/modelFactory/transformers/trimmerTransformer';
+import { BorderTransformer } from '../../src/modelFactory/transformers/borderTransformer';
+import { SelectionInterpreter } from '../../src/modelFactory/selectionInterpreter';
 
 export class PrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -47,8 +50,12 @@ export class PrettyfierFromFile {
 
     private createPrettyfier(): TableRangePrettyfier {
         return new TableRangePrettyfier(
-            new TableFactory(new AlignmentFactory()),
-            new TableValidator(),
+            new TableFactory(
+                new AlignmentFactory(),
+                new SelectionInterpreter(),
+                new TrimmerTransformer(new BorderTransformer(null))
+            ),
+            new TableValidator(new SelectionInterpreter()),
             new TableViewModelFactory(new RowViewModelFactory(new PadCalculator())),
             new TableStringWriter(),
             [ this._logger ]
