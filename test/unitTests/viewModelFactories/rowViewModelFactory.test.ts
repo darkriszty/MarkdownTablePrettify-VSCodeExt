@@ -117,7 +117,7 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const separatorRowViewModel = sut.buildSeparator(table);
 
         assertExt.isNotNull(separatorRowViewModel);
-        assert.equal(separatorRowViewModel.getValueAt(1), "L-R");
+        assert.equal(separatorRowViewModel.getValueAt(1), "LR");
     });
 });
 

@@ -99,11 +99,11 @@ suite("TableViewModelFactory tests", () => {
 
     test("build() with table having right border sets hasRightBorder on viewModel", () => {
         const table = new Table([
-            ["c1", "c2", ""],
-            ["--", "--", ""],
-            ["v1", "v2", ""],
-            ["v3", "v4", ""],
-        ], [ Alignment.Left, Alignment.Left, Alignment.Left ]);
+            ["", "c1", "c2", ""],
+            ["", "--", "--", ""],
+            ["", "v1", "v2", ""],
+            ["", "v3", "v4", ""],
+        ], [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
 
