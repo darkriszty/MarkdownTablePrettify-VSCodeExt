@@ -4,7 +4,7 @@ import { Alignment } from "../../../src/models/alignment";
 
 suite("Table tests", () => {
 
-    test("items() returns trimmed parameter given to constructor except for separator row", () => {
+    test("items() returns trimmed cells without empty first and last columns and without separator row", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
@@ -13,8 +13,8 @@ suite("Table tests", () => {
         const table = new Table(rows, getAlignmentsFor(rows));
 
         const trimmedRowsWithoutSeparator = [
-            [ "", "h1", "", "h3", "" ],
-            [ "", "c",  "", "e",  "" ]
+            [ "h1", "", "h3"],
+            [ "c",  "", "e" ]
         ];
         assertRowsMatch(table.rows, trimmedRowsWithoutSeparator);
     });
@@ -38,7 +38,7 @@ suite("Table tests", () => {
         assert.equal(table.isEmpty(), false);
     });
 
-    test("columnCount() returns number of columns", () => {
+    test("columnCount() returns number of columns without empty first and last columns", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
@@ -46,7 +46,7 @@ suite("Table tests", () => {
         ];
         const table = new Table(rows, getAlignmentsFor(rows));
 
-        assert.equal(table.columnCount, 5);
+        assert.equal(table.columnCount, 3);
     });
 
     test("rowCount() returns number of rows", () => {
@@ -72,7 +72,7 @@ suite("Table tests", () => {
         assert.equal(table.alignments, expectedAlignments);
     });
 
-    test("separator() returns the second row", () => {
+    test("separator() returns the second row without empty first and last columns", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
@@ -80,7 +80,7 @@ suite("Table tests", () => {
         ];
         const table = new Table(rows, getAlignmentsFor(rows));
 
-        const separator = [ "", "-" , "", "---" , "" ];
+        const separator = [ "-" , "", "---" ];
         assert.equal(table.separator.length, separator.length);
         for (let i = 0; i < separator.length; i++)
             assert.equal(table.separator[i], separator[i]);
@@ -108,7 +108,7 @@ suite("Table tests", () => {
         assert.equal(table.hasLeftBorder, false);
     });
 
-    test("hasRightBorder() returns true for empty last column", () => {
+    test("hasRightBorder() returns true when there is a left border and a right border", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  ", "" ],
             [ "",   " - "   ,   ""  ,   "---"   , "" ],
@@ -119,11 +119,22 @@ suite("Table tests", () => {
         assert.equal(table.hasRightBorder, true);
     });
 
-    test("hasRightBorder() returns false for non empty last column", () => {
+    test("hasRightBorder() returns true when there is a left border and no right border", () => {
         const rows = [ 
             [ "",   "  h1  ",   " " ,   "  h3  " ],
             [ "",   " - "   ,   ""  ,   "---"    ],
             [ "",   "c"     ,   "  ",   "e"      ]
+        ];
+        const table = new Table(rows, getAlignmentsFor(rows));
+
+        assert.equal(table.hasRightBorder, true);
+    });
+
+    test("hasRightBorder() returns false if there is a right border without a left border", () => {
+        const rows = [ 
+            [ "  h1  ",   " " ,   "  h3  ", "" ],
+            [ " - "   ,   ""  ,   "---"   , "" ],
+            [ "c"     ,   "  ",   "e"     , "" ]
         ];
         const table = new Table(rows, getAlignmentsFor(rows));
 

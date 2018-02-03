@@ -18,7 +18,7 @@ export class Table {
         this.setComplementaryBorders();
     }
 
-    public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : []; }
+    public get rows(): string[][] { return this._rowsWithSeparator != null ? this._rowsWithSeparator.filter((v, i) => i != 1) : null; }
     public get separator(): string[] { return this.hasRows ? this._rowsWithSeparator[1] : []; }
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.hasRows ? this.rows[0].length : 0; }
@@ -90,6 +90,7 @@ export class Table {
     }
 
     private trimColumnValues(rows: string[][]): string[][] {
+        if (rows == null) return;
         let result: string[][] = [];
         for (let i = 0; i < rows.length; i++)
             result.push(rows[i].map(r => r.trim()));
