@@ -20,8 +20,8 @@ export class Table {
     public get alignments(): Alignment[] { return this._alignments; }
     public get columnCount(): number { return this.hasRows ? this.rows[0].length : 0; }
     public get rowCount(): number { return this.hasRows ? this.rows.length : 0; }
-    public hasLeftBorder: boolean;
-    public hasRightBorder: boolean;
+    public hasLeftBorder: boolean = false;
+    public hasRightBorder: boolean = false;
 
     private get hasRows(): boolean { return this.rows != null && this.rows.length > 0; }
 

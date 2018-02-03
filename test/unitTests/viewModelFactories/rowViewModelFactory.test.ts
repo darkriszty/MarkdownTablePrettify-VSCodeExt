@@ -124,7 +124,6 @@ function threeColumnTable(): Table {
     return new Table(
         [
             [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "-", "-", "-" ],
             [ "aaaaa", "bbbbb", "ccccc" ]
         ], 
         [ Alignment.Left, Alignment.Left, Alignment.Left]
@@ -135,7 +134,6 @@ function threeColumnTableWithEmptyMiddleColumn(): Table {
     return new Table(
         [
             [ "aaaaa", "", "ccccc" ],
-            [ "-", "-", "-" ],
             [ "aaaaa", "", "ccccc" ]
         ], 
         [ Alignment.Left, Alignment.Left, Alignment.Left]
