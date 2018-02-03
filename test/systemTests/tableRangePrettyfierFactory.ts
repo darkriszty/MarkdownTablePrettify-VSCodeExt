@@ -31,7 +31,9 @@ export class PrettyfierFromFile {
 
     private assertEditsPrettyfied(edits: vscode.TextEdit[], expected: string): void {
         assert.equal(edits.length, 1);
-        assert.equal(edits[0].newText, expected);
+        const expectedLines = expected.split(/\r\n|\r|\n/);
+        const actualLines = edits[0].newText.split(/\r\n|\r|\n/);
+        assert.equal(expectedLines.length == actualLines.length && expectedLines.every((l,i) => l === actualLines[i]), true);
     }
 
     private makeTextEdit(fileContents: string): vscode.TextEdit[] {
