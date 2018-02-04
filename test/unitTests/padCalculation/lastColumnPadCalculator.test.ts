@@ -6,116 +6,122 @@ import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
 import { PadCalculator } from '../../../src/padCalculation/padCalculator';
 import { ColumnBasedPadCalculatorSelector } from '../../../src/padCalculation/columnBasedPadCalculatorSelector';
-import { FirstColumnPadCalculator } from '../../../src/padCalculation/firstColumnPadCalculator';
+import { LastColumnPadCalculator } from '../../../src/padCalculation/lastColumnPadCalculator';
 
-suite("FirstColumnPadCalculator tests", () => {
+suite("LastColumnPadCalculator tests", () => {
 
-    test("getLeftPadding() First column not left padded", () => {
+    test("getLeftPadding() Last column left padded with 1 character", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = getLeftPad(sut, table);
-
-        assert.equal(pad, "");
-    });
-
-    test("getLeftPadding() First column left padded with 1 character if there is a left border", () => {
-        const sut = createCalculator();
-        const table = tableFor([
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaaa", "bbbbb", "ccccc" ]
-        ]);
-        table.hasLeftBorder = true;
         const pad = getLeftPad(sut, table);
 
         assert.equal(pad, " ");
     });
 
-    test("getRightPadding() First column equal to maxColLength gets right padded with one character", () => {
+    test("getRightPadding() Last column not right padded if there's no border", () => {
+        const sut = createCalculator();
+        const table = tableFor([
+            [ "aaaaa", "bbbbb", "ccccc" ],
+            [ "aaaaa", "bbbbb", "c" ]
+        ]);
+        
+        const pad = getRightPad(sut, table);
+
+        assert.equal(pad, "");
+    });
+
+    test("getRightPadding() Last column equal to maxColLength gets right padded with one character if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
+        table.hasRightBorder = true;
 
         const pad = getRightPad(sut, table);
 
         assert.equal(pad, " ");
     });
 
-    test("getRightPadding() First column 1 char shorter than maxColLength gets right padded with 2 characters", () => {
+    test("getRightPadding() Last column 1 char shorter than maxColLength gets right padded with 2 characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaa", "bbbbb", "ccccc" ]
+            [ "aaaaa", "bbbbb", "cccc" ]
         ]);
+        table.hasRightBorder = true;
 
         const pad = getRightPad(sut, table);
 
         assert.equal(pad, "  ");
     });
 
-    test("getRightPadding() First column 2 char shorter than maxColLength gets right padded with 3 characters", () => {
+    test("getRightPadding() Last column 2 chars shorter than maxColLength gets right padded with 3 characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaa", "bbbbb", "ccccc" ]
+            [ "aaaaa", "bbbbb", "ccc" ]
         ]);
+        table.hasRightBorder = true;
 
         const pad = getRightPad(sut, table);
 
         assert.equal(pad, "   ");
     });
 
-    test("getRightPadding() First column 3 char shorter than maxColLength gets right padded with 4 characters", () => {
+    test("getRightPadding() Last column 3 char shorter than maxColLength gets right padded with 4 characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aa", "bbbbb", "ccccc" ]
+            [ "aaaaa", "bbbbb", "cc" ]
         ]);
+        table.hasRightBorder = true;
 
         const pad = getRightPad(sut, table);
 
         assert.equal(pad, "    ");
     });
 
-    test("getRightPadding() First column 4 char shorter than maxColLength gets right padded with 5 characters", () => {
+    test("getRightPadding() Last column is empty string gets right padded with maxColLength characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "a", "bbbbb", "ccccc" ]
+            [ "aaaaa", "bbbbb", "" ]
         ]);
+        table.hasRightBorder = true;
 
         const pad = getRightPad(sut, table);
 
         assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() First column is empty string gets right padded with 5 characters", () => {
+    test("getRightPadding() Last column with 0 maxLength gets right padded with 1 characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "", "bbbbb", "ccccc" ]
+            [ "aaaaa", "bbbbb", "" ],
+            [ "aaaaa", "bbbbb", "" ]
         ]);
+        table.hasRightBorder = true;
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "     ");
+        assert.equal(pad, " ");
     });
 
-    function getLeftPad(sut: FirstColumnPadCalculator, table: Table): string {
-        return sut.getLeftPadding(" ", table, table.rows[1][0]);
+    function getLeftPad(sut: LastColumnPadCalculator, table: Table): string {
+        return sut.getLeftPadding(" ", table, table.rows[1][2]);
     }
 
-    function getRightPad(sut: FirstColumnPadCalculator, table: Table): string {
-        return sut.getRightPadding(" ", table, 1, 0);
+    function getRightPad(sut: LastColumnPadCalculator, table: Table): string {
+        return sut.getRightPadding(" ", table, 1, 2);
     }
 
-    function createCalculator(): FirstColumnPadCalculator {
-        return new FirstColumnPadCalculator();
+    function createCalculator(): LastColumnPadCalculator {
+        return new LastColumnPadCalculator();
     }
 
     function tableFor(rows: string[][]) {
