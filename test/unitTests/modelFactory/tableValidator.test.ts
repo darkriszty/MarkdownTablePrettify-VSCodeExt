@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import { IMock, Mock, It, Times } from 'typemoq';
 import { Table } from "../../../src/models/table";
 import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { Alignment } from "../../../src/models/alignment";
@@ -140,7 +141,24 @@ suite("TableValidator tests", () => {
         assert.equal(isValid, true);
     });
 
-    function createSut(): TableValidator {
-        return new TableValidator(new SelectionInterpreter());
+    test("isValid() uses selection interpreter to get rows and separator", () => {
+        let selectionInterpreter: IMock<SelectionInterpreter> = Mock.ofType<SelectionInterpreter>();
+        selectionInterpreter
+            .setup(_ => _.allRows(It.isAny()))
+            .returns(() => [ ["a", "b"], ["-", "-"], ["c", "d"] ])
+            .verifiable(Times.once());
+        selectionInterpreter
+            .setup(_ => _.separator(It.isAny()))
+            .returns(() => ["-", "-"])
+            .verifiable(Times.once());
+        const sut = createSut(selectionInterpreter.object);
+
+        const isValid: boolean = sut.isValid("test");
+
+        selectionInterpreter.verifyAll();
+    });
+
+    function createSut(selectionInterpreter: SelectionInterpreter = null): TableValidator {
+        return new TableValidator(selectionInterpreter == null ? new SelectionInterpreter(): selectionInterpreter);
     }
 });

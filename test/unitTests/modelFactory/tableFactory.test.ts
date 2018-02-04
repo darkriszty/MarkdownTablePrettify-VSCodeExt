@@ -101,7 +101,26 @@ suite("TableFactory tests", () => {
         assert.equal(result, transformedTable);
     });
 
-    function createFactory(): TableFactory {
-        return new TableFactory(_alignmentFactoryMock.object, new SelectionInterpreter(), _transformer.object);
+    test("getModel() calls selection interpreter to get rows", () => {
+        const expectedAlignmets: Alignment[] = [ Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left ];
+        const transformedTable = new Table([["c1", "c2", "", "c4"], ["a", "b", "", "d"]].map(row => row.map(c  => new Cell(c))), expectedAlignmets);
+        _alignmentFactoryMock.setup(m => m.createAlignments(It.isAny())).returns(() => expectedAlignmets);
+        _transformer.setup(_ => _.process(It.isAny())).returns(() => transformedTable);
+        let selectionInterpreter: IMock<SelectionInterpreter> = Mock.ofType<SelectionInterpreter>();
+        selectionInterpreter
+            .setup(_ => _.allRows(It.isAny()))
+            .returns(() => [["c1", "c2", "", "c4"], ["-","-","-","-"], ["a", "b", "", "d"]])
+            .verifiable(Times.once());
+        const sut = createFactory(selectionInterpreter.object);
+
+        sut.getModel("test");
+
+        selectionInterpreter.verifyAll();
+    });
+
+    function createFactory(selectionInterpreter: SelectionInterpreter = null): TableFactory {
+        return new TableFactory(_alignmentFactoryMock.object, 
+            selectionInterpreter == null ? new SelectionInterpreter() : selectionInterpreter, 
+            _transformer.object);
     }
 });
