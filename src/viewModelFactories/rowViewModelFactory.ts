@@ -1,10 +1,11 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
-import { PadCalculator } from "../padCalculator";
+import { PadCalculator } from "../padCalculation/padCalculator";
 import { Table } from "../models/table";
 
 export class RowViewModelFactory {
     constructor(
-        private _padCalculator: PadCalculator)
+        private _contentPadCalculator: PadCalculator,
+        private _separatorPadCalculator: PadCalculator)
     { }
 
     public buildRow(row: number, table: Table): RowViewModel {
@@ -33,9 +34,9 @@ export class RowViewModelFactory {
             }
 
             resultRow[col] =
-                this._padCalculator.getLeftPadding(padChar, table, row, col) +
+                this._contentPadCalculator.getLeftPadding(padChar, table, row, col) +
                 text +
-                this._padCalculator.getRightPadding(padChar, table, row, col);
+                this._contentPadCalculator.getRightPadding(padChar, table, row, col);
         }
         return new RowViewModel(resultRow);
     }
@@ -46,8 +47,8 @@ export class RowViewModelFactory {
 
         for(let col = 0; col < table.columnCount; col++) {
             resultRow[col] =
-                this._padCalculator.getLeftPadding(padChar, table, 1, col) +
-                this._padCalculator.getRightPaddingForSeparator(padChar, table, col);
+                this._separatorPadCalculator.getLeftPadding(padChar, table, 1, col) +
+                this._separatorPadCalculator.getRightPadding(padChar, table, 0, col);
         }
         return new RowViewModel(resultRow);
     }

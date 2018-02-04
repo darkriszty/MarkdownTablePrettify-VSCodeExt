@@ -9,7 +9,7 @@ import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
 import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
 import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
-import { PadCalculator } from "../../src/padCalculator";
+import { ContentPadCalculator } from "../../src/padCalculation/contentPadCalculator";
 import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { ILogger } from "../../src/diagnostics/logger";
 import { ConsoleLogger } from '../../src/diagnostics/consoleLogger';
@@ -17,6 +17,7 @@ import { MarkdownTextDocumentStub } from "../stubs/markdownTextDocumentStub";
 import { TrimmerTransformer } from '../../src/modelFactory/transformers/trimmerTransformer';
 import { BorderTransformer } from '../../src/modelFactory/transformers/borderTransformer';
 import { SelectionInterpreter } from '../../src/modelFactory/selectionInterpreter';
+import { SeparatorPadCalculator } from '../../src/padCalculation/separatorPadCalculator';
 
 export class PrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -58,7 +59,7 @@ export class PrettyfierFromFile {
                 new TrimmerTransformer(new BorderTransformer(null))
             ),
             new TableValidator(new SelectionInterpreter()),
-            new TableViewModelFactory(new RowViewModelFactory(new PadCalculator())),
+            new TableViewModelFactory(new RowViewModelFactory(new ContentPadCalculator(), new SeparatorPadCalculator())),
             new TableStringWriter(),
             [ this._logger ]
         );

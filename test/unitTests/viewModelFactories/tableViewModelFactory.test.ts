@@ -7,7 +7,7 @@ import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { TableViewModel } from "../../../src/viewModels/tableViewModel";
 import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
-import { PadCalculator } from "../../../src/padCalculator";
+import { ContentPadCalculator } from "../../../src/padCalculation/contentPadCalculator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 import { Cell } from "../../../src/models/cell";
 

@@ -7,12 +7,13 @@ import { TableFactory } from "../modelFactory/tableFactory";
 import { AlignmentFactory } from "../modelFactory/alignmentFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
 import { TableStringWriter } from "../writers/tableStringWriter";
-import { PadCalculator } from '../padCalculator';
+import { ContentPadCalculator } from '../padCalculation/contentPadCalculator';
 import { TableViewModelFactory } from '../viewModelFactories/tableViewModelFactory';
 import { RowViewModelFactory } from '../viewModelFactories/rowViewModelFactory';
 import { TrimmerTransformer } from '../modelFactory/transformers/trimmerTransformer';
 import { BorderTransformer } from '../modelFactory/transformers/borderTransformer';
 import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
+import { SeparatorPadCalculator } from '../padCalculation/separatorPadCalculator';
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
@@ -27,7 +28,9 @@ export function activate(context: vscode.ExtensionContext): void {
                 new TrimmerTransformer(new BorderTransformer(null)),
             ),
             new TableValidator(new SelectionInterpreter()),
-            new TableViewModelFactory(new RowViewModelFactory(new PadCalculator())),
+            new TableViewModelFactory(
+                new RowViewModelFactory(new ContentPadCalculator(), new SeparatorPadCalculator())
+            ),
             new TableStringWriter(),
             [ new VsWindowLogger(), new ConsoleLogger() ])
     );
