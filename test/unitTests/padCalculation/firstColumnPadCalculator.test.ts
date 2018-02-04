@@ -5,7 +5,7 @@ import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
 import { PadCalculator } from '../../../src/padCalculation/padCalculator';
-import { ColumnBasedPadCalculatorSelector } from '../../../src/padCalculation/columnBasedPadCalculatorSelector';
+import { PadCalculatorSelector } from '../../../src/padCalculation/padCalculatorSelector';
 import { FirstColumnPadCalculator } from '../../../src/padCalculation/firstColumnPadCalculator';
 
 suite("FirstColumnPadCalculator tests", () => {

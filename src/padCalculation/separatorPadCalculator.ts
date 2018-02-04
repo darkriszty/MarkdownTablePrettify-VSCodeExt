@@ -1,12 +1,12 @@
 import { PadCalculator } from "./padCalculator";
 import { ContentPadCalculator } from "./contentPadCalculator";
 import { Table } from "../models/table";
-import { ColumnBasedPadCalculatorSelector } from "./columnBasedPadCalculatorSelector";
+import { PadCalculatorSelector } from "./padCalculatorSelector";
 
 export class SeparatorPadCalculator extends ContentPadCalculator implements PadCalculator  {
    
     constructor(
-        padCalculatorSelector: ColumnBasedPadCalculatorSelector,
+        padCalculatorSelector: PadCalculatorSelector,
         paddingChar: string) 
     {
         super(padCalculatorSelector, paddingChar);

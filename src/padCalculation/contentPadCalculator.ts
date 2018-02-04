@@ -1,11 +1,11 @@
 import { PadCalculator } from "./padCalculator";
 import { Table } from "../models/table";
-import { ColumnBasedPadCalculatorSelector } from "./columnBasedPadCalculatorSelector";
+import { PadCalculatorSelector } from "./padCalculatorSelector";
 
 export class ContentPadCalculator implements PadCalculator {
 
     constructor(
-        protected _padCalculatorSelector: ColumnBasedPadCalculatorSelector,
+        protected _padCalculatorSelector: PadCalculatorSelector,
         protected _paddingChar: string) 
     { }
 
