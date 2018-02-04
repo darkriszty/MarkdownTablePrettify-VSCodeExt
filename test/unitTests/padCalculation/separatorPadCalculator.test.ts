@@ -9,66 +9,6 @@ import { PadCalculatorSelector } from '../../../src/padCalculation/padCalculator
 
 suite("SeparatorPadCalculator tests", () => {
 
-    test("getLeftPadding() First column not left padded", () => {
-        const sut = createCalculator();
-        const table = tableFor([
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaaa", "bbbbb", "ccccc" ]
-        ]);
-
-        const pad = sut.getLeftPadding(table, 1, 0);
-
-        assert.equal(pad, "");
-    });
-
-    test("getLeftPadding() First column left padded with 1 character if there is a left border", () => {
-        const sut = createCalculator();
-        const table = tableFor([
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaaa", "bbbbb", "ccccc" ]
-        ]);
-        table.hasLeftBorder = true;
-        const pad = sut.getLeftPadding(table, 1, 1);
-
-        assert.equal(pad, "-");
-    });
-
-    test("getLeftPadding() Middle column left padded with 1 character", () => {
-        const sut = createCalculator();
-        const table = tableFor([
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaaa", "bbbbb", "ccccc" ]
-        ]);
-
-        const pad = sut.getLeftPadding(table, 1, 1);
-
-        assert.equal(pad, "-");
-    });
-
-    test("getLeftPadding() Middle column is empty cell gets left padded with one character", () => {
-        const sut = createCalculator();
-        const table = tableFor([
-            [ "aaa", "bbbb", "ccccc" ],
-            [ "a", "", "c" ]
-        ]);
-
-        const pad = sut.getLeftPadding(table, 1, 1);
-
-        assert.equal(pad, "-");
-    });
-
-    test("getLeftPadding() Last column left padded with 1 character", () => {
-        const sut = createCalculator();
-        const table = tableFor([
-            [ "aaaaa", "bbbbb", "ccccc" ],
-            [ "aaaaa", "bbbbb", "ccccc" ]
-        ]);
-
-        const pad = sut.getLeftPadding(table, 1, 2);
-
-        assert.equal(pad, "-");
-    });
-
     test("getRightPadding() First column gets right padded with maxColLength+1 dashes", () => {
         const sut = createCalculator();
         const table = tableFor([
