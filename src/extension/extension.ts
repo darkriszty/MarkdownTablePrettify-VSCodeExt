@@ -14,6 +14,7 @@ import { TrimmerTransformer } from '../modelFactory/transformers/trimmerTransfor
 import { BorderTransformer } from '../modelFactory/transformers/borderTransformer';
 import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { SeparatorPadCalculator } from '../padCalculation/separatorPadCalculator';
+import { ColumnBasedPadCalculatorSelector } from '../padCalculation/columnBasedPadCalculatorSelector';
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
@@ -29,7 +30,10 @@ export function activate(context: vscode.ExtensionContext): void {
             ),
             new TableValidator(new SelectionInterpreter()),
             new TableViewModelFactory(
-                new RowViewModelFactory(new ContentPadCalculator(), new SeparatorPadCalculator())
+                new RowViewModelFactory(
+                    new ContentPadCalculator(new ColumnBasedPadCalculatorSelector()), 
+                    new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector())
+                )
             ),
             new TableStringWriter(),
             [ new VsWindowLogger(), new ConsoleLogger() ])

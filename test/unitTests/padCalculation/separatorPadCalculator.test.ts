@@ -5,6 +5,7 @@ import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
 import { PadCalculator } from '../../../src/padCalculation/padCalculator';
 import { SeparatorPadCalculator } from '../../../src/padCalculation/separatorPadCalculator';
+import { ColumnBasedPadCalculatorSelector } from '../../../src/padCalculation/columnBasedPadCalculatorSelector';
 
 suite("SeparatorPadCalculator tests", () => {
 
@@ -149,6 +150,6 @@ suite("SeparatorPadCalculator tests", () => {
     }
 
     function createCalculator(): PadCalculator { 
-        return new SeparatorPadCalculator(); 
+        return new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector());
     }
 });

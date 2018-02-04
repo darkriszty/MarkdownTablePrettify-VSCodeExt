@@ -18,6 +18,7 @@ import { TrimmerTransformer } from '../../src/modelFactory/transformers/trimmerT
 import { BorderTransformer } from '../../src/modelFactory/transformers/borderTransformer';
 import { SelectionInterpreter } from '../../src/modelFactory/selectionInterpreter';
 import { SeparatorPadCalculator } from '../../src/padCalculation/separatorPadCalculator';
+import { ColumnBasedPadCalculatorSelector } from '../../src/padCalculation/columnBasedPadCalculatorSelector';
 
 export class PrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -59,7 +60,10 @@ export class PrettyfierFromFile {
                 new TrimmerTransformer(new BorderTransformer(null))
             ),
             new TableValidator(new SelectionInterpreter()),
-            new TableViewModelFactory(new RowViewModelFactory(new ContentPadCalculator(), new SeparatorPadCalculator())),
+            new TableViewModelFactory(new RowViewModelFactory(
+                new ContentPadCalculator(new ColumnBasedPadCalculatorSelector()), 
+                new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector())
+            )),
             new TableStringWriter(),
             [ this._logger ]
         );

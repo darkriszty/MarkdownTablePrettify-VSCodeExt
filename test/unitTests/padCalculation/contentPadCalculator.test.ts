@@ -5,6 +5,7 @@ import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
 import { PadCalculator } from '../../../src/padCalculation/padCalculator';
+import { ColumnBasedPadCalculatorSelector } from '../../../src/padCalculation/columnBasedPadCalculatorSelector';
 
 suite("ContentPadCalculator tests", () => {
 
@@ -338,6 +339,6 @@ suite("ContentPadCalculator tests", () => {
     }
 
     function createCalculator(): PadCalculator { 
-        return new ContentPadCalculator(); 
+        return new ContentPadCalculator(new ColumnBasedPadCalculatorSelector()); 
     }
 });

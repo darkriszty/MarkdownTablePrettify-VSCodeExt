@@ -4,11 +4,13 @@ import { ColumnBasedPadCalculatorSelector } from "./columnBasedPadCalculatorSele
 
 export class ContentPadCalculator implements PadCalculator {
 
+    constructor(private _padCalculatorSelector: ColumnBasedPadCalculatorSelector) { }
+
     public getLeftPadding(paddingChar: string, table: Table, row: number, column: number): string {
-        return new ColumnBasedPadCalculatorSelector().select(table, column).getLeftPadding(paddingChar, table, table.rows[row][column]);
+        return this._padCalculatorSelector.select(table, column).getLeftPadding(paddingChar, table, table.rows[row][column]);
     }
 
     public getRightPadding(paddingChar: string, table: Table, row: number, column: number): string {
-        return new ColumnBasedPadCalculatorSelector().select(table, column).getRightPadding(paddingChar, table, row, column);
+        return this._padCalculatorSelector.select(table, column).getRightPadding(paddingChar, table, row, column);
     }
 }
