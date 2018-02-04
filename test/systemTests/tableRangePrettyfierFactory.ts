@@ -36,7 +36,9 @@ export class PrettyfierFromFile {
         assert.equal(edits.length, 1);
         const expectedLines = expected.split(/\r\n|\r|\n/);
         const actualLines = edits[0].newText.split(/\r\n|\r|\n/);
-        assert.equal(expectedLines.length == actualLines.length && expectedLines.every((l,i) => l === actualLines[i]), true);
+        assert.equal(actualLines.length, expectedLines.length);
+        for (let i = 0; i < actualLines.length; i++)
+            assert.equal(actualLines[i], expectedLines[i]);
     }
 
     private makeTextEdit(fileContents: string): vscode.TextEdit[] {
