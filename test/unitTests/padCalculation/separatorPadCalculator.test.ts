@@ -16,7 +16,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getLeftPadding("-", table, 1, 0);
+        const pad = sut.getLeftPadding(table, 1, 0);
 
         assert.equal(pad, "");
     });
@@ -28,7 +28,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
         table.hasLeftBorder = true;
-        const pad = sut.getLeftPadding("-", table, 1, 1);
+        const pad = sut.getLeftPadding(table, 1, 1);
 
         assert.equal(pad, "-");
     });
@@ -40,7 +40,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getLeftPadding("-", table, 1, 1);
+        const pad = sut.getLeftPadding(table, 1, 1);
 
         assert.equal(pad, "-");
     });
@@ -52,7 +52,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "a", "", "c" ]
         ]);
 
-        const pad = sut.getLeftPadding("-", table, 1, 1);
+        const pad = sut.getLeftPadding(table, 1, 1);
 
         assert.equal(pad, "-");
     });
@@ -64,7 +64,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getLeftPadding("-", table, 1, 2);
+        const pad = sut.getLeftPadding(table, 1, 2);
 
         assert.equal(pad, "-");
     });
@@ -76,7 +76,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding("-", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "------");
     });
@@ -89,7 +89,7 @@ suite("SeparatorPadCalculator tests", () => {
         ]);
         table.hasLeftBorder = true;
         
-        const pad = sut.getRightPadding("-", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "------");
     });
@@ -101,7 +101,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding("-", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "------");
     });
@@ -113,7 +113,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding("-", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "--");
     });
@@ -125,7 +125,7 @@ suite("SeparatorPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding("-", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "------");
     });
@@ -138,7 +138,7 @@ suite("SeparatorPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding("-", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "------");
     });
@@ -150,6 +150,6 @@ suite("SeparatorPadCalculator tests", () => {
     }
 
     function createCalculator(): PadCalculator { 
-        return new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector());
+        return new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector(), "-");
     }
 });

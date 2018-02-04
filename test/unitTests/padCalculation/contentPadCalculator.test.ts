@@ -16,7 +16,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getLeftPadding(" ", table, 1, 0);
+        const pad = sut.getLeftPadding(table, 1, 0);
 
         assert.equal(pad, "");
     });
@@ -28,7 +28,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
         table.hasLeftBorder = true;
-        const pad = sut.getLeftPadding(" ", table, 1, 1);
+        const pad = sut.getLeftPadding(table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -40,7 +40,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getLeftPadding(" ", table, 1, 1);
+        const pad = sut.getLeftPadding(table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -52,7 +52,7 @@ suite("ContentPadCalculator tests", () => {
             [ "a", "", "c" ]
         ]);
 
-        const pad = sut.getLeftPadding(" ", table, 1, 1);
+        const pad = sut.getLeftPadding(table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -64,9 +64,9 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getLeftPadding("X", table, 1, 2);
+        const pad = sut.getLeftPadding(table, 1, 2);
 
-        assert.equal(pad, "X");
+        assert.equal(pad, " ");
     });
 
     test("getRightPadding() First column equal to maxColLength gets right padded with one character", () => {
@@ -76,7 +76,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, " ");
     });
@@ -88,7 +88,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "  ");
     });
@@ -100,7 +100,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "   ");
     });
@@ -112,7 +112,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "    ");
     });
@@ -124,7 +124,7 @@ suite("ContentPadCalculator tests", () => {
             [ "a", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "     ");
     });
@@ -136,7 +136,7 @@ suite("ContentPadCalculator tests", () => {
             [ "", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 0);
+        const pad = sut.getRightPadding(table, 1, 0);
 
         assert.equal(pad, "     ");
     });
@@ -148,7 +148,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "     ");
     });
@@ -160,7 +160,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -172,7 +172,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "  ");
     });
@@ -184,7 +184,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "   ");
     });
@@ -196,7 +196,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bb", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "    ");
     });
@@ -208,7 +208,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, "     ");
     });
@@ -220,7 +220,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "", "ccccc" ]
         ]);
 
-        const pad = sut.getRightPadding(" ", table, 1, 1);
+        const pad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(pad, " ");
     });
@@ -232,7 +232,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "c" ]
         ]);
         
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "");
     });
@@ -248,7 +248,7 @@ suite("ContentPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, " ");
     });
@@ -261,7 +261,7 @@ suite("ContentPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "  ");
     });
@@ -274,7 +274,7 @@ suite("ContentPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "   ");
     });
@@ -287,7 +287,7 @@ suite("ContentPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "    ");
     });
@@ -300,7 +300,7 @@ suite("ContentPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, "     ");
     });
@@ -313,7 +313,7 @@ suite("ContentPadCalculator tests", () => {
         ]);
         table.hasRightBorder = true;
 
-        const pad = sut.getRightPadding(" ", table, 1, 2);
+        const pad = sut.getRightPadding(table, 1, 2);
 
         assert.equal(pad, " ");
     });
@@ -325,8 +325,8 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "b", "ccccc" ]
         ]);
 
-        const leftPad = sut.getLeftPadding(" ", table, 1, 1);
-        const rightPad = sut.getRightPadding(" ", table, 1, 1);
+        const leftPad = sut.getLeftPadding(table, 1, 1);
+        const rightPad = sut.getRightPadding(table, 1, 1);
 
         assert.equal(leftPad, " ");
         assert.equal(rightPad, "     ");
@@ -339,6 +339,6 @@ suite("ContentPadCalculator tests", () => {
     }
 
     function createCalculator(): PadCalculator { 
-        return new ContentPadCalculator(new ColumnBasedPadCalculatorSelector()); 
+        return new ContentPadCalculator(new ColumnBasedPadCalculatorSelector(), " "); 
     }
 });

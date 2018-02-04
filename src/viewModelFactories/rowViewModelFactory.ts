@@ -12,7 +12,6 @@ export class RowViewModelFactory {
         if (table == null) throw new Error("Paramter can't be null");
 
         let resultRow = new Array(table.columnCount);
-        const padChar = " ";
 
         for(let col = 0; col < table.columnCount; col++) {
             let text = "";
@@ -21,7 +20,7 @@ export class RowViewModelFactory {
                     if (!table.hasRightBorder)
                         text = "";
                     else
-                        text = padChar;
+                        text = this._contentPadCalculator.getPadChar();
                 }
                 else {
                     text = table.rows[row][col].getValue();
@@ -29,26 +28,24 @@ export class RowViewModelFactory {
             }
             else {
                 text = table.rows[row][col].getValue() == ""
-                    ? padChar
+                    ? this._contentPadCalculator.getPadChar()
                     : table.rows[row][col].getValue();
             }
 
             resultRow[col] =
-                this._contentPadCalculator.getLeftPadding(padChar, table, row, col) +
+                this._contentPadCalculator.getLeftPadding(table, row, col) +
                 text +
-                this._contentPadCalculator.getRightPadding(padChar, table, row, col);
+                this._contentPadCalculator.getRightPadding(table, row, col);
         }
         return new RowViewModel(resultRow);
     }
 
     public buildSeparator(table: Table): RowViewModel {
         let resultRow = new Array(table.columnCount);
-        const padChar = "-";
-
         for(let col = 0; col < table.columnCount; col++) {
             resultRow[col] =
-                this._separatorPadCalculator.getLeftPadding(padChar, table, 1, col) +
-                this._separatorPadCalculator.getRightPadding(padChar, table, 0, col);
+                this._separatorPadCalculator.getLeftPadding( table, 1, col) +
+                this._separatorPadCalculator.getRightPadding( table, 0, col);
         }
         return new RowViewModel(resultRow);
     }

@@ -23,20 +23,20 @@ suite("RowViewModelFactory.buildRow() tests", () => {
 
         const rowViewModel = sut.buildRow(row, table);
 
-        _contentPadCalculator.verify(_ => _.getLeftPadding(" ", table, row, 0), Times.once());
-        _contentPadCalculator.verify(_ => _.getLeftPadding(" ", table, row, 1), Times.once());
-        _contentPadCalculator.verify(_ => _.getLeftPadding(" ", table, row, 2), Times.once());
+        _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 0), Times.once());
+        _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 1), Times.once());
+        _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 2), Times.once());
 
-        _contentPadCalculator.verify(_ => _.getRightPadding(" ", table, row, 0), Times.once());
-        _contentPadCalculator.verify(_ => _.getRightPadding(" ", table, row, 1), Times.once());
-        _contentPadCalculator.verify(_ => _.getRightPadding(" ", table, row, 2), Times.once());
+        _contentPadCalculator.verify(_ => _.getRightPadding(table, row, 0), Times.once());
+        _contentPadCalculator.verify(_ => _.getRightPadding(table, row, 1), Times.once());
+        _contentPadCalculator.verify(_ => _.getRightPadding(table, row, 2), Times.once());
     });
 
     test("value returned from padCalculator.getLeftPadding is used to start the row value", () => {
         const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const row = 1;
         const table = threeColumnTable();
-        _contentPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
+        _contentPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
         
         const rowViewModel = sut.buildRow(row, table);
 
@@ -47,55 +47,56 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const row = 1;
         const table = threeColumnTable();
-        _contentPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), row, It.isAny())).returns(() => "test");
+        _contentPadCalculator.setup(_ => _.getRightPadding(It.isAny(), row, It.isAny())).returns(() => "test");
         
         const rowViewModel = sut.buildRow(row, table);
 
         assert.equal(rowViewModel.getValueAt(1).endsWith("test"), true);
     });
 
-    test("Empty middle column is tranformed into a single space", () => {
+    test("Empty middle column uses left and right pad and also the pad char", () => {
         const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const row = 1;
         const table = threeColumnTableWithEmptyMiddleColumn();
-        _contentPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
-        _contentPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), row, It.isAny())).returns(() => "R");
+        _contentPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
+        _contentPadCalculator.setup(_ => _.getRightPadding(It.isAny(), row, It.isAny())).returns(() => "R");
+        _contentPadCalculator.setup(_ => _.getPadChar()).returns(() => "x");
         
         const rowViewModel = sut.buildRow(row, table);
 
         assertExt.isNotNull(rowViewModel);
-        assert.equal(rowViewModel.getValueAt(1), "L R");
+        assert.equal(rowViewModel.getValueAt(1), "LxR");
     });
 });
 
 suite("RowViewModelFactory.buildSeparator() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
-    let _separatprPadCalculator: IMock<PadCalculator>;
+    let _separatorPadCalculator: IMock<PadCalculator>;
 
     setup(() => {
         _contentPadCalculator = Mock.ofType<PadCalculator>();
-        _separatprPadCalculator = Mock.ofType<PadCalculator>();
+        _separatorPadCalculator = Mock.ofType<PadCalculator>();
     });
 
     test("padCalculator called for all columns with expected values", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatprPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const table = threeColumnTable();
 
         const separatorRowViewModel = sut.buildSeparator(table);
 
-        _separatprPadCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 0), Times.once());
-        _separatprPadCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 1), Times.once());
-        _separatprPadCalculator.verify(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 2), Times.once());
+        _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 0), Times.once());
+        _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 1), Times.once());
+        _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 2), Times.once());
 
-        _separatprPadCalculator.verify(_ => _.getRightPadding("-", It.isAny(), It.isAny(), 0), Times.once());
-        _separatprPadCalculator.verify(_ => _.getRightPadding("-", It.isAny(), It.isAny(), 1), Times.once());
-        _separatprPadCalculator.verify(_ => _.getRightPadding("-", It.isAny(), It.isAny(), 2), Times.once());
+        _separatorPadCalculator.verify(_ => _.getRightPadding(It.isAny(), It.isAny(), 0), Times.once());
+        _separatorPadCalculator.verify(_ => _.getRightPadding(It.isAny(), It.isAny(), 1), Times.once());
+        _separatorPadCalculator.verify(_ => _.getRightPadding(It.isAny(), It.isAny(), 2), Times.once());
     });
 
     test("value returned from padCalculator.getLeftPadding is used to start the row value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatprPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const table = threeColumnTable();
-        _separatprPadCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), 0)).returns(() => "test");
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), 0)).returns(() => "test");
 
         const separatorRowViewModel = sut.buildSeparator(table);
 
@@ -103,25 +104,26 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
     });
 
     test("value returned from padCalculator.getRightPadding is used to end the row value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatprPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const table = threeColumnTable();
-        _separatprPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
 
         const separatorRowViewModel = sut.buildSeparator(table);
 
         assert.equal(separatorRowViewModel.getValueAt(1).endsWith("test"), true);
     });
 
-    test("Empty middle column is tranformed into a single separator dash", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatprPadCalculator.object);
+    test("Empty middle column does not use pad char", () => {
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const table = threeColumnTableWithEmptyMiddleColumn();
-        _separatprPadCalculator.setup(_ => _.getLeftPadding("-", It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
-        _separatprPadCalculator.setup(_ => _.getRightPadding("-", It.isAny(), It.isAny(), It.isAny())).returns(() => "R");
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "Left");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "Right");
+        _separatorPadCalculator.setup(_ => _.getPadChar()).returns(() => "x");
 
         const separatorRowViewModel = sut.buildSeparator(table);
 
         assertExt.isNotNull(separatorRowViewModel);
-        assert.equal(separatorRowViewModel.getValueAt(1), "LR");
+        assert.equal(separatorRowViewModel.getValueAt(1), "LeftRight");
     });
 });
 

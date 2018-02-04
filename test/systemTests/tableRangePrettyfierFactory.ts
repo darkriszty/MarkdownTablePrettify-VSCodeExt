@@ -61,8 +61,8 @@ export class PrettyfierFromFile {
             ),
             new TableValidator(new SelectionInterpreter()),
             new TableViewModelFactory(new RowViewModelFactory(
-                new ContentPadCalculator(new ColumnBasedPadCalculatorSelector()), 
-                new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector())
+                new ContentPadCalculator(new ColumnBasedPadCalculatorSelector(), " "), 
+                new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector(), "-")
             )),
             new TableStringWriter(),
             [ this._logger ]

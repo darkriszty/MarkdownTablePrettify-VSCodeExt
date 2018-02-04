@@ -31,8 +31,8 @@ export function activate(context: vscode.ExtensionContext): void {
             new TableValidator(new SelectionInterpreter()),
             new TableViewModelFactory(
                 new RowViewModelFactory(
-                    new ContentPadCalculator(new ColumnBasedPadCalculatorSelector()), 
-                    new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector())
+                    new ContentPadCalculator(new ColumnBasedPadCalculatorSelector(), " "), 
+                    new SeparatorPadCalculator(new ColumnBasedPadCalculatorSelector(), "-")
                 )
             ),
             new TableStringWriter(),
