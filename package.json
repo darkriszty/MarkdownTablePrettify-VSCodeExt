@@ -30,15 +30,16 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
+    "test": "gulp copy-systemTest-resources && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^6.0.73",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^6.0.96",
+    "gulp": "^3.9.1",
     "mocha": "^2.3.3",
-    "typemoq": "^1.6.0",
-    "typescript": "^2.3.3",
-    "vscode": "^1.1.0"
+    "typemoq": "^1.8.0",
+    "typescript": "^2.7.1",
+    "vscode": "^1.1.10"
   },
   "license": "MIT"
 }

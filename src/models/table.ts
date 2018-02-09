@@ -1,30 +1,40 @@
-import { Column } from "./column";
-import { ColumnFactory } from "./columnFactory";
-import { ColumnPositioning } from "./columnPositioning";
+import { Cell } from "./cell";
+import { Alignment } from "./alignment";
 
-export interface ITable {
-    prettyPrint(): string;
-}
+export class Table {
+    private readonly _rows: Cell[][];
 
-export class Table implements ITable {
-    constructor(private _columns: Column[]) { }
+    constructor(
+        rows: Cell[][],
+        private _alignments: Alignment[])
+    {
+        if (rows != null && rows[0] != null && rows[0].length != _alignments.length)
+            throw new Error("The number of columns must match the number of alignments.");
 
-    public prettyPrint(): string {
-        const rowCount = this._columns[0].getNumberOfRows();
-        const colCount = this._columns.length;
+        this._rows = rows;
+    }
 
-        let buffer = "";
-        for (let row = 0; row < rowCount; row++) {
-            for (let col = 0; col < colCount; col++) {
-                const column = this._columns[col];
-                buffer += column.getValue(row);
-                if (column.getPositioning() != ColumnPositioning.Last)
-                    buffer += "|";
-            }
-            if (row < rowCount - 1)
-                buffer += "\r";
-        }
+    public get rows(): Cell[][] { return this._rows != null ? this._rows : null; }
+    public get alignments(): Alignment[] { return this._alignments; }
+    public get columnCount(): number { return this.hasRows ? this.rows[0].length : 0; }
+    public get rowCount(): number { return this.hasRows ? this.rows.length : 0; }
+    public hasLeftBorder: boolean = false;
+    public hasRightBorder: boolean = false;
 
-        return buffer;
+    private get hasRows(): boolean { return this.rows != null && this.rows.length > 0; }
+
+    public isEmpty(): boolean {
+        return !this.hasRows;
+    }
+
+    public getLongestColumnLengths(): number[] {
+        if (!this.hasRows) return [];
+
+        let maxColLengths: number[] = new Array(this.columnCount).fill(0);
+        for (let row = 0; row < this.rows.length; row++)
+            for (let col = 0; col < this.rows[row].length; col++)
+                maxColLengths[col] = Math.max(this.rows[row][col].getLength(), maxColLengths[col]);
+
+        return maxColLengths;
     }
 }

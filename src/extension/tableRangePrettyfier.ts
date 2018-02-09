@@ -1,56 +1,54 @@
 import * as vscode from "vscode";
-import { ITable } from "../models/table";
-import { ITableFactory } from "../models/tableFactory";
 import { ILogger } from "../diagnostics/logger";
+import { SelectionBasedLogToogler } from "../diagnostics/selectionBasedLogToogler";
+import { Table } from "../models/table";
+import { TableFactory } from "../modelFactory/tableFactory";
+import { TableValidator } from "../modelFactory/tableValidator";
+import { TableViewModel } from "../viewModels/tableViewModel";
+import { TableViewModelFactory } from "../viewModelFactories/tableViewModelFactory";
+import { TableStringWriter } from "../writers/tableStringWriter";
 
 export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditProvider {
 
     constructor(
-        private _tableFactory: ITableFactory,
-        private _logger: ILogger
+        private _tableFactory: TableFactory,
+        private _tableValidator: TableValidator,
+        private _viewModelFactory: TableViewModelFactory,
+        private _writer: TableStringWriter,
+        private _loggers: ILogger[]
     ) { }
 
-    provideDocumentRangeFormattingEdits(
+    public provideDocumentRangeFormattingEdits(
         document: vscode.TextDocument, range: vscode.Range,
         options: vscode.FormattingOptions, token: vscode.CancellationToken) : vscode.TextEdit[]
     {
         const result: vscode.TextEdit[] = [];
         const selection = document.getText(range);
 
+        this.toogleLogging(document, range);
         let message: string = null;
-        let table: ITable = null;
-
-        const silent = this._isWholeDocumentFormatting(document, range);
 
         try {
-            table = this._tableFactory.create(selection);
-            if (table == null) {
-                message = "Mismatching table column sizes.";
-            } else {
-                const formattedTable = table.prettyPrint();
+            if (this._tableValidator.isValid(selection)) {
+                const table: Table = this._tableFactory.getModel(selection);
+                const tableVm: TableViewModel = this._viewModelFactory.build(table);
+                const formattedTable: string = this._writer.writeTable(tableVm);
                 result.push(new vscode.TextEdit(range, formattedTable));
+            } else {
+                message = "Can't parse table from invalid text."
             }
         } catch (ex) {
-            if (!silent)
-                this._logger.logError(ex);
-            console.error(`Error: ${ex}`);
+            this._loggers.forEach(_ => _.logError(ex));
         }
 
-        if (!!message && !silent)
-            this._logger.logInfo(message);
+        if (!!message)
+            this._loggers.forEach(_ => _.logInfo(message));
 
         return result;
     }
 
-    private _isWholeDocumentFormatting(document: vscode.TextDocument, range: vscode.Range): boolean {
-        if (document.lineCount < 1)
-            return true;
-
-        const zeroPosition = new vscode.Position(0, 0);
-        const documentEndPosition = document.lineAt(document.lineCount - 1).range.end;
-        if (range.start.isEqual(zeroPosition) && range.end.isEqual(documentEndPosition))
-            return true;
-
-        return false;
+    private toogleLogging(document: vscode.TextDocument, range: vscode.Range) {
+        const toogler = new SelectionBasedLogToogler(document, range);
+        toogler.toogleLoggers(this._loggers);
     }
 }
