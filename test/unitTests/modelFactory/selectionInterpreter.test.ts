@@ -75,7 +75,7 @@ suite("SelectionInterpreter tests", () => {
         assert.equal(rows[1][1], "v2");
     });
 
-    test("allRows() doesn't consider separator that's in a code block 1", () => {
+    test("allRows() doesn't consider separator that's in a `code block` #1", () => {
         const text = "`h1|h2|h3`";
         const sut = createSut();
 
@@ -86,7 +86,7 @@ suite("SelectionInterpreter tests", () => {
         assert.equal(rows[0][0], "`h1|h2|h3`");
     });
 
-    test("allRows() doesn't consider separator that's in a code block 2", () => {
+    test("allRows() doesn't consider separator that's in a `code block` #2", () => {
         const text = "h1|h2`|still|h2`|h3";
         const sut = createSut();
 
@@ -99,7 +99,7 @@ suite("SelectionInterpreter tests", () => {
         assert.equal(rows[0][2], "h3");
     });
 
-    test("allRows() doesn't consider separator that's in a code block 3", () => {
+    test("allRows() doesn't consider separator that's in a `code block` #3", () => {
         const text = "`h1|h1`|h2|h3`|h3`";
         const sut = createSut();
 
@@ -107,7 +107,7 @@ suite("SelectionInterpreter tests", () => {
 
         assert.equal(rows.length, 1);
         assert.equal(rows[0].length, 3);
-        assert.equal(rows[0][0], "h1|h1");
+        assert.equal(rows[0][0], "`h1|h1`");
         assert.equal(rows[0][1], "h2");
         assert.equal(rows[0][2], "h3`|h3`");
     });
