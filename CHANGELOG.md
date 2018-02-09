@@ -5,7 +5,9 @@ All notable changes to the `markdowntableprettify` extension will be documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
+### Added
+- Issue #12: Full rewrite for refactoring
+- Issue #11: Support escaping of separators with backslash
 
 ## 1.1.1 - 2017-05-27
 ### Fixed
