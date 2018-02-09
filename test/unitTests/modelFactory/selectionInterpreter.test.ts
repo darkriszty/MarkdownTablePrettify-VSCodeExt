@@ -44,6 +44,21 @@ suite("SelectionInterpreter tests", () => {
         assert.equal(rows[1][1], "v2");
     });
 
+    test("allRows() doesn't consider \| as separator ", () => {
+        const text = "h1|h2\|still h2\nv1|v2";
+        const sut = createSut();
+
+        const rows = sut.allRows(text);
+
+        assert.equal(rows.length, 2);
+        assert.equal(rows[0].length, 2);
+        assert.equal(rows[1].length, 2);
+        assert.equal(rows[0][0], "h1");
+        assert.equal(rows[0][1], "h2\|still h2");
+        assert.equal(rows[1][0], "v1");
+        assert.equal(rows[1][1], "v2");
+    });
+
     test("separator() returns the first row", () => {
         const text = "h1|h2\r\n:-|-\r\nv1|v2";
         const sut = createSut();
