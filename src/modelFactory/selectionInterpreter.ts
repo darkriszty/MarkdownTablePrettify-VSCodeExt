@@ -16,7 +16,7 @@ export class SelectionInterpreter {
             index = -1,
             previousSplitIndex = -1;
         while ((index = line.indexOf("|", index + 1)) > -1) {
-            if (line[index - 1] != "\\") {
+            if (line[index - 1] != "\\" && !this.codeBlockOpenTill(line.substr(0, index))) {
                 result.push(line.substring(previousSplitIndex + 1, index));
                 previousSplitIndex = index;
             }
@@ -24,5 +24,9 @@ export class SelectionInterpreter {
         result.push(line.substring(previousSplitIndex + 1));
 
         return result;
+    }
+
+    private codeBlockOpenTill(text: string): boolean {
+        return (text.match(/`/g) || []).length % 2 != 0;
     }
 }

@@ -6,8 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Added
-- Issue #12: Full rewrite for refactoring
-- Issue #11: Support escaping of separators with backslash
+- Issue #12: Full rewrite for refactoring.
+- Issue #11: Support escaping of separators with backslash.
+- Issue #16: Ignore separators that are in code blocks.
 
 ## 1.1.1 - 2017-05-27
 ### Fixed
