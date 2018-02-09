@@ -86,7 +86,7 @@ suite("LastColumnPadCalculator tests", () => {
         assert.equal(pad, "    ");
     });
 
-    test("getRightPadding() Last column is empty string gets right padded with maxColLength characters if there is right border", () => {
+    test("getRightPadding() Last column is empty string gets right padded with maxColLength+1 characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
@@ -96,10 +96,10 @@ suite("LastColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "     ");
+        assert.equal(pad, "      ");
     });
 
-    test("getRightPadding() Last column with 0 maxLength gets right padded with 1 characters if there is right border", () => {
+    test("getRightPadding() Last column with 0 maxLength gets right padded with 2 characters if there is right border", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "" ],
@@ -109,7 +109,7 @@ suite("LastColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.equal(pad, "  ");
     });
 
     function getLeftPad(sut: LastColumnPadCalculator, table: Table): string {

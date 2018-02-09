@@ -13,30 +13,12 @@ export class RowViewModelFactory {
 
         let resultRow = new Array(table.columnCount);
 
-        for(let col = 0; col < table.columnCount; col++) {
-            let text = "";
-            if (col == table.columnCount - 1) {
-                if (table.rows[row][col].getValue() == "") {
-                    if (!table.hasRightBorder)
-                        text = "";
-                    else
-                        text = this._contentPadCalculator.getPadChar();
-                }
-                else {
-                    text = table.rows[row][col].getValue();
-                }
-            }
-            else {
-                text = table.rows[row][col].getValue() == ""
-                    ? this._contentPadCalculator.getPadChar()
-                    : table.rows[row][col].getValue();
-            }
-
+        for(let col = 0; col < table.columnCount; col++)
             resultRow[col] =
                 this._contentPadCalculator.getLeftPadding(table, row, col) +
-                text +
+                table.rows[row][col].getValue() +
                 this._contentPadCalculator.getRightPadding(table, row, col);
-        }
+
         return new RowViewModel(resultRow);
     }
 
@@ -44,8 +26,8 @@ export class RowViewModelFactory {
         let resultRow = new Array(table.columnCount);
         for(let col = 0; col < table.columnCount; col++) {
             resultRow[col] =
-                this._separatorPadCalculator.getLeftPadding( table, 1, col) +
-                this._separatorPadCalculator.getRightPadding( table, 0, col);
+                this._separatorPadCalculator.getLeftPadding(table, 1, col) +
+                this._separatorPadCalculator.getRightPadding(table, 0, col);
         }
         return new RowViewModel(resultRow);
     }

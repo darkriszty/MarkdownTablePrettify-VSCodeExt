@@ -94,7 +94,7 @@ suite("FirstColumnPadCalculator tests", () => {
         assert.equal(pad, "     ");
     });
 
-    test("getRightPadding() First column is empty string gets right padded with 5 characters", () => {
+    test("getRightPadding() First column is empty string gets right padded with 6 characters", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
@@ -103,7 +103,7 @@ suite("FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "     ");
+        assert.equal(pad, "      ");
     });
 
     function getLeftPad(sut: FirstColumnPadCalculator, table: Table): string {

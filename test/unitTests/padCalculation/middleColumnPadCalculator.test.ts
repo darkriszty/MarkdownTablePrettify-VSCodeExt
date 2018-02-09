@@ -34,7 +34,7 @@ suite("MiddleColumnPadCalculator tests", () => {
         assert.equal(pad, " ");
     });
 
-    test("getRightPadding() Middle column is empty cell gets right padded with maxColLength-1 characters", () => {
+    test("getRightPadding() Middle column is empty cell gets right padded with maxColLength characters", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
@@ -43,7 +43,7 @@ suite("MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "     ");
+        assert.equal(pad, "      ");
     });
 
     test("getRightPadding() Middle column equal to maxColLength gets right padded with one character", () => {
@@ -94,7 +94,7 @@ suite("MiddleColumnPadCalculator tests", () => {
         assert.equal(pad, "    ");
     });
 
-    test("getRightPadding() Middle column is empty string gets right padded with maxColLength characters", () => {
+    test("getRightPadding() Middle column is empty string gets right padded with maxColLength+1 characters", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
@@ -103,10 +103,10 @@ suite("MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "     ");
+        assert.equal(pad, "      ");
     });
 
-    test("getRightPadding() Middle column with 0 maxLength gets right padded with 1 character", () => {
+    test("getRightPadding() Middle column with 0 maxLength gets right padded with 2 character", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "", "ccccc" ],
@@ -115,7 +115,7 @@ suite("MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.equal(pad, "  ");
     });
 
     test("Regular middle gets padded both left and right with expected amount", () => {
