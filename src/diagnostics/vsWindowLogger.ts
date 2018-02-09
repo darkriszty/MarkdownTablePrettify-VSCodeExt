@@ -1,17 +1,17 @@
 import * as vscode from 'vscode';
 import { ILogger } from "./logger";
+import { BaseLogger } from './baseLogger';
 
-export class VsWindowLogger implements ILogger {
+export class VsWindowLogger extends BaseLogger implements ILogger {
 
-    logInfo(message: string): void {
-        vscode.window.showInformationMessage(message);
+    public logInfo(message: string): void {
+        super.logIfEnabled(vscode.window.showInformationMessage, message);
     }
 
-    logError(error: string | Error): void {
+    public logError(error: string | Error): void {
         const message: string = error instanceof Error
             ? (<Error>error).message
             : error;
-
-        vscode.window.showErrorMessage(message);
+        super.logIfEnabled(vscode.window.showErrorMessage, message);
     }
 }

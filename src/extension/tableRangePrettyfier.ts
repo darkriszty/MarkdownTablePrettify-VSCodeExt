@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ILogger } from "../diagnostics/logger";
+import { SelectionBasedLogToogler } from "../diagnostics/selectionBasedLogToogler";
 import { Table } from "../models/table";
 import { TableFactory } from "../modelFactory/tableFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
@@ -17,14 +18,16 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
         private _loggers: ILogger[]
     ) { }
 
-    provideDocumentRangeFormattingEdits(
+    public provideDocumentRangeFormattingEdits(
         document: vscode.TextDocument, range: vscode.Range,
         options: vscode.FormattingOptions, token: vscode.CancellationToken) : vscode.TextEdit[]
     {
         const result: vscode.TextEdit[] = [];
         const selection = document.getText(range);
 
+        this.toogleLogging(document, range);
         let message: string = null;
+
         try {
             if (this._tableValidator.isValid(selection)) {
                 const table: Table = this._tableFactory.getModel(selection);
@@ -42,5 +45,10 @@ export class TableRangePrettyfier implements vscode.DocumentRangeFormattingEditP
             this._loggers.forEach(_ => _.logInfo(message));
 
         return result;
+    }
+
+    private toogleLogging(document: vscode.TextDocument, range: vscode.Range) {
+        const toogler = new SelectionBasedLogToogler(document, range);
+        toogler.toogleLoggers(this._loggers);
     }
 }

@@ -1,12 +1,13 @@
 import { ILogger } from "./logger";
+import { BaseLogger } from "./baseLogger";
 
-export class ConsoleLogger implements ILogger {
+export class ConsoleLogger extends BaseLogger implements ILogger {
 
-    logInfo(message: string): void {
-        console.log(message);
+    public logInfo(message: string): void {
+        super.logIfEnabled(console.log, message);
     }
 
-    logError(error: string | Error): void {
-        console.error(error);
+    public logError(error: string | Error): void {
+        super.logIfEnabled(console.error, error);
     }
 }
