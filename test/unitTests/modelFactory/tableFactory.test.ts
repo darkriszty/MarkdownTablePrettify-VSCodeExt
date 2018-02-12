@@ -106,10 +106,15 @@ suite("TableFactory tests", () => {
         const transformedTable = new Table([["c1", "c2", "", "c4"], ["a", "b", "", "d"]].map(row => row.map(c  => new Cell(c))), expectedAlignmets);
         _alignmentFactoryMock.setup(m => m.createAlignments(It.isAny())).returns(() => expectedAlignmets);
         _transformer.setup(_ => _.process(It.isAny())).returns(() => transformedTable);
+
         let selectionInterpreter: IMock<SelectionInterpreter> = Mock.ofType<SelectionInterpreter>();
         selectionInterpreter
             .setup(_ => _.allRows(It.isAny()))
             .returns(() => [["c1", "c2", "", "c4"], ["-","-","-","-"], ["a", "b", "", "d"]])
+            .verifiable(Times.once());
+        selectionInterpreter
+            .setup(_ => _.separator(It.isAny()))
+            .returns(() => ["-","-","-","-"])
             .verifiable(Times.once());
         const sut = createFactory(selectionInterpreter.object);
 
