@@ -82,6 +82,9 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const table = threeColumnTable();
 
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "");
+
         const separatorRowViewModel = sut.buildSeparator(table);
 
         _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 0), Times.once());
@@ -96,6 +99,8 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
     test("Value returned from padCalculator.getLeftPadding is used to start the row value", () => {
         const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
         const table = threeColumnTable();
+
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "");
         _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), 0)).returns(() => "test");
 
         const separatorRowViewModel = sut.buildSeparator(table);
@@ -125,24 +130,76 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         assertExt.isNotNull(separatorRowViewModel);
         assert.equal(separatorRowViewModel.getValueAt(1), "LeftRight");
     });
+
+    test("Not set alignment column separator does not contain :", () => {
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const table = threeColumnTable(Alignment.NotSet);
+
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+
+        const separatorRowViewModel = sut.buildSeparator(table);
+
+        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
+            assert.equal(separatorRowViewModel.getValueAt(col), "----");
+    });
+
+    test("Left aligned column separator starts with :", () => {
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const table = threeColumnTable(Alignment.Left);
+
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+
+        const separatorRowViewModel = sut.buildSeparator(table);
+
+        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
+            assert.equal(separatorRowViewModel.getValueAt(col), ":---");
+    });
+
+    test("Right aligned column separator ends with :", () => {
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const table = threeColumnTable(Alignment.Right);
+
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+
+        const separatorRowViewModel = sut.buildSeparator(table);
+
+        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
+            assert.equal(separatorRowViewModel.getValueAt(col), "---:");
+    });
+
+    test("Centrally aligned column separator starts and ends with :", () => {
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const table = threeColumnTable(Alignment.Center);
+
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+
+        const separatorRowViewModel = sut.buildSeparator(table);
+
+        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
+            assert.equal(separatorRowViewModel.getValueAt(col), ":--:");
+    });
 });
 
-function threeColumnTable(): Table {
+function threeColumnTable(alignment: Alignment = Alignment.NotSet): Table {
     return tableFor([
         [ "aaaaa", "bbbbb", "ccccc" ],
         [ "aaaaa", "bbbbb", "ccccc" ]
-    ]);
+    ], alignment);
 }
 
-function threeColumnTableWithEmptyMiddleColumn(): Table {
+function threeColumnTableWithEmptyMiddleColumn(alignment: Alignment = Alignment.NotSet): Table {
     return tableFor([
         [ "aaaaa", "", "ccccc" ],
         [ "aaaaa", "", "ccccc" ]
-    ]);
+    ], alignment);
 }
 
-function tableFor(rows: string[][]) {
-    const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+function tableFor(rows: string[][], alignment: Alignment) {
+    const alignments: Alignment[] = rows[0].map(r => alignment);
     let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
     return table;
 }
