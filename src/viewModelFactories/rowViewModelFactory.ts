@@ -2,7 +2,7 @@ import { RowViewModel } from "../viewModels/rowViewModel";
 import { PadCalculator } from "../padCalculation/padCalculator";
 import { Table } from "../models/table";
 import { Alignment } from "../models/alignment";
-import { AlignmentMarkerStrategy } from "./alignmentMarker";
+import { AlignmentMarkerStrategy } from "./alignmentMarking";
 
 export class RowViewModelFactory {
 
@@ -38,15 +38,4 @@ export class RowViewModelFactory {
 
         return new RowViewModel(resultRow);
     }
-/*
-    private withAlignmentMarkers(padding: string, alignment: Alignment): string {
-        if (alignment == Alignment.NotSet || padding == null)
-            return padding;
-        if (alignment == Alignment.Left)
-            return ":" + padding.substr(1);
-        if (alignment == Alignment.Right)
-            return padding.substring(0, padding.length - 1) + ":";
-
-        return ":" + padding.substring(1, padding.length - 1) + ":";
-    }*/
 }
