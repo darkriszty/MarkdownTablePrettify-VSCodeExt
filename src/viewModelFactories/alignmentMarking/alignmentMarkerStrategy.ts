@@ -4,7 +4,7 @@ import { IAlignmentMarker, LeftAlignmentMarker, RightAlignmentMarker, CenterAlig
 
 export class AlignmentMarkerStrategy {
 
-    public marker(alignment: Alignment): IAlignmentMarker {
+    public markerFor(alignment: Alignment): IAlignmentMarker {
         switch (alignment) {
             case Alignment.Left: return new LeftAlignmentMarker();
             case Alignment.Right: return new RightAlignmentMarker();

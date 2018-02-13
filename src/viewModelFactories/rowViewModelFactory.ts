@@ -8,7 +8,8 @@ export class RowViewModelFactory {
 
     constructor(
         private _contentPadCalculator: PadCalculator,
-        private _separatorPadCalculator: PadCalculator)
+        private _separatorPadCalculator: PadCalculator,
+        private _alignmentMarkerStrategy: AlignmentMarkerStrategy)
     { }
 
     public buildRow(row: number, table: Table): RowViewModel {
@@ -28,10 +29,8 @@ export class RowViewModelFactory {
     public buildSeparator(table: Table): RowViewModel {
         let resultRow = new Array(table.columnCount);
 
-        //TODO: extract this as constructor param
-        let alignmentMarkerSelector = new AlignmentMarkerStrategy();
         for(let col = 0; col < table.columnCount; col++)
-            resultRow[col] = alignmentMarkerSelector.marker(table.alignments[col]).mark(
+            resultRow[col] = this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(
                 this._separatorPadCalculator.getLeftPadding(table, 1, col) +
                 this._separatorPadCalculator.getRightPadding(table, 0, col)
             );

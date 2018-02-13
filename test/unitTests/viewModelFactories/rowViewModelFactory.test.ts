@@ -6,6 +6,7 @@ import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewMode
 import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
+import { AlignmentMarkerStrategy, IAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
@@ -144,43 +145,23 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
             assert.equal(separatorRowViewModel.getValueAt(col), "----");
     });
 
-    test("Left aligned column separator starts with :", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
-        const table = threeColumnTable(Alignment.Left);
+    test("Calls alignment marker strategy and the marker returned from it", () => {
+        const alignment = Alignment.Left;
+        let marker = Mock.ofType<IAlignmentMarker>();
+        marker.setup(_ => _.mark("abcd")).returns((param) => param).verifiable(Times.exactly(3));
+        let alignmentMarkerStrategy = Mock.ofType<AlignmentMarkerStrategy>();
+        alignmentMarkerStrategy.setup(_ => _.markerFor(alignment)).returns(() => marker.object).verifiable(Times.exactly(3));
 
-        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
-        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
+        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object, alignmentMarkerStrategy.object);
+        const table = threeColumnTable(alignment);
 
-        const separatorRowViewModel = sut.buildSeparator(table);
+        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "ab");
+        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "cd");
 
-        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
-            assert.equal(separatorRowViewModel.getValueAt(col), ":---");
-    });
+        sut.buildSeparator(table);
 
-    test("Right aligned column separator ends with :", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
-        const table = threeColumnTable(Alignment.Right);
-
-        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
-        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
-
-        const separatorRowViewModel = sut.buildSeparator(table);
-
-        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
-            assert.equal(separatorRowViewModel.getValueAt(col), "---:");
-    });
-
-    test("Centrally aligned column separator starts and ends with :", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
-        const table = threeColumnTable(Alignment.Center);
-
-        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
-        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "--");
-
-        const separatorRowViewModel = sut.buildSeparator(table);
-
-        for (let col = 0; col < separatorRowViewModel.columnCount; col++)
-            assert.equal(separatorRowViewModel.getValueAt(col), ":--:");
+        marker.verifyAll();
+        alignmentMarkerStrategy.verifyAll();
     });
 });
 
@@ -204,6 +185,9 @@ function tableFor(rows: string[][], alignment: Alignment) {
     return table;
 }
 
-function createFactory(contentPadCalculator: PadCalculator, separatorPadCalculator: PadCalculator): RowViewModelFactory {
-    return new RowViewModelFactory(contentPadCalculator, separatorPadCalculator);
+function createFactory(contentPadCalculator: PadCalculator, separatorPadCalculator: PadCalculator, 
+    alignmentStrategy: AlignmentMarkerStrategy = null): RowViewModelFactory 
+{
+    alignmentStrategy = alignmentStrategy == null ? new AlignmentMarkerStrategy() : alignmentStrategy;
+    return new RowViewModelFactory(contentPadCalculator, separatorPadCalculator, alignmentStrategy);
 }
