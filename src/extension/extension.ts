@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext): void {
                 new RowViewModelFactory(
                     new ContentPadCalculator(new PadCalculatorSelector(), " "), 
                     new SeparatorPadCalculator(new PadCalculatorSelector(), "-"),
-                    new AlignmentMarkerStrategy()
+                    new AlignmentMarkerStrategy(":")
                 )
             ),
             new TableStringWriter(),

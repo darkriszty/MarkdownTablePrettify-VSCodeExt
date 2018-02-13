@@ -41,6 +41,6 @@ suite("LeftAlignmentMarker tests", () => {
     });
 
     function createSut() {
-        return new LeftAlignmentMarker();
+        return new LeftAlignmentMarker(":");
     }
 });

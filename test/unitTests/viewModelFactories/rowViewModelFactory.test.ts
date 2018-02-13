@@ -188,6 +188,6 @@ function tableFor(rows: string[][], alignment: Alignment) {
 function createFactory(contentPadCalculator: PadCalculator, separatorPadCalculator: PadCalculator, 
     alignmentStrategy: AlignmentMarkerStrategy = null): RowViewModelFactory 
 {
-    alignmentStrategy = alignmentStrategy == null ? new AlignmentMarkerStrategy() : alignmentStrategy;
+    alignmentStrategy = alignmentStrategy == null ? new AlignmentMarkerStrategy(":") : alignmentStrategy;
     return new RowViewModelFactory(contentPadCalculator, separatorPadCalculator, alignmentStrategy);
 }

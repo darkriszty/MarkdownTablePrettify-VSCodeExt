@@ -43,6 +43,6 @@ suite("CenterAlignmentMarker tests", () => {
     });
 
     function createSut() {
-        return new CenterAlignmentMarker();
+        return new CenterAlignmentMarker(":");
     }
 });

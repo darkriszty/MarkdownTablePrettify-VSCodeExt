@@ -64,7 +64,7 @@ export class PrettyfierFromFile {
             new TableViewModelFactory(new RowViewModelFactory(
                 new ContentPadCalculator(new PadCalculatorSelector(), " "), 
                 new SeparatorPadCalculator(new PadCalculatorSelector(), "-"),
-                new AlignmentMarkerStrategy()
+                new AlignmentMarkerStrategy(":")
             )),
             new TableStringWriter(),
             [ this._logger ]
