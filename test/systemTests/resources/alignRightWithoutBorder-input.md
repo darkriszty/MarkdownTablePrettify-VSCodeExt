@@ -1,0 +1,11 @@
+Type|Range|Size
+-:|-:|-:
+sbyte|-128to127|Signed8-bitinteger
+byte|0to255|Unsigned8-bitinteger
+char|U+0000toU+ffff|Unicode16-bitcharacter
+short|-32,768to32,767|Signed16-bitinteger
+ushort|0to65,535|Unsigned16-bitinteger
+int|-2,147,483,648to2,147,483,647|Signed32-bitinteger
+uint|0to4,294,967,295|Unsigned32-bitinteger
+long|-9,223,372,036,854,775,808to9,223,372,036,854,775,807|Signed64-bitinteger
+ulong|0to18,446,744,073,709,551,615|Unsigned64-bitinteger

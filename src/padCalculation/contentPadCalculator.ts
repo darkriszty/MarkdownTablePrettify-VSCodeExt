@@ -10,7 +10,7 @@ export class ContentPadCalculator implements PadCalculator {
     { }
 
     public getLeftPadding(table: Table, row: number, column: number): string {
-        return this._padCalculatorSelector.select(table, column).getLeftPadding(this._paddingChar, table, table.rows[row][column]);
+        return this._padCalculatorSelector.select(table, column).getLeftPadding(this._paddingChar, table, row, column);
     }
 
     public getRightPadding(table: Table, row: number, column: number): string {

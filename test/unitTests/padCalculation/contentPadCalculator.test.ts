@@ -26,7 +26,7 @@ suite("ContentPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
         _selector.setup(_ => _.select(table, It.isAny())).returns(() => _mockCalculator.object).verifiable(Times.once());
-        _mockCalculator.setup(_ => _.getLeftPadding(It.isAny(), table, It.isAny())).returns(() => "test").verifiable(Times.once());
+        _mockCalculator.setup(_ => _.getLeftPadding(It.isAny(), table, It.isAny(), It.isAny())).returns(() => "test").verifiable(Times.once());
 
         const pad = sut.getLeftPadding(table, 1, 2);
 

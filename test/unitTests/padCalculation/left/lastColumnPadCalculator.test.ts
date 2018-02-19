@@ -113,7 +113,7 @@ suite("LastColumnPadCalculator tests", () => {
     });
 
     function getLeftPad(sut: LastColumnPadCalculator, table: Table): string {
-        return sut.getLeftPadding(" ", table, table.rows[1][2]);
+        return sut.getLeftPadding(" ", table, 1, 2);
     }
 
     function getRightPad(sut: LastColumnPadCalculator, table: Table): string {
