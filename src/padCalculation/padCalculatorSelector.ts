@@ -1,8 +1,8 @@
 import { Table } from "../models/table";
 import { BasePadCalculator } from "./basePadCalculator";
-import { FirstColumnPadCalculator } from "./firstColumnPadCalculator";
-import { LastColumnPadCalculator } from "./lastColumnPadCalculator";
-import { MiddleColumnPadCalculator } from "./middleColumnPadCalculator";
+import { FirstColumnPadCalculator } from "./left/firstColumnPadCalculator";
+import { LastColumnPadCalculator } from "./left/lastColumnPadCalculator";
+import { MiddleColumnPadCalculator } from "./left/middleColumnPadCalculator";
 
 export class PadCalculatorSelector {
     public select(table: Table,  column: number) : BasePadCalculator {

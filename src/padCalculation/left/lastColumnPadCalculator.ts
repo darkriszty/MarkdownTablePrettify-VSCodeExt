@@ -1,6 +1,6 @@
-import { BasePadCalculator } from "./basePadCalculator";
-import { Table } from "../models/table";
-import { Cell } from "../models/cell";
+import { BasePadCalculator } from "../basePadCalculator";
+import { Table } from "../../models/table";
+import { Cell } from "../../models/cell";
 
 export class LastColumnPadCalculator extends BasePadCalculator {
     public getLeftPadding(paddingChar: string, table: Table, cell: Cell): string {
