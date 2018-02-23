@@ -16,8 +16,8 @@ export class TableViewModelFactory {
         result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
         result.hasRightBorder = tableWithoutSeparator.hasRightBorder;
         result.header = this._rowViewModelFactory.buildRow(0, tableWithoutSeparator);
-        result.separator = this._rowViewModelFactory.buildSeparator(tableWithoutSeparator);
         result.rows = this.buildRows(tableWithoutSeparator);
+        result.separator = this._rowViewModelFactory.buildSeparator(result.rows, tableWithoutSeparator);
 
         return result;
     }

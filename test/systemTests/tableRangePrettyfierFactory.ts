@@ -17,7 +17,6 @@ import { MarkdownTextDocumentStub } from "../stubs/markdownTextDocumentStub";
 import { TrimmerTransformer } from '../../src/modelFactory/transformers/trimmerTransformer';
 import { BorderTransformer } from '../../src/modelFactory/transformers/borderTransformer';
 import { SelectionInterpreter } from '../../src/modelFactory/selectionInterpreter';
-import { SeparatorPadCalculator } from '../../src/padCalculation/separatorPadCalculator';
 import { PadCalculatorSelector } from '../../src/padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../../src/viewModelFactories/alignmentMarking';
 
@@ -63,7 +62,6 @@ export class PrettyfierFromFile {
             new TableValidator(new SelectionInterpreter()),
             new TableViewModelFactory(new RowViewModelFactory(
                 new ContentPadCalculator(new PadCalculatorSelector(), " "), 
-                new SeparatorPadCalculator(new PadCalculatorSelector(), "-"),
                 new AlignmentMarkerStrategy(":")
             )),
             new TableStringWriter(),

@@ -28,7 +28,7 @@ suite("TableViewModelFactory tests", () => {
         const expectedRow = new RowViewModel([]);
 
         _rowVmb
-            .setup(m => m.buildSeparator(It.isAny()))
+            .setup(m => m.buildSeparator(It.isAny(), It.isAny()))
             .returns(() => expectedSeparator)
             .verifiable(Times.once());
         _rowVmb
@@ -50,7 +50,7 @@ suite("TableViewModelFactory tests", () => {
         ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
-        _rowVmb.setup(m => m.buildSeparator(It.isAny())).returns(() => expectedSeparator)
+        _rowVmb.setup(m => m.buildSeparator(It.isAny(), It.isAny())).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny(), It.isAny())).returns(() => expectedRow);
 
         const tableVm = createViewModelFactory().build(table);

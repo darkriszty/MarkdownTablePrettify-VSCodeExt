@@ -5,10 +5,10 @@ import { Alignment } from "../models/alignment";
 import { AlignmentMarkerStrategy } from "./alignmentMarking";
 
 export class RowViewModelFactory {
+    private separatorChar : string = "-";
 
     constructor(
         private _contentPadCalculator: PadCalculator,
-        private _separatorPadCalculator: PadCalculator,
         private _alignmentMarkerStrategy: AlignmentMarkerStrategy)
     { }
 
@@ -26,15 +26,17 @@ export class RowViewModelFactory {
         return new RowViewModel(resultRow);
     }
 
-    public buildSeparator(table: Table): RowViewModel {
-        let resultRow = new Array(table.columnCount);
+    public buildSeparator(rows: RowViewModel[], table: Table): RowViewModel {
+        const columnCount = rows[0].columnCount;
+        let lengths = Array(columnCount).fill(0);
 
-        for(let col = 0; col < table.columnCount; col++)
-            resultRow[col] = this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(
-                this._separatorPadCalculator.getLeftPadding(table, 1, col) +
-                this._separatorPadCalculator.getRightPadding(table, 0, col)
-            );
+        for (const row of rows) {
+            for (let i = 0; i < columnCount; i++) {
+                lengths[i] = Math.max(lengths[i], (row.getValueAt(i).length));
+            }
+        }
 
-        return new RowViewModel(resultRow);
+        const values = lengths.map(l => this.separatorChar.repeat(l)).map((val ,col) => this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(val));
+        return new RowViewModel(values);
     }
 }
