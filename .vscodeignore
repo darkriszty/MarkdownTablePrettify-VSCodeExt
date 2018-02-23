@@ -9,3 +9,5 @@ tsconfig.json
 vsc-extension-quickstart.md
 .travis.yml
 demonstration.md
+package-lock.json
+gulpfile.js
