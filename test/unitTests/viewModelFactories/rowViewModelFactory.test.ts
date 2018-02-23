@@ -6,7 +6,8 @@ import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewMode
 import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
-import { AlignmentMarkerStrategy, IAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
+import { AlignmentMarkerStrategy, IAlignmentMarker, NotSetAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
+import { RowViewModel } from '../../../src/viewModels/rowViewModel';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
@@ -70,19 +71,42 @@ suite("RowViewModelFactory.buildRow() tests", () => {
 
 suite("RowViewModelFactory.buildSeparator() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
-    let _separatorPadCalculator: IMock<PadCalculator>;
 
     setup(() => {
         _contentPadCalculator = Mock.ofType<PadCalculator>();
-        _separatorPadCalculator = Mock.ofType<PadCalculator>();
     });
 
-    test("Fills the max length with -", () => {
-        assert.equal(0, 1, "TODO");
+    test("Fills separator with dashes using the max length of the columns", () => {
+        const sut = createFactory(_contentPadCalculator.object);
+        const table = threeColumnTable();
+        const rows: RowViewModel[] = [
+            new RowViewModel(["abc", "defghi"]),
+            new RowViewModel(["abcd", "efgh"])
+        ];
+
+        const separator = sut.buildSeparator(rows, table);
+
+        assert.equal(separator.getValueAt(0), "----");
+        assert.equal(separator.getValueAt(1), "------");
     });
 
     test("Calls marker to mark the beginning and end", () => {
-        assert.equal(0, 1, "TODO");
+        const alignmentStrategy = Mock.ofType<AlignmentMarkerStrategy>();
+        const alignmentMarker = Mock.ofType<IAlignmentMarker>();
+        alignmentMarker.setup(_ => _.mark(It.isAny())).returns((input) => input).verifiable(Times.exactly(3));
+        alignmentStrategy.setup(_ => _.markerFor(It.isAny())).returns(() => alignmentMarker.object).verifiable(Times.exactly(3));
+
+        const sut = createFactory(_contentPadCalculator.object, alignmentStrategy.object);
+        const table = threeColumnTable();
+        const rows: RowViewModel[] = [
+            new RowViewModel(["abc", "defghi", "xyx"]),
+            new RowViewModel(["abcd", "efgh", "xyz"])
+        ];
+
+        const separator = sut.buildSeparator(rows, table);
+
+        alignmentStrategy.verifyAll();
+        alignmentMarker.verifyAll();
     });
 });
 
