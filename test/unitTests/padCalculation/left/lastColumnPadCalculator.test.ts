@@ -8,7 +8,7 @@ import { PadCalculator } from '../../../../src/padCalculation/padCalculator';
 import { PadCalculatorSelector } from '../../../../src/padCalculation/padCalculatorSelector';
 import { LastColumnPadCalculator } from '../../../../src/padCalculation/left/lastColumnPadCalculator';
 
-suite("LastColumnPadCalculator tests", () => {
+suite("LeftAlign - LastColumnPadCalculator tests", () => {
 
     test("getLeftPadding() Last column left padded with 1 character", () => {
         const sut = createCalculator();

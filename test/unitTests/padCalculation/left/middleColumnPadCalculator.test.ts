@@ -8,7 +8,7 @@ import { PadCalculator } from '../../../../src/padCalculation/padCalculator';
 import { PadCalculatorSelector } from '../../../../src/padCalculation/padCalculatorSelector';
 import { MiddleColumnPadCalculator } from '../../../../src/padCalculation/left/middleColumnPadCalculator';
 
-suite("MiddleColumnPadCalculator tests", () => {
+suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
     test("getLeftPadding() Middle column left padded with 1 character", () => {
         const sut = createCalculator();
