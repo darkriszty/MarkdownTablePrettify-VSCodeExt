@@ -1,24 +1,9 @@
-import { BasePadCalculator } from "../basePadCalculator";
 import { Table } from "../../models/table";
 import { Cell } from "../../models/cell";
+import { RightPadCalculator } from "./rightPadCalculator";
 
-export class LastColumnPadCalculator extends BasePadCalculator {
-
-    public getLeftPadding(paddingChar: string, table: Table, row: number, column: number): string {
-        return paddingChar.repeat(
-            this.getLeftPaddingCount(table.getLongestColumnLengths()[column], table.rows[row][column].getLength(), table.hasLeftBorder)
-        );
-    }
-
-    private getLeftPaddingCount(longestColumnLength: number, cellTextLength: number, hasLeftBorder: boolean) {
-        let leftPadCount = longestColumnLength > 0
-            ? longestColumnLength - cellTextLength
-            : 1;
-        leftPadCount++;
-        return leftPadCount;
-    }
-
+export class LastColumnPadCalculator extends RightPadCalculator {
     public getRightPadding(paddingChar: string, table: Table, row: number, column: number): string {
-        return table.hasLeftBorder ? paddingChar : "";
+        return table.hasLeftBorder ? super.getRightPadding(paddingChar, table, row, column) : "";
     }
 }

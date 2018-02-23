@@ -20,5 +20,7 @@ export abstract class CenterPadCalculator extends BasePadCalculator {
         return padCount / 2;
     }
 
-    protected abstract extraPadCount(table: Table): number;
+    protected extraPadCount(table: Table): number {
+        return 2;
+    }
 }
