@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Added
+- Issue #15: Support alignment options
+
+## 2.0.0 - 2012-02-09
+### Added
 - Issue #12: Full rewrite for refactoring.
 - Issue #11: Support escaping of separators with backslash.
 - Issue #16: Ignore separators that are in code blocks.

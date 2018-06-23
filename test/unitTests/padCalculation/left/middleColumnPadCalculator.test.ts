@@ -1,14 +1,14 @@
 import * as assert from 'assert';
-import { assertExt } from "../../assertExtensions";
-import { ContentPadCalculator } from "../../../src/padCalculation/contentPadCalculator";
-import { Table } from '../../../src/models/table';
-import { Alignment } from '../../../src/models/alignment';
-import { Cell } from '../../../src/models/cell';
-import { PadCalculator } from '../../../src/padCalculation/padCalculator';
-import { PadCalculatorSelector } from '../../../src/padCalculation/padCalculatorSelector';
-import { MiddleColumnPadCalculator } from '../../../src/padCalculation/middleColumnPadCalculator';
+import { assertExt } from "../../../assertExtensions";
+import { ContentPadCalculator } from "../../../../src/padCalculation/contentPadCalculator";
+import { Table } from '../../../../src/models/table';
+import { Alignment } from '../../../../src/models/alignment';
+import { Cell } from '../../../../src/models/cell';
+import { PadCalculator } from '../../../../src/padCalculation/padCalculator';
+import { PadCalculatorSelector } from '../../../../src/padCalculation/padCalculatorSelector';
+import { MiddleColumnPadCalculator } from '../../../../src/padCalculation/left/middleColumnPadCalculator';
 
-suite("MiddleColumnPadCalculator tests", () => {
+suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
     test("getLeftPadding() Middle column left padded with 1 character", () => {
         const sut = createCalculator();
@@ -125,7 +125,7 @@ suite("MiddleColumnPadCalculator tests", () => {
             [ "aaaaa", "b", "ccccc" ]
         ]);
 
-        const leftPad = sut.getLeftPadding(" ", table, table.rows[1][1]);
+        const leftPad = sut.getLeftPadding(" ", table, 1, 1);
         const rightPad = sut.getRightPadding(" ", table, 1, 1);
 
         assert.equal(leftPad, " ");
@@ -133,7 +133,7 @@ suite("MiddleColumnPadCalculator tests", () => {
     });
 
     function getLeftPad(sut: MiddleColumnPadCalculator, table: Table): string {
-        return sut.getLeftPadding(" ", table, table.rows[1][1]);
+        return sut.getLeftPadding(" ", table, 1, 1);
     }
 
     function getRightPad(sut: MiddleColumnPadCalculator, table: Table): string {
