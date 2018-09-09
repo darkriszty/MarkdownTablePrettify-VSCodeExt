@@ -15,7 +15,7 @@ before_install:
     fi
 
 install:
-  - npm install
+  - npm ci
   - npm run vscode:prepublish
 
 script:
