@@ -39,7 +39,7 @@
     "mocha": "^2.3.3",
     "typemoq": "^1.8.0",
     "typescript": "^2.7.1",
-    "vscode": "^1.1.10"
+    "vscode": "^1.1.21"
   },
   "license": "MIT"
 }
