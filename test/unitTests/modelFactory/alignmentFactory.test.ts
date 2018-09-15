@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import { assertExt } from "../../assertExtensions";
 import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
 import { Alignment } from "../../../src/models/alignment";
 
@@ -12,15 +11,15 @@ suite("AlignmentFactory tests", () => {
         assert.throws(() => sut.createAlignments(separatorCells))
     });
 
-    test("createAlignments() with separators without alignment defaults to left alignment", () => {
+    test("createAlignments() with separators without alignment defaults to NotSet alignment", () => {
         const separatorCells: string[] = ["---", "--", "-------"];
         const sut = createFactory();
 
         const alignments = sut.createAlignments(separatorCells);
         assert.equal(alignments.length, 3);
-        assert.equal(alignments[0], Alignment.Left);
-        assert.equal(alignments[1], Alignment.Left);
-        assert.equal(alignments[2], Alignment.Left);
+        assert.equal(alignments[0], Alignment.NotSet);
+        assert.equal(alignments[1], Alignment.NotSet);
+        assert.equal(alignments[2], Alignment.NotSet);
     });
 
     test("createAlignments() with separators having mixed alignments returns expected alignments", () => {
@@ -32,7 +31,7 @@ suite("AlignmentFactory tests", () => {
         assert.equal(alignments[0], Alignment.Center);
         assert.equal(alignments[1], Alignment.Left);
         assert.equal(alignments[2], Alignment.Left);
-        assert.equal(alignments[3], Alignment.Left);
+        assert.equal(alignments[3], Alignment.NotSet);
         assert.equal(alignments[4], Alignment.Right);
         assert.equal(alignments[5], Alignment.Center);
     });

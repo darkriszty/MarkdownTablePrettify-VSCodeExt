@@ -13,8 +13,8 @@ import { RowViewModelFactory } from '../viewModelFactories/rowViewModelFactory';
 import { TrimmerTransformer } from '../modelFactory/transformers/trimmerTransformer';
 import { BorderTransformer } from '../modelFactory/transformers/borderTransformer';
 import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
-import { SeparatorPadCalculator } from '../padCalculation/separatorPadCalculator';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
+import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
@@ -31,8 +31,8 @@ export function activate(context: vscode.ExtensionContext): void {
             new TableValidator(new SelectionInterpreter()),
             new TableViewModelFactory(
                 new RowViewModelFactory(
-                    new ContentPadCalculator(new PadCalculatorSelector(), " "), 
-                    new SeparatorPadCalculator(new PadCalculatorSelector(), "-")
+                    new ContentPadCalculator(new PadCalculatorSelector(), " "),
+                    new AlignmentMarkerStrategy(":")
                 )
             ),
             new TableStringWriter(),

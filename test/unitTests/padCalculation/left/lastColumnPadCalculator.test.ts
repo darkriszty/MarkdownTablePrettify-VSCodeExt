@@ -1,14 +1,10 @@
 import * as assert from 'assert';
-import { assertExt } from "../../assertExtensions";
-import { ContentPadCalculator } from "../../../src/padCalculation/contentPadCalculator";
-import { Table } from '../../../src/models/table';
-import { Alignment } from '../../../src/models/alignment';
-import { Cell } from '../../../src/models/cell';
-import { PadCalculator } from '../../../src/padCalculation/padCalculator';
-import { PadCalculatorSelector } from '../../../src/padCalculation/padCalculatorSelector';
-import { LastColumnPadCalculator } from '../../../src/padCalculation/lastColumnPadCalculator';
+import { Table } from '../../../../src/models/table';
+import { Alignment } from '../../../../src/models/alignment';
+import { Cell } from '../../../../src/models/cell';
+import { LastColumnPadCalculator } from '../../../../src/padCalculation/left/lastColumnPadCalculator';
 
-suite("LastColumnPadCalculator tests", () => {
+suite("LeftAlign - LastColumnPadCalculator tests", () => {
 
     test("getLeftPadding() Last column left padded with 1 character", () => {
         const sut = createCalculator();
@@ -113,7 +109,7 @@ suite("LastColumnPadCalculator tests", () => {
     });
 
     function getLeftPad(sut: LastColumnPadCalculator, table: Table): string {
-        return sut.getLeftPadding(" ", table, table.rows[1][2]);
+        return sut.getLeftPadding(" ", table, 1, 2);
     }
 
     function getRightPad(sut: LastColumnPadCalculator, table: Table): string {
@@ -125,7 +121,7 @@ suite("LastColumnPadCalculator tests", () => {
     }
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
         let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
         return table;
     }

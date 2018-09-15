@@ -6,22 +6,22 @@ import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewMode
 import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
+import { AlignmentMarkerStrategy, IAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
+import { RowViewModel } from '../../../src/viewModels/rowViewModel';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
-    let _separatorPadCalculator: IMock<PadCalculator>;
 
     setup(() => {
         _contentPadCalculator = Mock.ofType<PadCalculator>();
-        _separatorPadCalculator = Mock.ofType<PadCalculator>();
     });
 
     test("PadCalculator called for all columns with expected values", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object);
         const row = 1;
         const table = threeColumnTable();
 
-        const rowViewModel = sut.buildRow(row, table);
+        sut.buildRow(row, table);
 
         _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 0), Times.once());
         _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 1), Times.once());
@@ -33,7 +33,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
     });
 
     test("Value returned from padCalculator.getLeftPadding is used to start the row value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object);
         const row = 1;
         const table = threeColumnTable();
         _contentPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
@@ -44,7 +44,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
     });
 
     test("Value returned from padCalculator.getRightPadding is used to end the row value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object);
         const row = 1;
         const table = threeColumnTable();
         _contentPadCalculator.setup(_ => _.getRightPadding(It.isAny(), row, It.isAny())).returns(() => "test");
@@ -55,7 +55,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
     });
 
     test("Empty middle column uses only left and right pad to create the value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+        const sut = createFactory(_contentPadCalculator.object);
         const row = 1;
         const table = threeColumnTableWithEmptyMiddleColumn();
         _contentPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "L");
@@ -71,82 +71,67 @@ suite("RowViewModelFactory.buildRow() tests", () => {
 
 suite("RowViewModelFactory.buildSeparator() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
-    let _separatorPadCalculator: IMock<PadCalculator>;
 
     setup(() => {
         _contentPadCalculator = Mock.ofType<PadCalculator>();
-        _separatorPadCalculator = Mock.ofType<PadCalculator>();
     });
 
-    test("PadCalculator called for all columns with expected values", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+    test("Fills separator with dashes using the max length of the columns", () => {
+        const sut = createFactory(_contentPadCalculator.object);
         const table = threeColumnTable();
+        const rows: RowViewModel[] = [
+            new RowViewModel(["abc", "defghi"]),
+            new RowViewModel(["abcd", "efgh"])
+        ];
 
-        const separatorRowViewModel = sut.buildSeparator(table);
+        const separator = sut.buildSeparator(rows, table);
 
-        _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 0), Times.once());
-        _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 1), Times.once());
-        _separatorPadCalculator.verify(_ => _.getLeftPadding(It.isAny(), It.isAny(), 2), Times.once());
-
-        _separatorPadCalculator.verify(_ => _.getRightPadding(It.isAny(), It.isAny(), 0), Times.once());
-        _separatorPadCalculator.verify(_ => _.getRightPadding(It.isAny(), It.isAny(), 1), Times.once());
-        _separatorPadCalculator.verify(_ => _.getRightPadding(It.isAny(), It.isAny(), 2), Times.once());
+        assert.equal(separator.getValueAt(0), "----");
+        assert.equal(separator.getValueAt(1), "------");
     });
 
-    test("Value returned from padCalculator.getLeftPadding is used to start the row value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
+    test("Calls marker to mark the beginning and end", () => {
+        const alignmentStrategy = Mock.ofType<AlignmentMarkerStrategy>();
+        const alignmentMarker = Mock.ofType<IAlignmentMarker>();
+        alignmentMarker.setup(_ => _.mark(It.isAny())).returns((input) => input).verifiable(Times.exactly(3));
+        alignmentStrategy.setup(_ => _.markerFor(It.isAny())).returns(() => alignmentMarker.object).verifiable(Times.exactly(3));
+
+        const sut = createFactory(_contentPadCalculator.object, alignmentStrategy.object);
         const table = threeColumnTable();
-        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), 0)).returns(() => "test");
+        const rows: RowViewModel[] = [
+            new RowViewModel(["abc", "defghi", "xyx"]),
+            new RowViewModel(["abcd", "efgh", "xyz"])
+        ];
 
-        const separatorRowViewModel = sut.buildSeparator(table);
+        sut.buildSeparator(rows, table);
 
-        assert.equal(separatorRowViewModel.getValueAt(0).startsWith("test"), true);
-    });
-
-    test("Value returned from padCalculator.getRightPadding is used to end the row value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
-        const table = threeColumnTable();
-        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "test");
-
-        const separatorRowViewModel = sut.buildSeparator(table);
-
-        assert.equal(separatorRowViewModel.getValueAt(1).endsWith("test"), true);
-    });
-
-    test("Empty middle column uses only left and right pad to create the value", () => {
-        const sut = createFactory(_contentPadCalculator.object, _separatorPadCalculator.object);
-        const table = threeColumnTableWithEmptyMiddleColumn();
-        _separatorPadCalculator.setup(_ => _.getLeftPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "Left");
-        _separatorPadCalculator.setup(_ => _.getRightPadding(It.isAny(), It.isAny(), It.isAny())).returns(() => "Right");
-        _separatorPadCalculator.setup(_ => _.getPadChar()).returns(() => "x");
-
-        const separatorRowViewModel = sut.buildSeparator(table);
-
-        assertExt.isNotNull(separatorRowViewModel);
-        assert.equal(separatorRowViewModel.getValueAt(1), "LeftRight");
+        alignmentStrategy.verifyAll();
+        alignmentMarker.verifyAll();
     });
 });
 
-function threeColumnTable(): Table {
+function threeColumnTable(alignment: Alignment = Alignment.NotSet): Table {
     return tableFor([
         [ "aaaaa", "bbbbb", "ccccc" ],
         [ "aaaaa", "bbbbb", "ccccc" ]
-    ]);
+    ], alignment);
 }
 
-function threeColumnTableWithEmptyMiddleColumn(): Table {
+function threeColumnTableWithEmptyMiddleColumn(alignment: Alignment = Alignment.NotSet): Table {
     return tableFor([
         [ "aaaaa", "", "ccccc" ],
         [ "aaaaa", "", "ccccc" ]
-    ]);
+    ], alignment);
 }
 
-function tableFor(rows: string[][]) {
-    const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+function tableFor(rows: string[][], alignment: Alignment) {
+    const alignments: Alignment[] = rows[0].map(() => alignment);
     let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
     return table;
 }
 
-function createFactory(contentPadCalculator: PadCalculator, separatorPadCalculator: PadCalculator): RowViewModelFactory {
-    return new RowViewModelFactory(contentPadCalculator, separatorPadCalculator);
+function createFactory(contentPadCalculator: PadCalculator, alignmentStrategy: AlignmentMarkerStrategy = null): RowViewModelFactory 
+{
+    alignmentStrategy = alignmentStrategy == null ? new AlignmentMarkerStrategy(":") : alignmentStrategy;
+    return new RowViewModelFactory(contentPadCalculator, alignmentStrategy);
 }

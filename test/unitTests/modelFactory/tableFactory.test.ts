@@ -3,7 +3,6 @@ import { IMock, Mock, It, Times } from "typemoq";
 import { Alignment } from "../../../src/models/alignment";
 import { TableFactory } from "../../../src/modelFactory/tableFactory";
 import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
-import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { assertExt } from "../../assertExtensions";
 import { Transformer } from '../../../src/modelFactory/transformers/transformer';
 import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
@@ -106,10 +105,15 @@ suite("TableFactory tests", () => {
         const transformedTable = new Table([["c1", "c2", "", "c4"], ["a", "b", "", "d"]].map(row => row.map(c  => new Cell(c))), expectedAlignmets);
         _alignmentFactoryMock.setup(m => m.createAlignments(It.isAny())).returns(() => expectedAlignmets);
         _transformer.setup(_ => _.process(It.isAny())).returns(() => transformedTable);
+
         let selectionInterpreter: IMock<SelectionInterpreter> = Mock.ofType<SelectionInterpreter>();
         selectionInterpreter
             .setup(_ => _.allRows(It.isAny()))
             .returns(() => [["c1", "c2", "", "c4"], ["-","-","-","-"], ["a", "b", "", "d"]])
+            .verifiable(Times.once());
+        selectionInterpreter
+            .setup(_ => _.separator(It.isAny()))
+            .returns(() => ["-","-","-","-"])
             .verifiable(Times.once());
         const sut = createFactory(selectionInterpreter.object);
 

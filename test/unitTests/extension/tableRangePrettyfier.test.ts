@@ -1,6 +1,4 @@
 import * as assert from "assert";
-import * as vscode from "vscode";
-import * as typeMock from "typemoq";
 import { IMock, Mock, It, Times } from "typemoq";
 import { TableRangePrettyfier } from "../../../src/extension/tableRangePrettyfier";
 import { TableFactory } from "../../../src/modelFactory/tableFactory";
@@ -8,10 +6,7 @@ import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 import { TableStringWriter } from "../../../src/writers/tableStringWriter";
 import { ILogger } from "../../../src/diagnostics/logger";
-import { Table } from "../../../src/models/table";
-import { Alignment } from "../../../src/models/alignment";
 import { MarkdownTextDocumentStub } from "../../stubs/markdownTextDocumentStub";
-import { CancellationTokenSource } from "vscode";
 import { TableViewModel } from "../../../src/viewModels/tableViewModel";
 
 suite("TableRangePrettyfier tests", () => {
@@ -76,7 +71,6 @@ suite("TableRangePrettyfier tests", () => {
     test("provideDocumentRangeFormattingEdits() result contains table writer output", () => {
         const sut = createSut();
         const document = makeDocument("hello world");
-        const viewModel = new TableViewModel();
         _tableValidator.setup(_ => _.isValid(It.isAny())).returns(() => true);
         _writer.setup(_ => _.writeTable(It.isAny())).returns(() => "foo bar");
 

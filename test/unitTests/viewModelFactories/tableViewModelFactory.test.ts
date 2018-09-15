@@ -3,11 +3,9 @@ import { assertExt } from "../../assertExtensions";
 import { IMock, Mock, It, Times } from "typemoq";
 import { Table } from "../../../src/models/table";
 import { Alignment } from "../../../src/models/alignment";
-import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { TableViewModel } from "../../../src/viewModels/tableViewModel";
 import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
-import { ContentPadCalculator } from "../../../src/padCalculation/contentPadCalculator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 import { Cell } from "../../../src/models/cell";
 
@@ -28,7 +26,7 @@ suite("TableViewModelFactory tests", () => {
         const expectedRow = new RowViewModel([]);
 
         _rowVmb
-            .setup(m => m.buildSeparator(It.isAny()))
+            .setup(m => m.buildSeparator(It.isAny(), It.isAny()))
             .returns(() => expectedSeparator)
             .verifiable(Times.once());
         _rowVmb
@@ -50,7 +48,7 @@ suite("TableViewModelFactory tests", () => {
         ]);
         const expectedSeparator = new RowViewModel([]);
         const expectedRow = new RowViewModel([]);
-        _rowVmb.setup(m => m.buildSeparator(It.isAny())).returns(() => expectedSeparator)
+        _rowVmb.setup(m => m.buildSeparator(It.isAny(), It.isAny())).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny(), It.isAny())).returns(() => expectedRow);
 
         const tableVm = createViewModelFactory().build(table);
@@ -71,8 +69,6 @@ suite("TableViewModelFactory tests", () => {
             ["v3", "v4"],
         ]);
         table.hasLeftBorder = true;
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
 
         const tableVm = createViewModelFactory().build(table);
 
@@ -86,8 +82,6 @@ suite("TableViewModelFactory tests", () => {
             ["v1", "v2"],
             ["v3", "v4"],
         ]);
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
 
         const tableVm = createViewModelFactory().build(table);
 
@@ -102,8 +96,6 @@ suite("TableViewModelFactory tests", () => {
             ["v3", "v4"],
         ]);
         table.hasRightBorder = true;
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
 
         const tableVm = createViewModelFactory().build(table);
 
@@ -117,8 +109,6 @@ suite("TableViewModelFactory tests", () => {
             ["v1", "v2"],
             ["v3", "v4"],
         ]);
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
 
         const tableVm = createViewModelFactory().build(table);
 
@@ -127,17 +117,11 @@ suite("TableViewModelFactory tests", () => {
     });
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
         let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
         return table;
     }
     
-    function assertViewModelPropertiesSet(viewModel: TableViewModel) {
-        assertExt.isNotNull(viewModel);
-        assertExt.isNotNull(viewModel.header);
-        assertExt.isNotNull(viewModel.separator);
-        assertExt.isNotNull(viewModel.rows);
-    }
 
     function createViewModelFactory(): TableViewModelFactory {
         return new TableViewModelFactory(_rowVmb.object);

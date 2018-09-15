@@ -1,8 +1,6 @@
 import * as assert from 'assert';
 import { IMock, Mock, It, Times } from 'typemoq';
-import { Table } from "../../../src/models/table";
 import { TableValidator } from "../../../src/modelFactory/tableValidator";
-import { Alignment } from "../../../src/models/alignment";
 import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
 
 suite("TableValidator tests", () => {
@@ -153,7 +151,7 @@ suite("TableValidator tests", () => {
             .verifiable(Times.once());
         const sut = createSut(selectionInterpreter.object);
 
-        const isValid: boolean = sut.isValid("test");
+        sut.isValid("test");
 
         selectionInterpreter.verifyAll();
     });

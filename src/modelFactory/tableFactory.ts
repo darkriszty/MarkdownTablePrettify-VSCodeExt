@@ -18,9 +18,10 @@ export class TableFactory {
             throw new Error("Can't create table model from null table text.");
 
         const rowsWithoutSeparator = this._selectionInterpreter.allRows(text).filter((v, i) => i != 1);
+        const separator = this._selectionInterpreter.separator(text);
 
-        const alignments: Alignment[] = rowsWithoutSeparator != null && rowsWithoutSeparator.length > 1 
-            ? this._alignmentFactory.createAlignments(rowsWithoutSeparator[1]) 
+        const alignments: Alignment[] = separator != null && separator.length > 0
+            ? this._alignmentFactory.createAlignments(separator) 
             : [];
 
         const cells = rowsWithoutSeparator.map(row => row.map(c  => new Cell(c)));
