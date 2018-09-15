@@ -8,7 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Issue #15: Support alignment options
 
-## 2.0.0 - 2012-02-09
+## 2.1.0 - 2018-09-15
+### Added
+- Issue #15: Support alignment options
+
+## 2.0.0 - 2018-02-09
 ### Added
 - Issue #12: Full rewrite for refactoring.
 - Issue #11: Support escaping of separators with backslash.
