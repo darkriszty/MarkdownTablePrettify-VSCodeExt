@@ -151,6 +151,7 @@ suite("TableValidator tests", () => {
             .verifiable(Times.once());
         const sut = createSut(selectionInterpreter.object);
 
+        sut.isValid("test");
 
         selectionInterpreter.verifyAll();
     });

@@ -21,6 +21,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const row = 1;
         const table = threeColumnTable();
 
+        sut.buildRow(row, table);
 
         _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 0), Times.once());
         _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 1), Times.once());
@@ -102,6 +103,7 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
             new RowViewModel(["abcd", "efgh", "xyz"])
         ];
 
+        sut.buildSeparator(rows, table);
 
         alignmentStrategy.verifyAll();
         alignmentMarker.verifyAll();
