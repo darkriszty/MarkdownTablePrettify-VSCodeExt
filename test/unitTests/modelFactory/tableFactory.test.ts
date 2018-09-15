@@ -3,7 +3,6 @@ import { IMock, Mock, It, Times } from "typemoq";
 import { Alignment } from "../../../src/models/alignment";
 import { TableFactory } from "../../../src/modelFactory/tableFactory";
 import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
-import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { assertExt } from "../../assertExtensions";
 import { Transformer } from '../../../src/modelFactory/transformers/transformer';
 import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';

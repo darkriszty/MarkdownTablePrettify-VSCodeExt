@@ -1,6 +1,4 @@
-import * as assert from "assert";
-import * as vscode from "vscode";
-import { IMock, Mock, It, Times } from "typemoq";
+import { IMock, Mock, Times } from "typemoq";
 import { SelectionBasedLogToogler } from "../../../src/diagnostics/selectionBasedLogToogler";
 import { MarkdownTextDocumentStub } from "../../stubs/markdownTextDocumentStub";
 import { ILogger } from "../../../src/diagnostics/logger";

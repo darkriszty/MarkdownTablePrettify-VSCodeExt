@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import { assertExt } from "../../assertExtensions";
 import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
 import { Alignment } from "../../../src/models/alignment";
 

@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import { assertExt } from "../../assertExtensions";
 import { IMock, Mock, It, Times } from 'typemoq';
 import { ContentPadCalculator } from "../../../src/padCalculation/contentPadCalculator";
 import { Table } from '../../../src/models/table';
@@ -52,7 +51,7 @@ suite("ContentPadCalculator tests", () => {
     });
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
         let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
         return table;
     }

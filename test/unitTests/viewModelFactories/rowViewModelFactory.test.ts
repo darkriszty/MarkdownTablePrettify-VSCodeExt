@@ -6,7 +6,7 @@ import { RowViewModelFactory } from '../../../src/viewModelFactories/rowViewMode
 import { Table } from '../../../src/models/table';
 import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
-import { AlignmentMarkerStrategy, IAlignmentMarker, NotSetAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
+import { AlignmentMarkerStrategy, IAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
 import { RowViewModel } from '../../../src/viewModels/rowViewModel';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
@@ -21,7 +21,6 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const row = 1;
         const table = threeColumnTable();
 
-        const rowViewModel = sut.buildRow(row, table);
 
         _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 0), Times.once());
         _contentPadCalculator.verify(_ => _.getLeftPadding(table, row, 1), Times.once());
@@ -103,7 +102,6 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
             new RowViewModel(["abcd", "efgh", "xyz"])
         ];
 
-        const separator = sut.buildSeparator(rows, table);
 
         alignmentStrategy.verifyAll();
         alignmentMarker.verifyAll();
@@ -125,7 +123,7 @@ function threeColumnTableWithEmptyMiddleColumn(alignment: Alignment = Alignment.
 }
 
 function tableFor(rows: string[][], alignment: Alignment) {
-    const alignments: Alignment[] = rows[0].map(r => alignment);
+    const alignments: Alignment[] = rows[0].map(() => alignment);
     let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
     return table;
 }

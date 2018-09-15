@@ -2,7 +2,6 @@ import * as assert from 'assert';
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
-import { Mock } from "typemoq";
 import { TableRangePrettyfier } from "../../src/extension/tableRangePrettyfier";
 import { TableFactory } from "../../src/modelFactory/tableFactory";
 import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
