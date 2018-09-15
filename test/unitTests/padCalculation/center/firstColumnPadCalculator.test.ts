@@ -43,14 +43,14 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
         assert.equal(sut.getRightPadding(" ", table, 1, 0), " ");
     });
 
-    test("getLeftPadding() First column equal to maxColLength gets padded with one character", () => {
+    test("getLeftPadding() First column equal to maxColLength is not padded", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), " ");
+        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "");
     });
 
     test("getRightPadding() First column 1 char shorter than maxColLength gets padded with one character", () => {
@@ -83,14 +83,14 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
         assert.equal(sut.getRightPadding(" ", table, 1, 0), "  ");
     });
 
-    test("getLeftPadding() First column 2 char shorter than maxColLength gets padded with 2 characters", () => {
+    test("getLeftPadding() First column 2 char shorter than maxColLength is padded with one character", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
             [ "aaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "  ");
+        assert.equal(sut.getLeftPadding(" ", table, 1, 0), " ");
     });
 
     test("getRightPadding() First column 3 char shorter than maxColLength gets padded with 2 characters", () => {
@@ -123,14 +123,14 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
         assert.equal(sut.getRightPadding(" ", table, 1, 0), "   ");
     });
 
-    test("getLeftPadding() First column 4 char shorter than maxColLength gets padded with 3 characters", () => {
+    test("getLeftPadding() First column 4 char shorter than maxColLength gets padded with 2 characters", () => {
         const sut = createCalculator();
         const table = tableFor([
             [ "aaaaa", "bbbbb", "ccccc" ],
             [ "a", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "   ");
+        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "  ");
     });
 
     test("getRightPadding() First column is empty string gets padded with 3 characters", () => {
