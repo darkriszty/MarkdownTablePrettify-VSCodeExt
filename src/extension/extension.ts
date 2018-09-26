@@ -19,7 +19,7 @@ import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking'
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
 export function activate(context: vscode.ExtensionContext): void {
-    const MD_MODE: vscode.DocumentFilter = { language: "markdown", scheme: "file" };
+    const MD_MODE: vscode.DocumentFilter = { language: "markdown" };
 
     let disposable = vscode.languages.registerDocumentRangeFormattingEditProvider(
         MD_MODE, new TableRangePrettyfier(
