@@ -5,8 +5,8 @@ All notable changes to the `markdowntableprettify` extension will be documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Added
-- Issue #15: Support alignment options
+### 2.2.0 - 2018-09-26
+- Issue #22: Allow formatting without a filename
 
 ## 2.1.0 - 2018-09-15
 ### Added
