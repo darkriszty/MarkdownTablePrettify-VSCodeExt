@@ -99,6 +99,21 @@ suite("TableFinder tests", () => {
         assert.deepStrictEqual(tableRanges[1], new vscode.Range(9, 0, 12, 27));
     });
 
+    test("getTables() for table with alignments the expected range is returned", () => {
+        let sut = getSut();
+        let document = makeDocument(`no table on first line
+            |Primitive Type|Size(bit)|Wrapper
+            |-:|-|-
+            |short|16|Short
+            |int|32|Integer
+            no table on last line`);
+
+        let tableRanges = sut.getTables(document);
+
+        assert.equal(tableRanges.length, 1);
+        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, 27));
+    });
+
     function getSut() {
         return new TableFinder(new TableValidator(new SelectionInterpreter(true)));
     }

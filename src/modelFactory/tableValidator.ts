@@ -17,7 +17,13 @@ export class TableValidator {
         return sizeValid && this.hasValidSeparators(this._selectionInterpreter.separator(selection));
     }
 
-    private hasValidSeparators(separator: string[]): boolean {
+    public lineIsValidSeparator(separatorLine: string): boolean {
+        return this.hasValidSeparators(
+            this._selectionInterpreter.splitLine(separatorLine)
+        );
+    }
+
+    public hasValidSeparators(separator: string[]): boolean {
         if (!separator || separator.length < 1 || !separator[1])
             return false;
 

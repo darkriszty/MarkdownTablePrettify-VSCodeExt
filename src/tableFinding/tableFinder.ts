@@ -3,7 +3,6 @@ import { EOL } from "os";
 import { TableValidator } from "../modelFactory/tableValidator";
 
 export class TableFinder {
-    private readonly _separatorMarker = "-|-";
     constructor(
         private readonly _tableValidator: TableValidator
     ) { }
@@ -28,7 +27,7 @@ export class TableFinder {
         // look for the separator row, assume table starts 1 row before & ends when invalid
         let rowIndex = startAtRow;
         while (rowIndex < rows.length) {
-            let table = rows[rowIndex].indexOf(this._separatorMarker) >= 0
+            let table = this._tableValidator.lineIsValidSeparator(rows[rowIndex])
                 ? this.getTableFromSeparatorIndex(rows, rowIndex)
                 : null;
             if (table != null) return table;

@@ -14,7 +14,7 @@ export class SelectionInterpreter {
         return this.allRows(selection).filter((v, i) => i == 1)[0];
     }
 
-    private splitLine(line: string): string[] {
+    public splitLine(line: string): string[] {
         if (line == null || line.length == 0) return [];
 
         let result:string[] = [],
