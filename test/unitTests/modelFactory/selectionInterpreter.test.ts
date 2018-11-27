@@ -123,7 +123,34 @@ suite("SelectionInterpreter tests", () => {
         assert.equal(separator[1], "-");
     });
 
-    function createSut(): SelectionInterpreter {
-        return new SelectionInterpreter();
+    test("allRows() in strict mode returns empty lines", () => {
+        const text = "line1\r\nline2\r\n";
+        const sut = createSut(true);
+
+        const rows = sut.allRows(text);
+
+        assert.equal(rows.length, 3);
+        assert.equal(rows[0].length, 1);
+        assert.equal(rows[1].length, 1);
+        assert.equal(rows[2].length, 0);
+        assert.equal(rows[0][0], "line1");
+        assert.equal(rows[1][0], "line2");
+    });
+
+    test("allRows() in non-strict mode skips empty lines", () => {
+        const text = "line1\r\nline2\r\n";
+        const sut = createSut(false);
+
+        const rows = sut.allRows(text);
+
+        assert.equal(rows.length, 2);
+        assert.equal(rows[0].length, 1);
+        assert.equal(rows[1].length, 1);
+        assert.equal(rows[0][0], "line1");
+        assert.equal(rows[1][0], "line2");
+    });
+
+    function createSut(strict: boolean = false): SelectionInterpreter {
+        return new SelectionInterpreter(strict);
     }
 });

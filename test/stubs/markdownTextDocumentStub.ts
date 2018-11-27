@@ -43,6 +43,7 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
     }
 
     getText(range?: vscode.Range): string {
+        range = range == null ? this.getFullRange() : range;
         let buffer: string = "";
         for (let row = range.start.line; row < range.end.line; row++) {
             const isFirstRow = row == range.start.line;
@@ -74,12 +75,12 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
         return new vscode.Range[0];
     }
     validateRange(range: vscode.Range): vscode.Range {
-        return new vscode.Range[0];
+        return range;
     }
     positionAt(offset: number): vscode.Position {
         return new vscode.Position[0];
     }
     validatePosition(position: vscode.Position): vscode.Position {
-        return new vscode.Position[0];
+        return position;
     }
 }

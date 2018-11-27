@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
-import { TableRangePrettyfier } from "../../src/extension/tableRangePrettyfier";
+import { TableDocumentRangePrettyfier } from "../../src/extension/tableDocumentRangePrettyfier";
 import { TableFactory } from "../../src/modelFactory/tableFactory";
 import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
 import { TableValidator } from "../../src/modelFactory/tableValidator";
@@ -51,14 +51,14 @@ export class PrettyfierFromFile {
         return fs.readFileSync(path.resolve(__dirname, fileName), 'utf-8');
     }
 
-    private createPrettyfier(): TableRangePrettyfier {
-        return new TableRangePrettyfier(
+    private createPrettyfier(): TableDocumentRangePrettyfier {
+        return new TableDocumentRangePrettyfier(
             new TableFactory(
                 new AlignmentFactory(),
-                new SelectionInterpreter(),
+                new SelectionInterpreter(false),
                 new TrimmerTransformer(new BorderTransformer(null))
             ),
-            new TableValidator(new SelectionInterpreter()),
+            new TableValidator(new SelectionInterpreter(false)),
             new TableViewModelFactory(new RowViewModelFactory(
                 new ContentPadCalculator(new PadCalculatorSelector(), " "), 
                 new AlignmentMarkerStrategy(":")

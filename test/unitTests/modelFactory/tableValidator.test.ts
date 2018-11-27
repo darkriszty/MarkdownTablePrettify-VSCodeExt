@@ -157,6 +157,6 @@ suite("TableValidator tests", () => {
     });
 
     function createSut(selectionInterpreter: SelectionInterpreter = null): TableValidator {
-        return new TableValidator(selectionInterpreter == null ? new SelectionInterpreter(): selectionInterpreter);
+        return new TableValidator(selectionInterpreter == null ? new SelectionInterpreter(false): selectionInterpreter);
     }
 });
