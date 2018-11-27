@@ -10,14 +10,14 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 - Create missing ending table border if the beginning already has a border, so the table _will end_ with "|".
 - Save space by not right-padding the last column if the table has no border.
 - Support empty columns inside tables.
-- Support character lengths for Chinese, Japanese and Korean characters.
+- Support column alignment options with ":".
 
 ![feature X](assets/animation.gif)
 
 ## Extension Settings
 
-The extension is available for markdown (_.md_) files. To format a table just select the entire table, then right click to format the selection.
+The extension is available for markdown language mode. It can either format a selected table (`Format Selection`) or the entire document (`Format Document`).
 
 ## Known Issues
 
-- Formatting multiple tables at once is not supported (issue #7).
+- Tables with mixed character widths (eg: CJK) are not always properly formatted (issue #4).
