@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",

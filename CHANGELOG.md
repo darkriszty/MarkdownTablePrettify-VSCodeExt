@@ -5,6 +5,8 @@ All notable changes to the `markdowntableprettify` extension will be documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 2.3.0 - 2018-11-27
 ### Added
 - Issue #7: Support formatting all tables in the document.
 
