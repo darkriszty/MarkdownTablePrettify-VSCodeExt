@@ -68,7 +68,7 @@ export class TableFinder {
     private getRangeForLines(rows: string[], startLine: number, endLine: number): vscode.Range {
         return new vscode.Range(
             new vscode.Position(startLine, 0),
-            new vscode.Position(endLine, rows[endLine - 1].length)
+            new vscode.Position(endLine, rows[endLine].length)
         );
     }
 }
