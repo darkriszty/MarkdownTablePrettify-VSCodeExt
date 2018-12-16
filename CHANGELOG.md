@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## 2.3.0 - 2018-11-27
+## 2.3.0 - 2018-12-16
 ### Added
 - Issue #7: Support formatting all tables in the document.
 
