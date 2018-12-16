@@ -124,7 +124,7 @@ suite("TableFactory tests", () => {
 
     function createFactory(selectionInterpreter: SelectionInterpreter = null): TableFactory {
         return new TableFactory(_alignmentFactoryMock.object, 
-            selectionInterpreter == null ? new SelectionInterpreter() : selectionInterpreter, 
+            selectionInterpreter == null ? new SelectionInterpreter(false) : selectionInterpreter, 
             _transformer.object);
     }
 });

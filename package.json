@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -33,13 +33,13 @@
     "test": "gulp copy-systemTest-resources && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "@types/mocha": "~5.2.0",
-    "@types/node": "~10.9.4",
+    "@types/mocha": "~5.2.5",
+    "@types/node": "~10.12.15",
     "gulp": "~4.0.0",
     "mocha": "~5.2.0",
-    "typemoq": "~1.8.0",
-    "typescript": "~3.0.3",
-    "vscode": "~1.1.21"
+    "typemoq": "~2.1.0",
+    "typescript": "~3.2.2",
+    "vscode": "~1.1.26"
   },
   "license": "MIT"
 }
