@@ -29,16 +29,21 @@ export class PrettyfierFromFile {
     }
 
     public assertPrettyfiedAsExpected(fileNamePrefix: string): void {
-        const inputFileContents = this.readFileContents(`${fileNamePrefix}-input.md`);
-        const edits = this.makeTextEdit(inputFileContents);
-        const expectedFileContents = this.readFileContents(`${fileNamePrefix}-expected.md`);
-        this.assertEditsPrettyfied(inputFileContents, edits, expectedFileContents);
+        vscode.workspace.openTextDocument(`${fileNamePrefix}-input.md`)
+            .then(inputDocument => {
+                const edits = this.formatFile(inputDocument);
+                const expectedFileContents = this.readFileContents(`${fileNamePrefix}-expected.md`);
+                this.assertEditsPrettyfied(inputDocument, edits, expectedFileContents);
+            });
     }
 
-    private assertEditsPrettyfied(originalInput: string, edits: vscode.TextEdit[], expected: string): void {
-        const doc = new MarkdownTextDocumentStub(originalInput);
-        doc.applyEdits(edits);
-        const actual = doc.getText();
+    private assertEditsPrettyfied(inputDocument: vscode.TextDocument, edits: vscode.TextEdit[], expected: string): void {
+        let actual = inputDocument.getText();
+        for (let edit of edits) {
+            const startIndex = inputDocument.offsetAt(edit.range.start);
+            const endIndex = inputDocument.offsetAt(inputDocument.validatePosition(edit.range.end));
+            actual = actual.substring(0, startIndex) + edit.newText + actual.substring(endIndex);
+        }
 
         const expectedLines = expected.split(/\r\n|\r|\n/);
         const actualLines = actual.split(/\r\n|\r|\n/);
@@ -48,13 +53,16 @@ export class PrettyfierFromFile {
             assert.equal(actualLines[i], expectedLines[i]);
     }
 
-    private makeTextEdit(fileContents: string): vscode.TextEdit[] {
-        const doc = new MarkdownTextDocumentStub(fileContents);
+    private formatFile(doc: vscode.TextDocument): vscode.TextEdit[] {
         return this.createPrettyfier().provideDocumentFormattingEdits(doc, null, null);
     }
 
     private readFileContents(fileName: string) {
-        return fs.readFileSync(path.resolve(__dirname, fileName), 'utf-8');
+        return fs.readFileSync(this.pathFor(fileName), 'utf-8');
+    }
+
+    private pathFor(fileName: string) {
+        return path.resolve(__dirname, fileName);
     }
 
     private createPrettyfier(): TableDocumentPrettyfier {

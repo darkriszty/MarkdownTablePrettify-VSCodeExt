@@ -38,24 +38,6 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
         );
     }
 
-    applyEdits(edits: vscode.TextEdit[]): void {
-        let original = this._lines.join(EOL);
-        for (let edit of edits) {
-            const startIndex = this.indexOf(edit.range.start);
-            const endIndex = this.indexOf(edit.range.end);
-            original = original.substring(0, startIndex) + edit.newText + original.substring(endIndex);
-        }
-        this.setLines(original);
-    }
-
-    indexOf(position: vscode.Position): number {
-        let result = 0;
-        for (let i = 0; i < position.line; i++) {
-            result += this._lines[i].length;
-        }
-        result += position.character;
-        return result;
-    }
 
     lineAt(param: number): vscode.TextLine;
     lineAt(param: vscode.Position): vscode.TextLine;

@@ -38,7 +38,7 @@ suite("TableFinder tests", () => {
         let tableRanges = sut.getTables(document);
 
         assert.equal(tableRanges.length, 1);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(0, 0, 3, 27));
+        assert.deepStrictEqual(tableRanges[0], new vscode.Range(0, 0, 3, Number.MAX_SAFE_INTEGER));
     });
 
     test("getTables() for single table the expected range is returned", () => {
@@ -53,7 +53,7 @@ suite("TableFinder tests", () => {
         let tableRanges = sut.getTables(document);
 
         assert.equal(tableRanges.length, 1);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, 27));
+        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
     });
 
     test("getTables() for two tables the expected ranges are returned", () => {
@@ -72,8 +72,8 @@ suite("TableFinder tests", () => {
         let tableRanges = sut.getTables(document);
 
         assert.equal(tableRanges.length, 2);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, 27));
-        assert.deepStrictEqual(tableRanges[1], new vscode.Range(6, 0, 9, 27));
+        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(tableRanges[1], new vscode.Range(6, 0, 9, Number.MAX_SAFE_INTEGER));
     });
 
     test("getTables() jumps over invalid tables", () => {
@@ -95,8 +95,8 @@ suite("TableFinder tests", () => {
         let tableRanges = sut.getTables(document);
 
         assert.equal(tableRanges.length, 2);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, 27));
-        assert.deepStrictEqual(tableRanges[1], new vscode.Range(9, 0, 12, 27));
+        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(tableRanges[1], new vscode.Range(9, 0, 12, Number.MAX_SAFE_INTEGER));
     });
 
     test("getTables() for table with alignments the expected range is returned", () => {
@@ -111,7 +111,7 @@ suite("TableFinder tests", () => {
         let tableRanges = sut.getTables(document);
 
         assert.equal(tableRanges.length, 1);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, 27));
+        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
     });
 
     function getSut() {

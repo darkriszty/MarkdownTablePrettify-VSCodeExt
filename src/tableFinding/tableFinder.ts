@@ -16,7 +16,7 @@ export class TableFinder {
             let { tableStartRow, tableEndRow } = this.getNextResult(rows, previousRowIndex);
             if (tableStartRow == null || tableEndRow == null)
                 break;
-            result.push(this.getRangeForLines(rows, tableStartRow, tableEndRow));
+            result.push(this.getRangeForLines(tableStartRow, tableEndRow));
             previousRowIndex = tableEndRow;
         }
 
@@ -54,7 +54,7 @@ export class TableFinder {
         // make sure there is at least 1 row after the separator
         return tableEndRow > separatorRowIndex + 1
             ? {
-                tableStartRow: tableStartRow ,
+                tableStartRow: tableStartRow,
                 tableEndRow: tableEndRow - 1
             }
             : null;
@@ -65,10 +65,10 @@ export class TableFinder {
         return relevantRows.join(EOL);
     }
 
-    private getRangeForLines(rows: string[], startLine: number, endLine: number): vscode.Range {
+    private getRangeForLines(startLine: number, endLine: number): vscode.Range {
         return new vscode.Range(
             new vscode.Position(startLine, 0),
-            new vscode.Position(endLine, rows[endLine].length)
+            new vscode.Position(endLine, Number.MAX_SAFE_INTEGER) // avoid calculating the column in the editor, this will be validated by vscode
         );
     }
 }
