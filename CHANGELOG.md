@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## 2.4.0 - 2019-05-11
+### Added
+- Issue #28: Add the possibility to disable window messages from the extension
+
 ## 2.3.0 - 2018-12-16
 ### Added
 - Issue #7: Support formatting all tables in the document.
