@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -22,7 +22,19 @@
     "onLanguage:markdown"
   ],
   "main": "./out/src/extension/extension",
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Markdown Table Prettifier Configuration",
+      "properties": {
+        "markdownTablePrettify.showWindowMessages": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether or not show window messages."
+        }
+      }
+    }
+  },
   "capabilities": {
     "documentFormattingProvider": "true"
   },
@@ -39,7 +51,7 @@
     "mocha": "~5.2.0",
     "typemoq": "~2.1.0",
     "typescript": "~3.2.2",
-    "vscode": "~1.1.26"
+    "vscode": "^1.1.34"
   },
   "license": "MIT"
 }

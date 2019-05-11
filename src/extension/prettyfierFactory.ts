@@ -31,7 +31,10 @@ export function getDocumentRangePrettyfier(strict: boolean = false) {
             )
         ),
         new TableStringWriter(),
-        [new VsWindowLogger(), new ConsoleLogger()]
+        [
+            ...(canShowWindowMessages() ? [ new VsWindowLogger() ] : []),
+            new ConsoleLogger()
+        ]
     );
 }
 
@@ -40,4 +43,12 @@ export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFo
         new TableFinder(new TableValidator(new SelectionInterpreter(strict))), 
         getDocumentRangePrettyfier(strict)
     );
+}
+
+function canShowWindowMessages(): boolean {
+    return getConfigurationValue<boolean>("showWindowMessages", true);
+}
+
+function getConfigurationValue<T>(key: string, defaultValue: T): T {
+    return vscode.workspace.getConfiguration("markdownTablePrettify").get(key, defaultValue);
 }
