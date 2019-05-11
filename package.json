@@ -22,7 +22,19 @@
     "onLanguage:markdown"
   ],
   "main": "./out/src/extension/extension",
-  "contributes": {},
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Markdown Table Prettifier Configuration",
+      "properties": {
+        "markdownTablePrettify.showWindowMessages": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether or not show window messages."
+        }
+      }
+    }
+  },
   "capabilities": {
     "documentFormattingProvider": "true"
   },
