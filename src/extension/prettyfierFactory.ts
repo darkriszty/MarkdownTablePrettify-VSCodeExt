@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
+import { SizeLimitChecker } from './sizeLimitCheker';
 import { TableDocumentPrettyfier } from './tableDocumentPrettyfier';
 import { TableFinder } from '../tableFinding/tableFinder';
 import { TableDocumentRangePrettyfier } from "./tableDocumentRangePrettyfier";
+import { ILogger } from '../diagnostics/logger';
 import { ConsoleLogger } from '../diagnostics/consoleLogger';
 import { VsWindowLogger } from '../diagnostics/vsWindowLogger';
 import { TableFactory } from "../modelFactory/tableFactory";
@@ -17,7 +19,10 @@ import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
 
-export function getDocumentRangePrettyfier(strict: boolean = false) {
+export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: SizeLimitChecker = null, loggers: ILogger[] = null) {
+    loggers = loggers || getLoggers();
+    sizeLimitCheker = sizeLimitCheker || getSizeLimitChecker(loggers);
+
     return new TableDocumentRangePrettyfier(
         new TableFactory(
             new AlignmentFactory(), new SelectionInterpreter(strict), 
@@ -31,22 +36,33 @@ export function getDocumentRangePrettyfier(strict: boolean = false) {
             )
         ),
         new TableStringWriter(),
-        [
-            ...(canShowWindowMessages() ? [ new VsWindowLogger() ] : []),
-            new ConsoleLogger()
-        ]
+        loggers,
+        sizeLimitCheker
     );
 }
 
 export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFormattingEditProvider {
+    const loggers = getLoggers();
+    const sizeLimitCheker = getSizeLimitChecker(loggers);
+
     return new TableDocumentPrettyfier(
         new TableFinder(new TableValidator(new SelectionInterpreter(strict))), 
-        getDocumentRangePrettyfier(strict)
+        getDocumentRangePrettyfier(strict, sizeLimitCheker, loggers),
+        sizeLimitCheker
     );
 }
 
-function canShowWindowMessages(): boolean {
-    return getConfigurationValue<boolean>("showWindowMessages", true);
+function getLoggers(): ILogger[] {
+    const canShowWindowMessages = getConfigurationValue<boolean>("showWindowMessages", true);
+    return [
+        ...(canShowWindowMessages ? [ new VsWindowLogger() ] : []),
+        new ConsoleLogger()
+    ]
+}
+
+function getSizeLimitChecker(loggers: ILogger[]): SizeLimitChecker {
+    const maxTextLength = getConfigurationValue<number>("maxTextLength", 1000000);
+    return new SizeLimitChecker(loggers, maxTextLength);
 }
 
 function getConfigurationValue<T>(key: string, defaultValue: T): T {

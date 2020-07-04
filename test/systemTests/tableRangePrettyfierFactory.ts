@@ -2,24 +2,24 @@ import * as assert from 'assert';
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
+import { SizeLimitChecker } from '../../src/extension/sizeLimitCheker';
+import { TableDocumentPrettyfier } from '../../src/extension/tableDocumentPrettyfier';
 import { TableDocumentRangePrettyfier } from "../../src/extension/tableDocumentRangePrettyfier";
-import { TableFactory } from "../../src/modelFactory/tableFactory";
-import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
-import { TableValidator } from "../../src/modelFactory/tableValidator";
-import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
-import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
-import { ContentPadCalculator } from "../../src/padCalculation/contentPadCalculator";
-import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { ILogger } from "../../src/diagnostics/logger";
 import { ConsoleLogger } from '../../src/diagnostics/consoleLogger';
-import { MarkdownTextDocumentStub } from "../stubs/markdownTextDocumentStub";
+import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
+import { SelectionInterpreter } from '../../src/modelFactory/selectionInterpreter';
 import { TrimmerTransformer } from '../../src/modelFactory/transformers/trimmerTransformer';
 import { BorderTransformer } from '../../src/modelFactory/transformers/borderTransformer';
-import { SelectionInterpreter } from '../../src/modelFactory/selectionInterpreter';
+import { TableFactory } from "../../src/modelFactory/tableFactory";
+import { TableValidator } from "../../src/modelFactory/tableValidator";
+import { ContentPadCalculator } from "../../src/padCalculation/contentPadCalculator";
 import { PadCalculatorSelector } from '../../src/padCalculation/padCalculatorSelector';
-import { AlignmentMarkerStrategy } from '../../src/viewModelFactories/alignmentMarking';
-import { TableDocumentPrettyfier } from '../../src/extension/tableDocumentPrettyfier';
 import { TableFinder } from '../../src/tableFinding/tableFinder';
+import { AlignmentMarkerStrategy } from '../../src/viewModelFactories/alignmentMarking';
+import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
+import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
+import { TableStringWriter } from "../../src/writers/tableStringWriter";
 
 export class PrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -80,8 +80,10 @@ export class PrettyfierFromFile {
                     new AlignmentMarkerStrategy(":")
                 )),
                 new TableStringWriter(),
-                [ this._logger ]
-            )
+                [ this._logger ],
+                new SizeLimitChecker([ this._logger ], 50000)
+            ),
+            new SizeLimitChecker([ this._logger ], 50000)
         );
     }
 }

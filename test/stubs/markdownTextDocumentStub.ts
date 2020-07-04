@@ -11,6 +11,8 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
     version: number;
     isDirty: boolean;
     lineCount: number;
+    isClosed: boolean;
+    eol: vscode.EndOfLine;
 
     constructor(text: string) {
         this.setLines(text);
