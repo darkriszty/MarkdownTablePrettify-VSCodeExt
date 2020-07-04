@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { SizeLimitChecker } from "./sizeLimitCheker";
 import { ILogger } from "../diagnostics/logger";
 import { SelectionBasedLogToogler } from "../diagnostics/selectionBasedLogToogler";
 import { Table } from "../models/table";
@@ -11,11 +12,12 @@ import { TableStringWriter } from "../writers/tableStringWriter";
 export class TableDocumentRangePrettyfier implements vscode.DocumentRangeFormattingEditProvider {
 
     constructor(
-        private _tableFactory: TableFactory,
-        private _tableValidator: TableValidator,
-        private _viewModelFactory: TableViewModelFactory,
-        private _writer: TableStringWriter,
-        private _loggers: ILogger[]
+        private readonly _tableFactory: TableFactory,
+        private readonly _tableValidator: TableValidator,
+        private readonly _viewModelFactory: TableViewModelFactory,
+        private readonly _writer: TableStringWriter,
+        private readonly _loggers: ILogger[],
+        private readonly _sizeLimitChecker: SizeLimitChecker
     ) { }
 
     public provideDocumentRangeFormattingEdits(
@@ -29,7 +31,9 @@ export class TableDocumentRangePrettyfier implements vscode.DocumentRangeFormatt
         let message: string = null;
 
         try {
-            if (this._tableValidator.isValid(selection)) {
+            if (!this._sizeLimitChecker.isWithinAllowedSizeLimit(selection)) {
+                return result;
+            } else if (this._tableValidator.isValid(selection)) {
                 const table: Table = this._tableFactory.getModel(selection);
                 const tableVm: TableViewModel = this._viewModelFactory.build(table);
                 const formattedTable: string = this._writer.writeTable(tableVm);
@@ -47,7 +51,7 @@ export class TableDocumentRangePrettyfier implements vscode.DocumentRangeFormatt
         return result;
     }
 
-    private toogleLogging(document: vscode.TextDocument, range: vscode.Range) {
+    private toogleLogging(document: vscode.TextDocument, range: vscode.Range): void {
         const toogler = new SelectionBasedLogToogler(document, range);
         toogler.toogleLoggers(this._loggers);
     }

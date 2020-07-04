@@ -1,6 +1,7 @@
 import * as assert from "assert";
 import { IMock, Mock, It, Times } from "typemoq";
 import { TableDocumentRangePrettyfier } from "../../../src/extension/tableDocumentRangePrettyfier";
+import { SizeLimitChecker } from "../../../src/extension/sizeLimitCheker";
 import { TableFactory } from "../../../src/modelFactory/tableFactory";
 import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
@@ -16,6 +17,7 @@ suite("TableDocumentRangePrettyfier tests", () => {
     let _viewModelFactory: IMock<TableViewModelFactory>;
     let _writer: IMock<TableStringWriter>;
     let _logger: IMock<ILogger>;
+    let _sizeLimitChecker: IMock<SizeLimitChecker>;
 
     setup(() => {
         _tableFactory = Mock.ofType<TableFactory>();
@@ -23,6 +25,7 @@ suite("TableDocumentRangePrettyfier tests", () => {
         _viewModelFactory = Mock.ofType<TableViewModelFactory>();
         _writer = Mock.ofType<TableStringWriter>();
         _logger = Mock.ofType<ILogger>();
+        _sizeLimitChecker = Mock.ofType<SizeLimitChecker>()
     });
 
     test("provideDocumentRangeFormattingEdits() calls table validator", () => {
@@ -121,11 +124,29 @@ suite("TableDocumentRangePrettyfier tests", () => {
         _logger.verify(_ => _.logInfo(It.isAny()), Times.once());
     });
 
+    test("provideDocumentRangeFormattingEdits() doesn't call table writer for input too large", () => {
+        const sut = createSut(false);
+        const document = makeDocument("hello");
+        _tableValidator.setup(_ => _.isValid(It.isAny())).returns(() => false);
+
+        sut.provideDocumentRangeFormattingEdits(document, document.getFullRange(), null, null);
+
+        _writer.verify(_ => _.writeTable(It.isAny()), Times.never());
+    });
+
     function makeDocument(fileContents) {
         return new MarkdownTextDocumentStub(fileContents);
     }
 
-    function createSut() {
-        return new TableDocumentRangePrettyfier(_tableFactory.object, _tableValidator.object, _viewModelFactory.object, _writer.object, [ _logger.object ]);
+    function createSut(sizeWithinLimit: boolean = true) {
+        _sizeLimitChecker.setup(_ => _.isWithinAllowedSizeLimit(It.isAny())).returns(() => sizeWithinLimit);
+
+        return new TableDocumentRangePrettyfier(
+            _tableFactory.object,
+            _tableValidator.object,
+            _viewModelFactory.object,
+            _writer.object,
+            [ _logger.object ],
+            _sizeLimitChecker.object);
     }
 });

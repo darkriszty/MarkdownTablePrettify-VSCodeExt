@@ -31,6 +31,11 @@
           "type": "boolean",
           "default": true,
           "description": "Whether or not show window messages."
+        },
+        "markdownTablePrettify.maxTextLength": {
+          "type": "integer",
+          "default": 1000000,
+          "description": "The maximum text length to apply formatting to."
         }
       }
     }
