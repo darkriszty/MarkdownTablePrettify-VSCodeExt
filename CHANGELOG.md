@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## 2.5.0 - 2020-07-04
+### Added
+- Issue #30: Add configurable text limit for table formatting
+
 ## 2.4.0 - 2019-05-11
 ### Added
 - Issue #28: Add the possibility to disable window messages from the extension
