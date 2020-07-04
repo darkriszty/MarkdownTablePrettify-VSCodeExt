@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { IMock, Mock, It, Times } from "typemoq";
+import { IMock, Mock } from "typemoq";
 import { SizeLimitChecker } from '../../../src/extension/sizeLimitCheker';
 import { ILogger } from '../../../src/diagnostics/logger';
 
