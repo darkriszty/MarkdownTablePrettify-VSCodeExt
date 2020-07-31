@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { IMock, Mock, It, Times } from "typemoq";
 import { TableDocumentRangePrettyfier } from "../../../src/extension/tableDocumentRangePrettyfier";
-import { SizeLimitChecker } from "../../../src/prettyfiers/sizeLimitCheker";
+import { ConfigSizeLimitChecker } from "../../../src/prettyfiers/sizeLimit/configSizeLimitCheker";
 import { TableFactory } from "../../../src/modelFactory/tableFactory";
 import { TableValidator } from "../../../src/modelFactory/tableValidator";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
@@ -17,7 +17,7 @@ suite("TableDocumentRangePrettyfier tests", () => {
     let _viewModelFactory: IMock<TableViewModelFactory>;
     let _writer: IMock<TableStringWriter>;
     let _logger: IMock<ILogger>;
-    let _sizeLimitChecker: IMock<SizeLimitChecker>;
+    let _sizeLimitChecker: IMock<ConfigSizeLimitChecker>;
 
     setup(() => {
         _tableFactory = Mock.ofType<TableFactory>();
@@ -25,7 +25,7 @@ suite("TableDocumentRangePrettyfier tests", () => {
         _viewModelFactory = Mock.ofType<TableViewModelFactory>();
         _writer = Mock.ofType<TableStringWriter>();
         _logger = Mock.ofType<ILogger>();
-        _sizeLimitChecker = Mock.ofType<SizeLimitChecker>()
+        _sizeLimitChecker = Mock.ofType<ConfigSizeLimitChecker>()
     });
 
     test("provideDocumentRangeFormattingEdits() calls table validator", () => {

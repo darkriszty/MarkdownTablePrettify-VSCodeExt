@@ -1,7 +1,7 @@
-import { SizeLimitChecker } from "./sizeLimitCheker";
 import { Document } from "../models/doc/document";
 import { Range } from "../models/doc/range";
 import { TableFinder } from "../tableFinding/tableFinder";
+import { SizeLimitChecker } from "./sizeLimit/sizeLimitChecker";
 import { SingleTablePrettyfier } from "./singleTablePrettyfier";
 
 export class MultiTablePrettyfier {

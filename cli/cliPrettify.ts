@@ -2,19 +2,19 @@ import { MultiTablePrettyfier } from "../src/prettyfiers/multiTablePrettyfier";
 import { TableFinder } from "../src/tableFinding/tableFinder";
 import { TableValidator } from "../src/modelFactory/tableValidator";
 import { SelectionInterpreter } from "../src/modelFactory/selectionInterpreter";
-import { SingleTablePrettyfier } from "../src/prettyfiers/singleTablePrettyfier";
 import { TableFactory } from "../src/modelFactory/tableFactory";
 import { AlignmentFactory } from "../src/modelFactory/alignmentFactory";
 import { TrimmerTransformer } from "../src/modelFactory/transformers/trimmerTransformer";
 import { BorderTransformer } from "../src/modelFactory/transformers/borderTransformer";
 import { ConsoleLogger } from "../src/diagnostics/consoleLogger";
+import { SingleTablePrettyfier } from "../src/prettyfiers/singleTablePrettyfier";
+import { NoSizeLimitChecker } from "../src/prettyfiers/sizeLimit/noSizeLimitChecker";
 import { TableViewModelFactory } from "../src/viewModelFactories/tableViewModelFactory";
 import { RowViewModelFactory } from "../src/viewModelFactories/rowViewModelFactory";
 import { ContentPadCalculator } from "../src/padCalculation/contentPadCalculator";
 import { PadCalculatorSelector } from "../src/padCalculation/padCalculatorSelector";
 import { AlignmentMarkerStrategy } from "../src/viewModelFactories/alignmentMarking";
 import { TableStringWriter } from "../src/writers/tableStringWriter";
-import { SizeLimitChecker } from "../src/prettyfiers/sizeLimitCheker";
 
 export class CliPrettify {
 
@@ -40,9 +40,9 @@ export class CliPrettify {
                 )),
                 new TableStringWriter(),
                 [ logger ],
-                new SizeLimitChecker([ logger ], 1000000) //TODO: extract an interface and implement and use an "NoSizeLimitChecker"
+                new NoSizeLimitChecker()
             ),
-            new SizeLimitChecker([ logger ], 1000000)
+            new NoSizeLimitChecker()
         );
     }
 }

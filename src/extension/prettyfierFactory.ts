@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { SizeLimitChecker } from '../prettyfiers/sizeLimitCheker';
+import { ConfigSizeLimitChecker } from '../prettyfiers/sizeLimit/configSizeLimitCheker';
 import { TableDocumentPrettyfier } from './tableDocumentPrettyfier';
 import { TableFinder } from '../tableFinding/tableFinder';
 import { TableDocumentRangePrettyfier } from "./tableDocumentRangePrettyfier";
@@ -19,7 +19,7 @@ import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
 
-export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: SizeLimitChecker = null, loggers: ILogger[] = null) {
+export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: ConfigSizeLimitChecker = null, loggers: ILogger[] = null) {
     loggers = loggers || getLoggers();
     sizeLimitCheker = sizeLimitCheker || getSizeLimitChecker(loggers);
 
@@ -60,9 +60,9 @@ function getLoggers(): ILogger[] {
     ]
 }
 
-function getSizeLimitChecker(loggers: ILogger[]): SizeLimitChecker {
+function getSizeLimitChecker(loggers: ILogger[]): ConfigSizeLimitChecker {
     const maxTextLength = getConfigurationValue<number>("maxTextLength", 1000000);
-    return new SizeLimitChecker(loggers, maxTextLength);
+    return new ConfigSizeLimitChecker(loggers, maxTextLength);
 }
 
 function getConfigurationValue<T>(key: string, defaultValue: T): T {

@@ -1,7 +1,5 @@
-import { SizeLimitChecker } from "./sizeLimitCheker";
 import { ILogger } from "../diagnostics/logger";
 import { Document } from "../models/doc/document";
-import { Line } from "../models/doc/line";
 import { Range } from "../models/doc/range";
 import { Table } from "../models/table";
 import { TableFactory } from "../modelFactory/tableFactory";
@@ -9,6 +7,7 @@ import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { TableViewModelFactory } from "../viewModelFactories/tableViewModelFactory";
 import { TableStringWriter } from "../writers/tableStringWriter";
+import { SizeLimitChecker } from "./sizeLimit/sizeLimitChecker";
 
 export class SingleTablePrettyfier {
 

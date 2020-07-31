@@ -1,9 +1,9 @@
 import * as assert from 'assert';
 import { IMock, Mock } from "typemoq";
-import { SizeLimitChecker } from '../../../src/prettyfiers/sizeLimitCheker';
-import { ILogger } from '../../../src/diagnostics/logger';
+import { ConfigSizeLimitChecker } from '../../../../src/prettyfiers/sizeLimit/configSizeLimitCheker';
+import { ILogger } from '../../../../src/diagnostics/logger';
 
-suite("SizeLimitCheker Tests", () => {
+suite("ConfigSizeLimitCheker Tests", () => {
 
     let _logger: IMock<ILogger>;
 
@@ -43,7 +43,7 @@ suite("SizeLimitCheker Tests", () => {
         assert.equal(result, false);
     });
 
-    function createSut(limit: number = 100): SizeLimitChecker {
-        return new SizeLimitChecker([_logger.object], limit);
+    function createSut(limit: number = 100): ConfigSizeLimitChecker {
+        return new ConfigSizeLimitChecker([_logger.object], limit);
     }
 });

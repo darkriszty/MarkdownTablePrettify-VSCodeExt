@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
-import { SizeLimitChecker } from '../../src/prettyfiers/sizeLimitCheker';
+import { ConfigSizeLimitChecker } from '../../src/prettyfiers/sizeLimit/configSizeLimitCheker';
 import { TableDocumentPrettyfier } from '../../src/extension/tableDocumentPrettyfier';
 import { TableDocumentRangePrettyfier } from "../../src/extension/tableDocumentRangePrettyfier";
 import { ILogger } from "../../src/diagnostics/logger";
@@ -81,9 +81,9 @@ export class VsPrettyfierFromFile {
                 )),
                 new TableStringWriter(),
                 [ this._logger ],
-                new SizeLimitChecker([ this._logger ], 50000)
+                new ConfigSizeLimitChecker([ this._logger ], 50000)
             ),
-            new SizeLimitChecker([ this._logger ], 50000)
+            new ConfigSizeLimitChecker([ this._logger ], 50000)
         );
     }
 }

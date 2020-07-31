@@ -5,7 +5,7 @@ import { CliPrettify } from '../../cli/cliPrettify';
 
 fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
     suite("CLI Prettyfier system tests", () => {
-        let distinctTests: string[] = files.map(f => f.split("-")[0]).filter((item, i, s) => s.lastIndexOf(item) == i);
+        const distinctTests: string[] = files.map(f => f.split("-")[0]).filter((item, i, s) => s.lastIndexOf(item) == i);
 
         for (let fileNameRoot of distinctTests) {
             test(`[${fileNameRoot}]`, () => {

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { SizeLimitChecker } from "../prettyfiers/sizeLimitCheker";
+import { ConfigSizeLimitChecker } from "../prettyfiers/sizeLimit/configSizeLimitCheker";
 import { ILogger } from "../diagnostics/logger";
 import { SelectionBasedLogToogler } from "../diagnostics/selectionBasedLogToogler";
 import { Document } from "../models/doc/document";
@@ -19,7 +19,7 @@ export class TableDocumentRangePrettyfier implements vscode.DocumentRangeFormatt
         private readonly _viewModelFactory: TableViewModelFactory,
         private readonly _writer: TableStringWriter,
         private readonly _loggers: ILogger[],
-        private readonly _sizeLimitChecker: SizeLimitChecker
+        private readonly _sizeLimitChecker: ConfigSizeLimitChecker
     ) { }
 
     public provideDocumentRangeFormattingEdits(
