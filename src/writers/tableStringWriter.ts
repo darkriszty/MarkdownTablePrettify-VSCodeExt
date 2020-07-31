@@ -9,8 +9,8 @@ export class TableStringWriter {
         if (table.rows == null || table.rowCount == 0) throw new Error("Table must have rows.");
 
         let buffer = "";
-        buffer += this.writeRowViewModel(table.header, table);
-        buffer += this.writeRowViewModel(table.separator, table);
+        buffer += this.writeRowViewModel(table.header, table, true);
+        buffer += this.writeRowViewModel(table.separator, table, true);
         buffer += this.writeRows(table);
 
         return buffer;
@@ -19,12 +19,12 @@ export class TableStringWriter {
     private writeRows(table: TableViewModel): string {
         let buffer = "";
         for (let row = 0; row < table.rowCount; row++) {
-            buffer += this.writeRowViewModel(table.rows[row], table);
+            buffer += this.writeRowViewModel(table.rows[row], table, row != table.rowCount - 1);
         }
         return buffer;
     }
 
-    private writeRowViewModel(row: RowViewModel, table: TableViewModel): string {
+    private writeRowViewModel(row: RowViewModel, table: TableViewModel, addEndOfLine: boolean): string {
         let buffer = "";
         buffer += this.getLeftBorderIfNeeded(table);
         for (let col = 0; col < table.columnCount; col++) {
@@ -32,7 +32,8 @@ export class TableStringWriter {
             buffer += this.getSeparatorIfNeeded(table, col);
         }
         buffer += this.getRightBorderIfNeeded(table);
-
+        if (addEndOfLine)
+            buffer += row.EOL;
         return buffer;
     }
 

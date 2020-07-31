@@ -81,8 +81,8 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const sut = createFactory(_contentPadCalculator.object);
         const table = threeColumnTable();
         const rows: RowViewModel[] = [
-            new RowViewModel(["abc", "defghi"]),
-            new RowViewModel(["abcd", "efgh"])
+            new RowViewModel(["abc", "defghi"], "\n"),
+            new RowViewModel(["abcd", "efgh"], "\n")
         ];
 
         const separator = sut.buildSeparator(rows, table);
@@ -100,8 +100,8 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const sut = createFactory(_contentPadCalculator.object, alignmentStrategy.object);
         const table = threeColumnTable();
         const rows: RowViewModel[] = [
-            new RowViewModel(["abc", "defghi", "xyx"]),
-            new RowViewModel(["abcd", "efgh", "xyz"])
+            new RowViewModel(["abc", "defghi", "xyx"], "\n"),
+            new RowViewModel(["abcd", "efgh", "xyz"], "\n")
         ];
 
         sut.buildSeparator(rows, table);

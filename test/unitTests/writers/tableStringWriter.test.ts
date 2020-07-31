@@ -5,12 +5,13 @@ import { TableStringWriter } from "../../../src/writers/tableStringWriter";
 import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 
 suite("TableStringWriter tests", () => {
+    const eol = "\n";
 
     test("writeTable() with valid input writes the header on the first row", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = new RowViewModel(["c1", "c2"]);
-        input.separator = new RowViewModel(["-", "-"]);
-        input.rows = [ new RowViewModel(["v1", "v2"]) ];
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["-", "-"]);
+        input.rows = [ makeRowViewModel(["v1", "v2"]) ];
 
         const tableText: string = createSut().writeTable(input);
 
@@ -21,9 +22,9 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() with valid input writes the separator on the second row", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = new RowViewModel(["c1", "c2"]);
-        input.separator = new RowViewModel(["---", "--"]);
-        input.rows = [ new RowViewModel(["v1", "v2"]) ];
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["---", "--"]);
+        input.rows = [ makeRowViewModel(["v1", "v2"]) ];
 
         const tableText: string = createSut().writeTable(input);
 
@@ -34,12 +35,12 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() with valid input writes the rows from the 3rd row on", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = new RowViewModel(["c1", "c2"]);
-        input.separator = new RowViewModel(["-", "-"]);
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["-", "-"]);
         input.rows = [ 
-            new RowViewModel(["v1", "v2"]),
-            new RowViewModel(["v3", "v4"]),
-            new RowViewModel(["", "v5"])
+            makeRowViewModel(["v1", "v2"]),
+            makeRowViewModel(["v3", "v4"]),
+            makeRowViewModel(["", "v5"])
         ];
 
         const tableText: string = createSut().writeTable(input);
@@ -59,8 +60,8 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() table without header throws exception", () => {
         const input : TableViewModel = new TableViewModel();
-        input.separator = new RowViewModel([]);
-        input.rows = [ new RowViewModel([]) ];
+        input.separator = makeRowViewModel([]);
+        input.rows = [ makeRowViewModel([]) ];
 
         const writer = createSut();
 
@@ -69,8 +70,8 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() table without separator throws exception", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = new RowViewModel([]);
-        input.rows = [ new RowViewModel([]) ];
+        input.header = makeRowViewModel([]);
+        input.rows = [ makeRowViewModel([]) ];
 
         const writer = createSut();
 
@@ -79,8 +80,8 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() table with null rows throws exception", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = new RowViewModel([]);
-        input.separator = new RowViewModel([]);
+        input.header = makeRowViewModel([]);
+        input.separator = makeRowViewModel([]);
 
         const writer = createSut();
 
@@ -89,7 +90,7 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() table with no rows throws exception", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = new RowViewModel([]);
+        input.header = makeRowViewModel([]);
         input.rows = [ ];
 
         const writer = createSut();
@@ -100,12 +101,12 @@ suite("TableStringWriter tests", () => {
     test("writeTable() writes left borders on all rows for viewModel having hasLeftBorderSet", () => {
         const input : TableViewModel = new TableViewModel();
         input.hasLeftBorder = true;
-        input.header = new RowViewModel(["c1", "c2"]);
-        input.separator = new RowViewModel(["-", "-"]);
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["-", "-"]);
         input.rows = [ 
-            new RowViewModel(["v1", "v2"]),
-            new RowViewModel(["v3", "v4"]),
-            new RowViewModel(["v5", "v6"])
+            makeRowViewModel(["v1", "v2"]),
+            makeRowViewModel(["v3", "v4"]),
+            makeRowViewModel(["v5", "v6"])
         ];
 
         const tableText: string = createSut().writeTable(input);
@@ -121,12 +122,12 @@ suite("TableStringWriter tests", () => {
     test("writeTable() writes right borders on all rows for viewModel having hasRightBorderSet", () => {
         const input : TableViewModel = new TableViewModel();
         input.hasRightBorder = true;
-        input.header = new RowViewModel(["c1", "c2"]);
-        input.separator = new RowViewModel(["-", "-"]);
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["-", "-"]);
         input.rows = [ 
-            new RowViewModel(["v1", "v2"]),
-            new RowViewModel(["v3", "v4"]),
-            new RowViewModel(["v5", "v6"])
+            makeRowViewModel(["v1", "v2"]),
+            makeRowViewModel(["v3", "v4"]),
+            makeRowViewModel(["v5", "v6"])
         ];
 
         const tableText: string = createSut().writeTable(input);
@@ -138,6 +139,10 @@ suite("TableStringWriter tests", () => {
         assert.equal(lines[3], "v3|v4|");
         assert.equal(lines[4], "v5|v6|");
     });
+
+    function makeRowViewModel(values: string[]) {
+        return new RowViewModel(values, eol);
+    }
 
     function createSut() : TableStringWriter {
         return new TableStringWriter();

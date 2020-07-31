@@ -23,8 +23,8 @@ suite("TableViewModelFactory tests", () => {
             ["v1", "v2"],
             ["v3", "v4"],
         ]);
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
+        const expectedSeparator = new RowViewModel([], "");
+        const expectedRow = new RowViewModel([], "");
 
         _rowVmb
             .setup(m => m.buildSeparator(It.isAny(), It.isAny()))
@@ -47,8 +47,8 @@ suite("TableViewModelFactory tests", () => {
             ["v1", "v2"],
             ["v3", "v4"],
         ]);
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
+        const expectedSeparator = new RowViewModel([], "");
+        const expectedRow = new RowViewModel([], "");
         _rowVmb.setup(m => m.buildSeparator(It.isAny(), It.isAny())).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny(), It.isAny())).returns(() => expectedRow);
 

@@ -17,19 +17,13 @@ export class RowViewModelFactory {
         let resultRow = new Array(table.columnCount);
 
         for(let col = 0; col < table.columnCount; col++) {
-            let colText = 
+            resultRow[col] = 
                 this._contentPadCalculator.getLeftPadding(table, row, col) +
                 table.rows[row].cells[col].getValue() +
                 this._contentPadCalculator.getRightPadding(table, row, col);
-
-            if (col == table.columnCount - 1) {
-                resultRow[col] += table.rows[row].EOL;
-            }
-
-            resultRow[col] = colText;
         }
 
-        return new RowViewModel(resultRow);
+        return new RowViewModel(resultRow, table.rows[row].EOL);
     }
 
     public buildSeparator(rows: RowViewModel[], table: Table): RowViewModel {
@@ -44,13 +38,8 @@ export class RowViewModelFactory {
 
         const values: string[] = lengths
             .map(l => this.separatorChar.repeat(l))
-            .map((val, col) => {
-                let result = this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(val);
-                if (col == lengths.length - 1) {
-                    result += table.separatorEOL;
-                }
-                return result;
-            });
-        return new RowViewModel(values);
+            .map((val, col) => this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(val));
+
+        return new RowViewModel(values, table.separatorEOL);
     }
 }
