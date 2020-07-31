@@ -3,6 +3,7 @@ import { Table } from "../../../src/models/table";
 import { Alignment } from "../../../src/models/alignment";
 import { BorderTransformer } from '../../../src/modelFactory/transformers/borderTransformer';
 import { Cell } from '../../../src/models/cell';
+import { Row } from '../../../src/models/row';
 
 suite("BorderTransformer tests", () => {
     test("process() sets hasLeftBorder to true for empty first column", () => {
@@ -57,10 +58,9 @@ suite("BorderTransformer tests", () => {
 
     function tableFor(rows: string[][]) {
         const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
-        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-        return table;
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
     }
-    
+
     function createSut() {
         return new BorderTransformer(null);
     }

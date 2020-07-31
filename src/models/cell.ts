@@ -1,6 +1,5 @@
 export class Cell {
     private _value: string;
-    private _length: number;
 
     constructor(value: string) {
         this._value = value;

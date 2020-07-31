@@ -4,6 +4,10 @@ import { Alignment } from "../models/alignment";
 import { Transformer } from "./transformers/transformer";
 import { SelectionInterpreter } from "./selectionInterpreter";
 import { Cell } from "../models/cell";
+import { Line } from "../models/doc/line";
+import { Row } from "../models/row";
+import { Document } from "../models/doc/document";
+import { Range } from "../models/doc/range";
 
 export class TableFactory {
 
@@ -13,19 +17,27 @@ export class TableFactory {
         private _transformer: Transformer)
     { }
 
-    public getModel(text: string): Table {
-        if (text == null)
-            throw new Error("Can't create table model from null table text.");
+    public getModel(document: Document, range: Range): Table {
+        const lines = document.getLines(range);
+        if (lines == null || lines.length == 0)
+            throw new Error("Can't create table model from no lines.");
 
-        const rowsWithoutSeparator = this._selectionInterpreter.allRows(text).filter((v, i) => i != 1);
-        const separator = this._selectionInterpreter.separator(text);
+        const rowsWithoutSeparator: Row[] = lines
+            .filter((_, i) => i != 1)
+            .map(line => new Row(
+                this._selectionInterpreter
+                    .splitLine(line.value)
+                    .map(c => new Cell(c)),
+                line.EOL)
+            );
+
+        const separatorLine: Line = lines[1];
+        const separator: string[] = this._selectionInterpreter.splitLine(separatorLine.value);
 
         const alignments: Alignment[] = separator != null && separator.length > 0
             ? this._alignmentFactory.createAlignments(separator) 
             : [];
 
-        const cells = rowsWithoutSeparator.map(row => row.map(c  => new Cell(c)));
-
-        return this._transformer.process(new Table(cells, alignments));
+        return this._transformer.process(new Table(rowsWithoutSeparator, separatorLine.EOL, alignments));
     }
 }

@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { IMock, Mock } from "typemoq";
-import { SizeLimitChecker } from '../../../src/extension/sizeLimitCheker';
+import { SizeLimitChecker } from '../../../src/prettyfiers/sizeLimitCheker';
 import { ILogger } from '../../../src/diagnostics/logger';
 
 suite("SizeLimitCheker Tests", () => {

@@ -1,7 +1,6 @@
 import { RowViewModel } from "../viewModels/rowViewModel";
 import { PadCalculator } from "../padCalculation/padCalculator";
 import { Table } from "../models/table";
-import { Alignment } from "../models/alignment";
 import { AlignmentMarkerStrategy } from "./alignmentMarking";
 
 export class RowViewModelFactory {
@@ -17,11 +16,18 @@ export class RowViewModelFactory {
 
         let resultRow = new Array(table.columnCount);
 
-        for(let col = 0; col < table.columnCount; col++)
-            resultRow[col] =
+        for(let col = 0; col < table.columnCount; col++) {
+            let colText = 
                 this._contentPadCalculator.getLeftPadding(table, row, col) +
-                table.rows[row][col].getValue() +
+                table.rows[row].cells[col].getValue() +
                 this._contentPadCalculator.getRightPadding(table, row, col);
+
+            if (col == table.columnCount - 1) {
+                resultRow[col] += table.rows[row].EOL;
+            }
+
+            resultRow[col] = colText;
+        }
 
         return new RowViewModel(resultRow);
     }
@@ -36,7 +42,15 @@ export class RowViewModelFactory {
             }
         }
 
-        const values = lengths.map(l => this.separatorChar.repeat(l)).map((val ,col) => this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(val));
+        const values: string[] = lengths
+            .map(l => this.separatorChar.repeat(l))
+            .map((val, col) => {
+                let result = this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(val);
+                if (col == lengths.length - 1) {
+                    result += table.separatorEOL;
+                }
+                return result;
+            });
         return new RowViewModel(values);
     }
 }

@@ -47,7 +47,8 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -p ./",
     "pretest": "npm run compile",
-    "test": "gulp copy-systemTest-resources && node ./out/test/index.js"
+    "test": "gulp copy-systemTest-resources && node ./out/test/index.js",
+    "prettify-md": "node ./out/cli/index.js"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.2",

@@ -13,7 +13,7 @@ export abstract class RightPadCalculator extends BasePadCalculator {
     private getLeftPaddingCount(table: Table, row: number, column: number) {
         let longestColumnLength = table.getLongestColumnLengths()[column];
         let leftPadCount = longestColumnLength > 0
-            ? longestColumnLength - table.rows[row][column].getLength()
+            ? longestColumnLength - table.rows[row].cells[column].getLength()
             : 1;
         leftPadCount += this.extraPadCount(table);
         return leftPadCount;

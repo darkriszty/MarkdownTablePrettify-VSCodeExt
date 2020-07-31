@@ -1,18 +1,23 @@
 import { Transformer } from "./transformer";
-import { Table } from "../../models/table";
 import { Cell } from "../../models/cell";
+import { Row } from "../../models/row";
+import { Table } from "../../models/table";
 
 export class TrimmerTransformer extends Transformer {
     
     public transform(input: Table): Table {
-        return new Table(this.trimColumnValues(input.rows), input.alignments);
+        return new Table(this.trimColumnValues(input.rows), input.separatorEOL, input.alignments);
     }
 
-    private trimColumnValues(rows: Cell[][]): Cell[][] {
-        if (rows == null) return;
-        let result: Cell[][] = [];
+    private trimColumnValues(rows: Row[]): Row[] {
+        let result: Row[] = [];
+
+        if (rows == null) 
+            return result;
+
         for (let i = 0; i < rows.length; i++)
-            result.push(rows[i].map(r => new Cell(r.getValue().trim())));
+            result.push(new Row(rows[i].cells.map(cell => new Cell(cell.getValue().trim())), rows[i].EOL));
+
         return result;
     }
 }

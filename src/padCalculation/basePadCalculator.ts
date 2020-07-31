@@ -1,12 +1,11 @@
 import { Table } from "../models/table";
-import { Cell } from "../models/cell";
 
 export abstract class BasePadCalculator {
     public abstract getLeftPadding(paddingChar: string, table: Table, row: number, column: number): string;
     public abstract getRightPadding(paddingChar: string, table: Table, row: number, column: number): string;
 
     protected baseGetRightPadding(paddingChar: string, table: Table, row: number, column: number): string {
-        return paddingChar.repeat(this.getRightPadCount(table.getLongestColumnLengths()[column], table.rows[row][column].getLength()));
+        return paddingChar.repeat(this.getRightPadCount(table.getLongestColumnLengths()[column], table.rows[row].cells[column].getLength()));
     }
 
     private getRightPadCount(longestColumnLength: number, cellTextLength: number) {

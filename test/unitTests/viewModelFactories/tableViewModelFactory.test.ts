@@ -8,6 +8,7 @@ import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 import { Cell } from "../../../src/models/cell";
+import { Row } from "../../../src/models/row";
 
 suite("TableViewModelFactory tests", () => {
     let _rowVmb: IMock<RowViewModelFactory>;
@@ -117,11 +118,9 @@ suite("TableViewModelFactory tests", () => {
     });
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
-        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-        return table;
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
     }
-    
 
     function createViewModelFactory(): TableViewModelFactory {
         return new TableViewModelFactory(_rowVmb.object);

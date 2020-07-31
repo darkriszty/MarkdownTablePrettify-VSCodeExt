@@ -4,7 +4,8 @@ export class SelectionInterpreter {
     ) { }
 
     public allRows(selection: string): string[][] {
-        let split = selection.split(/\r\n|\r|\n/).map(this.splitLine, this);
+        let split: string[][] = selection.split(/\r\n|\r|\n/).map(this.splitLine, this);
+
         return this._strict
             ? split
             : split.filter(arr => arr.length > 0 && !(arr.length == 1 && /^\s*$/.test(arr[0])));

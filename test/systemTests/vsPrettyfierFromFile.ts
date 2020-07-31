@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
-import { SizeLimitChecker } from '../../src/extension/sizeLimitCheker';
+import { SizeLimitChecker } from '../../src/prettyfiers/sizeLimitCheker';
 import { TableDocumentPrettyfier } from '../../src/extension/tableDocumentPrettyfier';
 import { TableDocumentRangePrettyfier } from "../../src/extension/tableDocumentRangePrettyfier";
 import { ILogger } from "../../src/diagnostics/logger";
@@ -21,7 +21,7 @@ import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFa
 import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
 import { TableStringWriter } from "../../src/writers/tableStringWriter";
 
-export class PrettyfierFromFile {
+export class VsPrettyfierFromFile {
     private readonly _logger: ILogger;
 
     constructor(logger: ILogger = null) {

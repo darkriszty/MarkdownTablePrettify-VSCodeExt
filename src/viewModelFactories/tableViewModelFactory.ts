@@ -1,5 +1,4 @@
 import { Table } from "../models/table";
-import { TableValidator } from "../modelFactory/tableValidator";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { RowViewModel } from "../viewModels/rowViewModel";
 import { RowViewModelFactory } from "./rowViewModelFactory";

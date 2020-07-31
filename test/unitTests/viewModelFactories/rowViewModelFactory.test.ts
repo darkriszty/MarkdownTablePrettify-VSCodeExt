@@ -8,6 +8,7 @@ import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
 import { AlignmentMarkerStrategy, IAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
 import { RowViewModel } from '../../../src/viewModels/rowViewModel';
+import { Row } from '../../../src/models/row';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
@@ -126,8 +127,7 @@ function threeColumnTableWithEmptyMiddleColumn(alignment: Alignment = Alignment.
 
 function tableFor(rows: string[][], alignment: Alignment) {
     const alignments: Alignment[] = rows[0].map(() => alignment);
-    let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-    return table;
+    return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
 }
 
 function createFactory(contentPadCalculator: PadCalculator, alignmentStrategy: AlignmentMarkerStrategy = null): RowViewModelFactory 

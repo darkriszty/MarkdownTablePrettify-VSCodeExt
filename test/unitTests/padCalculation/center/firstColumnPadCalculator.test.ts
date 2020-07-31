@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import { Table } from '../../../../src/models/table';
 import { Alignment } from '../../../../src/models/alignment';
 import { Cell } from '../../../../src/models/cell';
+import { Row } from '../../../../src/models/row';
 import { FirstColumnPadCalculator } from '../../../../src/padCalculation/center/firstColumnPadCalculator';
 
 suite("CenterAlign - FirstColumnPadCalculator tests", () => {
@@ -154,8 +155,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
     }
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(() => Alignment.Center);
-        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-        return table;
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Center);
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
     }
 });

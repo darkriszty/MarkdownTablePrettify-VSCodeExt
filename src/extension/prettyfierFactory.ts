@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { SizeLimitChecker } from './sizeLimitCheker';
+import { SizeLimitChecker } from '../prettyfiers/sizeLimitCheker';
 import { TableDocumentPrettyfier } from './tableDocumentPrettyfier';
 import { TableFinder } from '../tableFinding/tableFinder';
 import { TableDocumentRangePrettyfier } from "./tableDocumentRangePrettyfier";
