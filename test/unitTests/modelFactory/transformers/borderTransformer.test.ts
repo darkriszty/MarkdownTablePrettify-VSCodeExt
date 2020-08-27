@@ -1,9 +1,9 @@
 import * as assert from 'assert';
-import { Table } from "../../../src/models/table";
-import { Alignment } from "../../../src/models/alignment";
-import { BorderTransformer } from '../../../src/modelFactory/transformers/borderTransformer';
-import { Cell } from '../../../src/models/cell';
-import { Row } from '../../../src/models/row';
+import { Table } from "../../../../src/models/table";
+import { Alignment } from "../../../../src/models/alignment";
+import { BorderTransformer } from '../../../../src/modelFactory/transformers/borderTransformer';
+import { Cell } from '../../../../src/models/cell';
+import { Row } from '../../../../src/models/row';
 
 suite("BorderTransformer tests", () => {
     test("process() sets hasLeftBorder to true for empty first column", () => {

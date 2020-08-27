@@ -1,9 +1,9 @@
 import * as assert from 'assert';
-import { Table } from "../../../src/models/table";
-import { Alignment } from "../../../src/models/alignment";
-import { TrimmerTransformer } from '../../../src/modelFactory/transformers/trimmerTransformer';
-import { Cell } from '../../../src/models/cell';
-import { Row } from '../../../src/models/row';
+import { Table } from "../../../../src/models/table";
+import { Alignment } from "../../../../src/models/alignment";
+import { TrimmerTransformer } from '../../../../src/modelFactory/transformers/trimmerTransformer';
+import { Cell } from '../../../../src/models/cell';
+import { Row } from '../../../../src/models/row';
 
 suite("TrimmerTransformer tests", () => {
     test("process() returns trimmed cells", () => {
