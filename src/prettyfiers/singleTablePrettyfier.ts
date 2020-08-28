@@ -28,13 +28,14 @@ export class SingleTablePrettyfier {
 
         try {
             if (!this._sizeLimitChecker.isWithinAllowedSizeLimit(selection)) {
-                return result;
+                return selection;
             } else if (this._tableValidator.isValid(selection)) {
                 const table: Table = this._tableFactory.getModel(document, range);
                 const tableVm: TableViewModel = this._viewModelFactory.build(table);
                 result = this._writer.writeTable(tableVm);
             } else {
-                message = "Can't parse table from invalid text."
+                message = "Can't parse table from invalid text.";
+                result = selection;
             }
         } catch (ex) {
             this._loggers.forEach(_ => _.logError(ex));
