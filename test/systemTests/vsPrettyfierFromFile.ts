@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ConfigSizeLimitChecker } from '../../src/prettyfiers/sizeLimit/configSizeLimitCheker';
 import { TableDocumentPrettyfier } from '../../src/extension/tableDocumentPrettyfier';
-import { TableDocumentRangePrettyfier } from "../../src/extension/tableDocumentRangePrettyfier";
 import { ILogger } from "../../src/diagnostics/logger";
 import { ConsoleLogger } from '../../src/diagnostics/consoleLogger';
 import { AlignmentFactory } from "../../src/modelFactory/alignmentFactory";
@@ -20,6 +19,8 @@ import { AlignmentMarkerStrategy } from '../../src/viewModelFactories/alignmentM
 import { RowViewModelFactory } from "../../src/viewModelFactories/rowViewModelFactory";
 import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewModelFactory";
 import { TableStringWriter } from "../../src/writers/tableStringWriter";
+import { MultiTablePrettyfier } from '../../src/prettyfiers/multiTablePrettyfier';
+import { SingleTablePrettyfier } from '../../src/prettyfiers/singleTablePrettyfier';
 
 export class VsPrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -67,23 +68,25 @@ export class VsPrettyfierFromFile {
 
     private createPrettyfier(): TableDocumentPrettyfier {
         return new TableDocumentPrettyfier(
-            new TableFinder(new TableValidator(new SelectionInterpreter(true))),
-            new TableDocumentRangePrettyfier(
-                new TableFactory(
-                    new AlignmentFactory(),
-                    new SelectionInterpreter(false),
-                    new TrimmerTransformer(new BorderTransformer(null))
+            new MultiTablePrettyfier(
+                new TableFinder(new TableValidator(new SelectionInterpreter(true))),
+                new SingleTablePrettyfier(
+                    new TableFactory(
+                        new AlignmentFactory(),
+                        new SelectionInterpreter(false),
+                        new TrimmerTransformer(new BorderTransformer(null))
+                    ),
+                    new TableValidator(new SelectionInterpreter(false)),
+                    new TableViewModelFactory(new RowViewModelFactory(
+                        new ContentPadCalculator(new PadCalculatorSelector(), " "),
+                        new AlignmentMarkerStrategy(":")
+                    )),
+                    new TableStringWriter(),
+                    [ this._logger ],
+                    new ConfigSizeLimitChecker([ this._logger ], 50000)
                 ),
-                new TableValidator(new SelectionInterpreter(false)),
-                new TableViewModelFactory(new RowViewModelFactory(
-                    new ContentPadCalculator(new PadCalculatorSelector(), " "), 
-                    new AlignmentMarkerStrategy(":")
-                )),
-                new TableStringWriter(),
-                [ this._logger ],
                 new ConfigSizeLimitChecker([ this._logger ], 50000)
-            ),
-            new ConfigSizeLimitChecker([ this._logger ], 50000)
+            )
         );
     }
 }

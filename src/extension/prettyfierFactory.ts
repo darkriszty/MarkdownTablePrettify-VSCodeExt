@@ -18,27 +18,14 @@ import { BorderTransformer } from '../modelFactory/transformers/borderTransforme
 import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
+import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
+import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
 
 export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: ConfigSizeLimitChecker = null, loggers: ILogger[] = null) {
     loggers = loggers || getLoggers();
     sizeLimitCheker = sizeLimitCheker || getSizeLimitChecker(loggers);
 
-    return new TableDocumentRangePrettyfier(
-        new TableFactory(
-            new AlignmentFactory(), new SelectionInterpreter(strict), 
-            new TrimmerTransformer(new BorderTransformer(null))
-        ),
-        new TableValidator(new SelectionInterpreter(strict)),
-        new TableViewModelFactory(
-            new RowViewModelFactory(
-                new ContentPadCalculator(new PadCalculatorSelector(), " "), 
-                new AlignmentMarkerStrategy(":")
-            )
-        ),
-        new TableStringWriter(),
-        loggers,
-        sizeLimitCheker
-    );
+    return new TableDocumentRangePrettyfier(getSingleTablePrettyfier(loggers, sizeLimitCheker));
 }
 
 export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFormattingEditProvider {
@@ -46,8 +33,28 @@ export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFo
     const sizeLimitCheker = getSizeLimitChecker(loggers);
 
     return new TableDocumentPrettyfier(
-        new TableFinder(new TableValidator(new SelectionInterpreter(strict))), 
-        getDocumentRangePrettyfier(strict, sizeLimitCheker, loggers),
+        new MultiTablePrettyfier(
+            new TableFinder(new TableValidator(new SelectionInterpreter(strict))),
+            getSingleTablePrettyfier(loggers, sizeLimitCheker),
+            sizeLimitCheker
+        )
+    );
+}
+
+function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSizeLimitChecker): SingleTablePrettyfier {
+    return new SingleTablePrettyfier(
+        new TableFactory(
+            new AlignmentFactory(),
+            new SelectionInterpreter(false),
+            new TrimmerTransformer(new BorderTransformer(null))
+        ),
+        new TableValidator(new SelectionInterpreter(false)),
+        new TableViewModelFactory(new RowViewModelFactory(
+            new ContentPadCalculator(new PadCalculatorSelector(), " "),
+            new AlignmentMarkerStrategy(":")
+        )),
+        new TableStringWriter(),
+        loggers,
         sizeLimitCheker
     );
 }

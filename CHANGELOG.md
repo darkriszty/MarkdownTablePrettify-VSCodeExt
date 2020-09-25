@@ -5,6 +5,7 @@ All notable changes to the `markdowntableprettify` extension will be documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- Add cli support
 
 ## 2.5.0 - 2020-07-04
 ### Added
