@@ -39,8 +39,8 @@ suite("TableFactory tests", () => {
         const rows: Row[] = sut.getModel(document, new Range(2, 4)).rows;
 
         assertExt.isNotNull(rows);
-        assert.equal(rows.length, 2);
-        assert.equal(rows.every(r => r.cells.length == 4), true);
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows.every(r => r.cells.length == 4), true);
     });
 
     test("getModel() removes separator row and returns expected cells", () => {
@@ -58,16 +58,16 @@ suite("TableFactory tests", () => {
         const rows: Row[] = sut.getModel(document, document.fullRange).rows;
 
         assertExt.isNotNull(rows);
-        assert.equal(rows.length, 2);
-        assert.equal(rows.every(r => r.cells.length == 4), true);
-        assert.equal(rows[0].cells[0].getValue(), " c1 ");
-        assert.equal(rows[0].cells[1].getValue(), " c2 ");
-        assert.equal(rows[0].cells[2].getValue(), " ");
-        assert.equal(rows[0].cells[3].getValue(), " c4");
-        assert.equal(rows[1].cells[0].getValue(), "           a ");
-        assert.equal(rows[1].cells[1].getValue(), " b ");
-        assert.equal(rows[1].cells[2].getValue(), "");
-        assert.equal(rows[1].cells[3].getValue(), " d");
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows.every(r => r.cells.length == 4), true);
+        assert.strictEqual(rows[0].cells[0].getValue(), " c1 ");
+        assert.strictEqual(rows[0].cells[1].getValue(), " c2 ");
+        assert.strictEqual(rows[0].cells[2].getValue(), " ");
+        assert.strictEqual(rows[0].cells[3].getValue(), " c4");
+        assert.strictEqual(rows[1].cells[0].getValue(), "           a ");
+        assert.strictEqual(rows[1].cells[1].getValue(), " b ");
+        assert.strictEqual(rows[1].cells[2].getValue(), "");
+        assert.strictEqual(rows[1].cells[3].getValue(), " d");
     });
 
     test("getModel() calls alignmentFactory to create alignments for the table columns", () => {
@@ -85,7 +85,7 @@ suite("TableFactory tests", () => {
         const sut = createFactory();
 
         const actualAlignments: Alignment[] = sut.getModel(document, document.fullRange).alignments;
-        assert.equal(expectedAlignmets.length == actualAlignments.length && expectedAlignmets.every((l,i) => l === actualAlignments[i]), true);
+        assert.strictEqual(expectedAlignmets.length == actualAlignments.length && expectedAlignmets.every((l,i) => l === actualAlignments[i]), true);
         _alignmentFactoryMock.verifyAll();
     });
 
@@ -104,7 +104,7 @@ suite("TableFactory tests", () => {
         const result = sut.getModel(document, document.fullRange);
 
         _transformer.verify(_ => _.process(It.isAny()), Times.once());
-        assert.equal(result, transformedTable);
+        assert.strictEqual(result, transformedTable);
     });
 
     test("getModel() calls selection interpreter to split lines for each line (incl. separator)", () => {

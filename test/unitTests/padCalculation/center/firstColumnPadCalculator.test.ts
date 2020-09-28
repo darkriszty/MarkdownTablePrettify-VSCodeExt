@@ -14,8 +14,8 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 0, 0), "");
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), " ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 0, 0), "");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), " ");
     });
 
     test("getLeftPadding() First column left padded with 1 extra character if there is a left border", () => {
@@ -26,8 +26,8 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
         ]);
         table.hasLeftBorder = true;
 
-        assert.equal(sut.getLeftPadding(" ", table, 0, 0), " ");
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "  ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 0, 0), " ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), "  ");
     });
 
     test("getRightPadding() First column equal to maxColLength gets padded with one character", () => {
@@ -37,7 +37,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getRightPadding(" ", table, 1, 0), " ");
+        assert.strictEqual(sut.getRightPadding(" ", table, 1, 0), " ");
     });
 
     test("getLeftPadding() First column equal to maxColLength is not padded", () => {
@@ -47,7 +47,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aaaaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), "");
     });
 
     test("getRightPadding() First column 1 char shorter than maxColLength gets padded with one character", () => {
@@ -57,7 +57,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aaaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getRightPadding(" ", table, 1, 0), " ");
+        assert.strictEqual(sut.getRightPadding(" ", table, 1, 0), " ");
     });
 
     test("getLeftPadding() First column 1 char shorter than maxColLength gets padded with one character", () => {
@@ -67,7 +67,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aaaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), " ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), " ");
     });
 
     test("getRightPadding() First column 2 char shorter than maxColLength gets padded with 2 characters", () => {
@@ -77,7 +77,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getRightPadding(" ", table, 1, 0), "  ");
+        assert.strictEqual(sut.getRightPadding(" ", table, 1, 0), "  ");
     });
 
     test("getLeftPadding() First column 2 char shorter than maxColLength is padded with one character", () => {
@@ -87,7 +87,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aaa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), " ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), " ");
     });
 
     test("getRightPadding() First column 3 char shorter than maxColLength gets padded with 2 characters", () => {
@@ -97,7 +97,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getRightPadding(" ", table, 1, 0), "  ");
+        assert.strictEqual(sut.getRightPadding(" ", table, 1, 0), "  ");
     });
 
     test("getLeftPadding() First column 3 char shorter than maxColLength gets padded with 2 characters", () => {
@@ -107,7 +107,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "aa", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "  ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), "  ");
     });
 
     test("getRightPadding() First column 4 char shorter than maxColLength gets padded with 3 characters", () => {
@@ -117,7 +117,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "a", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getRightPadding(" ", table, 1, 0), "   ");
+        assert.strictEqual(sut.getRightPadding(" ", table, 1, 0), "   ");
     });
 
     test("getLeftPadding() First column 4 char shorter than maxColLength gets padded with 2 characters", () => {
@@ -127,7 +127,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "a", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "  ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), "  ");
     });
 
     test("getRightPadding() First column is empty string gets padded with 3 characters", () => {
@@ -137,7 +137,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getRightPadding(" ", table, 1, 0), "   ");
+        assert.strictEqual(sut.getRightPadding(" ", table, 1, 0), "   ");
     });
 
     test("getLeftPadding() First column is empty string gets padded with 3 characters", () => {
@@ -147,7 +147,7 @@ suite("CenterAlign - FirstColumnPadCalculator tests", () => {
             [ "", "bbbbb", "ccccc" ]
         ]);
 
-        assert.equal(sut.getLeftPadding(" ", table, 1, 0), "   ");
+        assert.strictEqual(sut.getLeftPadding(" ", table, 1, 0), "   ");
     });
 
     function createCalculator(): FirstColumnPadCalculator {

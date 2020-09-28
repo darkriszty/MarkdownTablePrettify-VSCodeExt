@@ -13,7 +13,7 @@ suite("BorderTransformer tests", () => {
         ];
         const table = createSut().process(tableFor(rows));
 
-        assert.equal(table.hasLeftBorder, true);
+        assert.strictEqual(table.hasLeftBorder, true);
     });
 
     test("process() sets hasLeftBorder to false for non-empty first column", () => {
@@ -23,7 +23,7 @@ suite("BorderTransformer tests", () => {
         ];
         const table = createSut().process(tableFor(rows));
 
-        assert.equal(table.hasLeftBorder, false);
+        assert.strictEqual(table.hasLeftBorder, false);
     });
 
     test("process() sets hasRightBorder to true when there is a left border and a right border", () => {
@@ -33,7 +33,7 @@ suite("BorderTransformer tests", () => {
         ];
         const table = createSut().process(tableFor(rows));
 
-        assert.equal(table.hasRightBorder, true);
+        assert.strictEqual(table.hasRightBorder, true);
     });
 
     test("process() sets hasRightBorder to true when there is a left border and no right border", () => {
@@ -43,7 +43,7 @@ suite("BorderTransformer tests", () => {
         ];
         const table = createSut().process(tableFor(rows));
 
-        assert.equal(table.hasRightBorder, true);
+        assert.strictEqual(table.hasRightBorder, true);
     });
 
     test("process() sets hasRightBorder to false if there is a right border without a left border", () => {
@@ -53,7 +53,7 @@ suite("BorderTransformer tests", () => {
         ];
         const table = createSut().process(tableFor(rows));
 
-        assert.equal(table.hasRightBorder, false);
+        assert.strictEqual(table.hasRightBorder, false);
     });
 
     function tableFor(rows: string[][]) {

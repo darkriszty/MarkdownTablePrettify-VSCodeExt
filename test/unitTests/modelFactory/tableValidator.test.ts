@@ -10,7 +10,7 @@ suite("TableValidator tests", () => {
 
         const isValid: boolean = sut.isValid(null);
 
-        assert.equal(isValid, false);
+        assert.strictEqual(isValid, false);
     });
 
     test("isValid() with less than two rows returns false", () => {
@@ -18,7 +18,7 @@ suite("TableValidator tests", () => {
 
         const isValid: boolean = sut.isValid("A|B");
 
-        assert.equal(isValid, false);
+        assert.strictEqual(isValid, false);
     });
 
     test("isValid() with less than two columns returns false", () => {
@@ -29,7 +29,7 @@ suite("TableValidator tests", () => {
              B|`
         );
 
-        assert.equal(isValid, false);
+        assert.strictEqual(isValid, false);
     });
 
     test("isValid() with two rows and two columns returns false", () => {
@@ -40,7 +40,7 @@ suite("TableValidator tests", () => {
              c|d`
         );
 
-        assert.equal(isValid, false);
+        assert.strictEqual(isValid, false);
     });
 
     test("isValid() with two rows and a separator and two columns returns true", () => {
@@ -52,7 +52,7 @@ suite("TableValidator tests", () => {
              c|d`
         );
 
-        assert.equal(isValid, true);
+        assert.strictEqual(isValid, true);
     });
 
     test("isValid() with separator alignment options returns true", () => {
@@ -64,7 +64,7 @@ suite("TableValidator tests", () => {
              1|2|3`
         );
 
-        assert.equal(isValid, true);
+        assert.strictEqual(isValid, true);
     });
 
     test("isValid() with invalid separator chars returns false", () => {
@@ -76,7 +76,7 @@ suite("TableValidator tests", () => {
              c|d`
         );
 
-        assert.equal(isValid, false);
+        assert.strictEqual(isValid, false);
     });
 
     test("isValid() with mismatching row counts returns false", () => {
@@ -88,7 +88,7 @@ suite("TableValidator tests", () => {
              c|d|e`
         );
 
-        assert.equal(isValid, false);
+        assert.strictEqual(isValid, false);
     });
 
     test("isValid() with empty first columns returns true", () => {
@@ -100,7 +100,7 @@ suite("TableValidator tests", () => {
              |c|d|e`
         );
 
-        assert.equal(isValid, true);
+        assert.strictEqual(isValid, true);
     });
 
     test("isValid() with empty last columns returns true", () => {
@@ -112,7 +112,7 @@ suite("TableValidator tests", () => {
              c|d|e|`
         );
 
-        assert.equal(isValid, true);
+        assert.strictEqual(isValid, true);
     });
 
     test("isValid() with empty first and last columns returns true", () => {
@@ -124,7 +124,7 @@ suite("TableValidator tests", () => {
              |c|d|e|`
         );
 
-        assert.equal(isValid, true);
+        assert.strictEqual(isValid, true);
     });
 
     test("isValid() with empty first, middle and last columns returns true", () => {
@@ -136,7 +136,7 @@ suite("TableValidator tests", () => {
              c||d|e|`
         );
 
-        assert.equal(isValid, true);
+        assert.strictEqual(isValid, true);
     });
 
     test("isValid() uses selection interpreter to get rows and separator", () => {

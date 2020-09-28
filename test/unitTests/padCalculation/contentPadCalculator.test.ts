@@ -30,7 +30,7 @@ suite("ContentPadCalculator tests", () => {
 
         const pad = sut.getLeftPadding(table, 1, 2);
 
-        assert.equal(pad, "test");
+        assert.strictEqual(pad, "test");
         _selector.verifyAll();
         _mockCalculator.verifyAll();
     });
@@ -46,7 +46,7 @@ suite("ContentPadCalculator tests", () => {
 
         const pad = sut.getRightPadding(table, 1, 2);
 
-        assert.equal(pad, "foo bar");
+        assert.strictEqual(pad, "foo bar");
         _selector.verifyAll();
         _mockCalculator.verifyAll();
     });

@@ -8,19 +8,19 @@ suite("Table tests", () => {
     test("isEmpty() returns true for null rows", () => {
         const table = new Table(null, null, null);
 
-        assert.equal(table.isEmpty(), true);
+        assert.strictEqual(table.isEmpty(), true);
     });
 
     test("isEmpty() returns true for empty rows", () => {
         const table = new Table([], "", []);
 
-        assert.equal(table.isEmpty(), true);
+        assert.strictEqual(table.isEmpty(), true);
     });
 
     test("isEmpty() returns false for a single element", () => {
         const table = tableFor([["test"]]);
 
-        assert.equal(table.isEmpty(), false);
+        assert.strictEqual(table.isEmpty(), false);
     });
 
     test("columnCount() returns number of columns", () => {
@@ -29,7 +29,7 @@ suite("Table tests", () => {
             [ "c"     ,   "  ",   "e"     ]
         ]);
 
-        assert.equal(table.columnCount, 3);
+        assert.strictEqual(table.columnCount, 3);
     });
 
     test("rowCount() returns number of rows", () => {
@@ -38,7 +38,7 @@ suite("Table tests", () => {
             [ "c"     ,   "  ",   "e"      ]
         ]);
 
-        assert.equal(table.rowCount, 2);
+        assert.strictEqual(table.rowCount, 2);
     });
 
     test("alignments() returns the given constructor alignments", () => {
@@ -49,13 +49,13 @@ suite("Table tests", () => {
         const expectedAlignments = getAlignmentsFor(rows);
         const table = new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "")), "", expectedAlignments);
 
-        assert.equal(table.alignments, expectedAlignments);
+        assert.strictEqual(table.alignments, expectedAlignments);
     });
 
     test("separatorEOL() returns the given constructor value", () => {
         const table = new Table([], "\r\n", []);
 
-        assert.equal(table.separatorEOL, "\r\n");
+        assert.strictEqual(table.separatorEOL, "\r\n");
     });
 
     test("getLongestColumnLengths() mixed CJK and english chars returns longest row length for each column", () => {
@@ -67,9 +67,9 @@ suite("Table tests", () => {
         
         const maxLengths: number[] = table.getLongestColumnLengths();
 
-        assert.equal(maxLengths.length, 2);
-        assert.equal(maxLengths[0], 7);
-        assert.equal(maxLengths[1], 10);
+        assert.strictEqual(maxLengths.length, 2);
+        assert.strictEqual(maxLengths[0], 7);
+        assert.strictEqual(maxLengths[1], 10);
     });
     
     function tableFor(rows: string[][]) {
@@ -85,18 +85,18 @@ suite("Table tests", () => {
 
         const actualAlignments = actual.alignments;
         const expectedAlignments = expected.alignments;
-        assert.equal(actualAlignments.length, expectedAlignments.length);
+        assert.strictEqual(actualAlignments.length, expectedAlignments.length);
         for (let i = 0; i < actualAlignments.length; i++)
-            assert.equal(actualAlignments[i], expectedAlignments[i]);
+            assert.strictEqual(actualAlignments[i], expectedAlignments[i]);
     }
 
     function assertRowsMatch(actualRows: Row[], expectedRows: Row[]) {
-        assert.equal(actualRows.length, expectedRows.length);
+        assert.strictEqual(actualRows.length, expectedRows.length);
         for (let i = 0; i < actualRows.length; i++) {
-            assert.equal(actualRows[i].cells.length, expectedRows[i].cells.length);
+            assert.strictEqual(actualRows[i].cells.length, expectedRows[i].cells.length);
 
             for (let j = 0; j < actualRows[i].cells.length; j++)
-                assert.equal(actualRows[i].cells[j].getValue(), expectedRows[i].cells[j].getValue());
+                assert.strictEqual(actualRows[i].cells[j].getValue(), expectedRows[i].cells[j].getValue());
         }
     }
 });

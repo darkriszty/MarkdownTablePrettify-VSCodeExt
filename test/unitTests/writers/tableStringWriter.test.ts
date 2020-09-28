@@ -17,7 +17,7 @@ suite("TableStringWriter tests", () => {
 
         assertExt.isNotNull(tableText);
         const lines = tableText.split(/\r\n|\r|\n/);
-        assert.equal(lines[0], "c1|c2");
+        assert.strictEqual(lines[0], "c1|c2");
     });
 
     test("writeTable() with valid input writes the separator on the second row", () => {
@@ -30,7 +30,7 @@ suite("TableStringWriter tests", () => {
 
         assertExt.isNotNull(tableText);
         const lines = tableText.split(/\r\n|\r|\n/);
-        assert.equal(lines[1], "---|--");
+        assert.strictEqual(lines[1], "---|--");
     });
 
     test("writeTable() with valid input writes the rows from the 3rd row on", () => {
@@ -47,10 +47,10 @@ suite("TableStringWriter tests", () => {
 
         assertExt.isNotNull(tableText);
         const lines = tableText.split(/\r\n|\r|\n/);
-        assert.equal(lines.length, 5);
-        assert.equal(lines[2], "v1|v2");
-        assert.equal(lines[3], "v3|v4");
-        assert.equal(lines[4], "|v5");
+        assert.strictEqual(lines.length, 5);
+        assert.strictEqual(lines[2], "v1|v2");
+        assert.strictEqual(lines[3], "v3|v4");
+        assert.strictEqual(lines[4], "|v5");
     });
 
     test("writeTable() null table throws exception", () => {
@@ -113,10 +113,10 @@ suite("TableStringWriter tests", () => {
 
         assertExt.isNotNull(tableText);
         const lines = tableText.split(/\r\n|\r|\n/);
-        assert.equal(lines.length, 5);
-        assert.equal(lines[2], "|v1|v2");
-        assert.equal(lines[3], "|v3|v4");
-        assert.equal(lines[4], "|v5|v6");
+        assert.strictEqual(lines.length, 5);
+        assert.strictEqual(lines[2], "|v1|v2");
+        assert.strictEqual(lines[3], "|v3|v4");
+        assert.strictEqual(lines[4], "|v5|v6");
     });
 
     test("writeTable() writes right borders on all rows for viewModel having hasRightBorderSet", () => {
@@ -134,10 +134,10 @@ suite("TableStringWriter tests", () => {
 
         assertExt.isNotNull(tableText);
         const lines = tableText.split(/\r\n|\r|\n/);
-        assert.equal(lines.length, 5);
-        assert.equal(lines[2], "v1|v2|");
-        assert.equal(lines[3], "v3|v4|");
-        assert.equal(lines[4], "v5|v6|");
+        assert.strictEqual(lines.length, 5);
+        assert.strictEqual(lines[2], "v1|v2|");
+        assert.strictEqual(lines[3], "v3|v4|");
+        assert.strictEqual(lines[4], "v5|v6|");
     });
 
     function makeRowViewModel(values: string[]) {

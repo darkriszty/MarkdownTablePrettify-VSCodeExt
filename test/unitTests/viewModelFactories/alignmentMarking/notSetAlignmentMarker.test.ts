@@ -13,11 +13,11 @@ suite("NotSetAlignmentMarker tests", () => {
         results.push(sut.mark("x"));
         results.push(sut.mark(null));
 
-        assert.equal(results[0], "ab");
-        assert.equal(results[1], "123");
-        assert.equal(results[2], "----------");
-        assert.equal(results[3], "x");
-        assert.equal(results[4], null);
+        assert.strictEqual(results[0], "ab");
+        assert.strictEqual(results[1], "123");
+        assert.strictEqual(results[2], "----------");
+        assert.strictEqual(results[3], "x");
+        assert.strictEqual(results[4], null);
     });
 
     function createSut() {

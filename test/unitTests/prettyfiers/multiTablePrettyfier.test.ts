@@ -83,7 +83,7 @@ suite("MultiTablePrettyfier tests", () => {
 
         const result = sut.formatTables(text);
 
-        assert.equal(result, "text\na\ntext\nb\ntext\ntext");
+        assert.strictEqual(result, "text\na\ntext\nb\ntext\ntext");
     });
 
     function createSut(): MultiTablePrettyfier {

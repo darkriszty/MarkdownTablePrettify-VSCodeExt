@@ -55,12 +55,12 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.header, expectedRow);
-        assert.equal(tableVm.separator, expectedSeparator);
+        assert.strictEqual(tableVm.header, expectedRow);
+        assert.strictEqual(tableVm.separator, expectedSeparator);
         assertExt.isNotNull(tableVm.rows);
-        assert.equal(tableVm.rows.length, 2);
-        assert.equal(tableVm.rows[0], expectedRow);
-        assert.equal(tableVm.rows[1], expectedRow);
+        assert.strictEqual(tableVm.rows.length, 2);
+        assert.strictEqual(tableVm.rows[0], expectedRow);
+        assert.strictEqual(tableVm.rows[1], expectedRow);
     });
 
     test("build() with table having left border sets hasLeftBorder on viewModel", () => {
@@ -74,7 +74,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasLeftBorder, true);
+        assert.strictEqual(tableVm.hasLeftBorder, true);
     });
 
     test("build() with table without left border sets hasLeftBorder on viewModel to false", () => {
@@ -87,7 +87,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasLeftBorder, false);
+        assert.strictEqual(tableVm.hasLeftBorder, false);
     });
 
     test("build() with table having right border sets hasRightBorder on viewModel", () => {
@@ -101,7 +101,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasRightBorder, true);
+        assert.strictEqual(tableVm.hasRightBorder, true);
     });
 
     test("build() with table without right border sets hasRightBorder on viewModel to false", () => {
@@ -114,7 +114,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasRightBorder, false);
+        assert.strictEqual(tableVm.hasRightBorder, false);
     });
 
     function tableFor(rows: string[][]) {

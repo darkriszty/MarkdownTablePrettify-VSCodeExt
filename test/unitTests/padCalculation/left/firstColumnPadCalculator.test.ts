@@ -16,7 +16,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getLeftPad(sut, table);
 
-        assert.equal(pad, "");
+        assert.strictEqual(pad, "");
     });
 
     test("getLeftPadding() First column left padded with 1 character if there is a left border", () => {
@@ -28,7 +28,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
         table.hasLeftBorder = true;
         const pad = getLeftPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.strictEqual(pad, " ");
     });
 
     test("getRightPadding() First column equal to maxColLength gets right padded with one character", () => {
@@ -40,7 +40,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.strictEqual(pad, " ");
     });
 
     test("getRightPadding() First column 1 char shorter than maxColLength gets right padded with 2 characters", () => {
@@ -52,7 +52,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "  ");
+        assert.strictEqual(pad, "  ");
     });
 
     test("getRightPadding() First column 2 char shorter than maxColLength gets right padded with 3 characters", () => {
@@ -64,7 +64,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "   ");
+        assert.strictEqual(pad, "   ");
     });
 
     test("getRightPadding() First column 3 char shorter than maxColLength gets right padded with 4 characters", () => {
@@ -76,7 +76,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "    ");
+        assert.strictEqual(pad, "    ");
     });
 
     test("getRightPadding() First column 4 char shorter than maxColLength gets right padded with 5 characters", () => {
@@ -88,7 +88,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "     ");
+        assert.strictEqual(pad, "     ");
     });
 
     test("getRightPadding() First column is empty string gets right padded with 6 characters", () => {
@@ -100,7 +100,7 @@ suite("LeftAlign - FirstColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "      ");
+        assert.strictEqual(pad, "      ");
     });
 
     function getLeftPad(sut: FirstColumnPadCalculator, table: Table): string {

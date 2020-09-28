@@ -6,24 +6,24 @@ suite("Document tests", () => {
 
     test("getText() with a single line returns the input", () => {
         const text = "test";
-        assert.equal(new Document(text).getText(), text);
+        assert.strictEqual(new Document(text).getText(), text);
     });
 
     test("getText() with two lines returns the input", () => {
         const text = "l1\r\nl2";
-        assert.equal(new Document(text).getText(), text);
+        assert.strictEqual(new Document(text).getText(), text);
     });
 
     test("getText() with multiple lines and mixed endings returns the input", () => {
         const text = "l1\r\nl2\nl3\r\nl4\r\n\n";
-        assert.equal(new Document(text).getText(), text);
+        assert.strictEqual(new Document(text).getText(), text);
     });
 
     test("getText() with range returns expected lines", () => {
         const text = `l1\r\nl2\nl3\r\nl4\nl5\nl6\nl7\nl8\nl9`;
         const expectedText = "l3\r\nl4\nl5\nl6";
         const range = new Range(2, 5);
-        assert.equal(new Document(text).getText(range), expectedText);
+        assert.strictEqual(new Document(text).getText(range), expectedText);
     });
 
     test("replaceTextInRange() with multiple lines and mixed endings replaced generates the correct text", () => {
@@ -35,7 +35,7 @@ suite("Document tests", () => {
 
         document.replaceTextInRange(range, relacementText);
 
-        assert.equal(document.getText(), expectedText);
+        assert.strictEqual(document.getText(), expectedText);
     });
 
     test("replaceTextInRange() with full range replaced generates the correct text", () => {
@@ -47,7 +47,7 @@ suite("Document tests", () => {
 
         document.replaceTextInRange(range, relacementText);
 
-        assert.equal(document.getText(), expectedText);
+        assert.strictEqual(document.getText(), expectedText);
     });
 
 });

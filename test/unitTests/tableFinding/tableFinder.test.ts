@@ -13,7 +13,7 @@ suite("TableFinder tests", () => {
 
         let range = sut.getNextRange(document, 0);
 
-        assert.equal(range, null);
+        assert.strictEqual(range, null);
     });
 
     test("getNextRange() for a document containing only text returns no range", () => {
@@ -25,7 +25,7 @@ suite("TableFinder tests", () => {
 
         let range = sut.getNextRange(document, 0);
 
-        assert.equal(range, null);
+        assert.strictEqual(range, null);
     });
 
     test("getNextRange() with document having a full range table returns full doc range", () => {

@@ -27,12 +27,12 @@ suite("TrimmerTransformer tests", () => {
     }
 
     function assertRowsMatch(actualRows: Row[], expectedRows: string[][]) {
-        assert.equal(actualRows.length, expectedRows.length);
+        assert.strictEqual(actualRows.length, expectedRows.length);
         for (let i = 0; i < actualRows.length; i++) {
-            assert.equal(actualRows[i].cells.length, expectedRows[i].length);
+            assert.strictEqual(actualRows[i].cells.length, expectedRows[i].length);
 
             for (let j = 0; j < actualRows[i].cells.length; j++)
-                assert.equal(actualRows[i].cells[j].getValue(), expectedRows[i][j]);
+                assert.strictEqual(actualRows[i].cells[j].getValue(), expectedRows[i][j]);
         }
     }
 

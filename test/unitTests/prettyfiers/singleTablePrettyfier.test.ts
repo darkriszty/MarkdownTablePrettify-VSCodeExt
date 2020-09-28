@@ -47,7 +47,7 @@ suite("SingleTablePrettyfier Tests", () => {
 
         const result = sut.prettifyTable(document, range);
 
-        assert.equal(result, expectedResult);
+        assert.strictEqual(result, expectedResult);
         _sizeLimitChecker.verify(checker => checker.isWithinAllowedSizeLimit(inputText), Times.once());
         _tableValidator.verify(validator => validator.isValid(inputText), Times.once());
         _tableFactory.verify(factory => factory.getModel(document, range), Times.once());
@@ -63,7 +63,7 @@ suite("SingleTablePrettyfier Tests", () => {
 
         const result = sut.prettifyTable(document, null);
 
-        assert.equal(result, inputText);
+        assert.strictEqual(result, inputText);
         _sizeLimitChecker.verify(checker => checker.isWithinAllowedSizeLimit(inputText), Times.once());
         _tableFactory.verify(factory => factory.getModel(It.isAny(), It.isAny()), Times.never());
     });
@@ -77,7 +77,7 @@ suite("SingleTablePrettyfier Tests", () => {
 
         const result = sut.prettifyTable(document, null);
 
-        assert.equal(result, inputText);
+        assert.strictEqual(result, inputText);
         _sizeLimitChecker.verify(checker => checker.isWithinAllowedSizeLimit(inputText), Times.once());
         _tableValidator.verify(validator => validator.isValid(inputText), Times.once());
         _tableFactory.verify(factory => factory.getModel(It.isAny(), It.isAny()), Times.never());

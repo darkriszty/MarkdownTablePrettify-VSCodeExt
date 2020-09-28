@@ -49,9 +49,9 @@ export class VsPrettyfierFromFile {
         const expectedLines = expected.split(/\r\n|\r|\n/);
         const actualLines = actual.split(/\r\n|\r|\n/);
 
-        assert.equal(actualLines.length, expectedLines.length);
+        assert.strictEqual(actualLines.length, expectedLines.length);
         for (let i = 0; i < actualLines.length; i++)
-            assert.equal(actualLines[i], expectedLines[i]);
+            assert.strictEqual(actualLines[i], expectedLines[i]);
     }
 
     private formatFile(doc: vscode.TextDocument): vscode.TextEdit[] {

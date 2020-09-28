@@ -16,7 +16,7 @@ suite("ConfigSizeLimitCheker Tests", () => {
 
         const result = sut.isWithinAllowedSizeLimit("");
 
-        assert.equal(result, true);
+        assert.strictEqual(result, true);
     });
 
     test("isWithinAllowedSizeLimit() with 1 char and 0 limit returns false", () => {
@@ -24,7 +24,7 @@ suite("ConfigSizeLimitCheker Tests", () => {
 
         const result = sut.isWithinAllowedSizeLimit("a");
 
-        assert.equal(result, false);
+        assert.strictEqual(result, false);
     });
 
     test("isWithinAllowedSizeLimit() with 2 char and 2 char limit returns true", () => {
@@ -32,7 +32,7 @@ suite("ConfigSizeLimitCheker Tests", () => {
 
         const result = sut.isWithinAllowedSizeLimit("ab");
 
-        assert.equal(result, true);
+        assert.strictEqual(result, true);
     });
 
     test("isWithinAllowedSizeLimit() with 2 char and 3 char limit returns false", () => {
@@ -40,7 +40,7 @@ suite("ConfigSizeLimitCheker Tests", () => {
 
         const result = sut.isWithinAllowedSizeLimit("abc");
 
-        assert.equal(result, false);
+        assert.strictEqual(result, false);
     });
 
     function createSut(limit: number = 100): ConfigSizeLimitChecker {

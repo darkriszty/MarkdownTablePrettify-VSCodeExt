@@ -41,7 +41,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         
         const rowViewModel = sut.buildRow(row, table);
 
-        assert.equal(rowViewModel.getValueAt(1).startsWith("test"), true);
+        assert.strictEqual(rowViewModel.getValueAt(1).startsWith("test"), true);
     });
 
     test("Value returned from padCalculator.getRightPadding is used to end the row value", () => {
@@ -52,7 +52,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         
         const rowViewModel = sut.buildRow(row, table);
 
-        assert.equal(rowViewModel.getValueAt(1).endsWith("test"), true);
+        assert.strictEqual(rowViewModel.getValueAt(1).endsWith("test"), true);
     });
 
     test("Empty middle column uses only left and right pad to create the value", () => {
@@ -66,7 +66,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const rowViewModel = sut.buildRow(row, table);
 
         assertExt.isNotNull(rowViewModel);
-        assert.equal(rowViewModel.getValueAt(1), "LR");
+        assert.strictEqual(rowViewModel.getValueAt(1), "LR");
     });
 });
 
@@ -87,8 +87,8 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
 
         const separator = sut.buildSeparator(rows, table);
 
-        assert.equal(separator.getValueAt(0), "----");
-        assert.equal(separator.getValueAt(1), "------");
+        assert.strictEqual(separator.getValueAt(0), "----");
+        assert.strictEqual(separator.getValueAt(1), "------");
     });
 
     test("Calls marker to mark the beginning and end", () => {
