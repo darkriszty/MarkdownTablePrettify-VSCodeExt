@@ -38,7 +38,19 @@
           "description": "The maximum text length to apply formatting to."
         }
       }
-    }
+    },
+    "commands": [{
+      "command": "markdownTablePrettify.prettifyTables",
+      "title": "Prettify markdown tables"
+    }],
+    "keybindings": [
+      {
+        "command": "markdownTablePrettify.prettifyTables",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m",
+        "when": "editorTextFocus && editorLangId == markdown && !editorReadonly && !inCompositeEditor"
+      }
+    ]
   },
   "capabilities": {
     "documentFormattingProvider": "true"

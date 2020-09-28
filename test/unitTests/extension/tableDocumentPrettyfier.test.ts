@@ -22,12 +22,12 @@ suite("TableDocumentPrettyfier tests", () => {
 
         const result = sut.provideDocumentFormattingEdits(document, null, null);
 
-        assert.equal(result.length, 1);
-        assert.equal(result[0].newText, expectedResult);
-        assert.equal(result[0].range.start.line, 0);
-        assert.equal(result[0].range.start.character, 0);
-        assert.equal(result[0].range.end.line, 9);
-        assert.equal(result[0].range.end.character, Number.MAX_SAFE_INTEGER);
+        assert.strictEqual(result.length, 1);
+        assert.strictEqual(result[0].newText, expectedResult);
+        assert.strictEqual(result[0].range.start.line, 0);
+        assert.strictEqual(result[0].range.start.character, 0);
+        assert.strictEqual(result[0].range.end.line, 9);
+        assert.strictEqual(result[0].range.end.character, Number.MAX_SAFE_INTEGER);
         _multiTablePrettyfier.verify(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny()), Times.once());
     });
 

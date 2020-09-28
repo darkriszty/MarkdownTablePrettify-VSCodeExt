@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ConfigSizeLimitChecker } from '../prettyfiers/sizeLimit/configSizeLimitCheker';
 import { TableDocumentPrettyfier } from './tableDocumentPrettyfier';
+import { TableDocumentPrettyfierCommand } from './tableDocumentPrettyfierCommand';
 import { TableFinder } from '../tableFinding/tableFinder';
 import { TableDocumentRangePrettyfier } from "./tableDocumentRangePrettyfier";
 import { ILogger } from '../diagnostics/logger';
@@ -35,6 +36,19 @@ export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFo
     return new TableDocumentPrettyfier(
         new MultiTablePrettyfier(
             new TableFinder(new TableValidator(new SelectionInterpreter(strict))),
+            getSingleTablePrettyfier(loggers, sizeLimitCheker),
+            sizeLimitCheker
+        )
+    );
+}
+
+export function getDocumentPrettyfierCommand(): TableDocumentPrettyfierCommand {
+    const loggers = getLoggers();
+    const sizeLimitCheker = getSizeLimitChecker(loggers);
+
+    return new TableDocumentPrettyfierCommand(
+        new MultiTablePrettyfier(
+            new TableFinder(new TableValidator(new SelectionInterpreter(true))),
             getSingleTablePrettyfier(loggers, sizeLimitCheker),
             sizeLimitCheker
         )

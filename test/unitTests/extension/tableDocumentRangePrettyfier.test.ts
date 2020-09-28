@@ -22,8 +22,8 @@ suite("TableDocumentRangePrettyfier tests", () => {
 
         const result = sut.provideDocumentRangeFormattingEdits(document, range, null, null);
 
-        assert.equal(result.length, 1);
-        assert.equal(result[0].range, range);
+        assert.strictEqual(result.length, 1);
+        assert.strictEqual(result[0].range, range);
         _singleTablePrettyfier.verify(_ => _.prettifyTable(It.isAny(), It.isAny()), Times.once());
     });
 
