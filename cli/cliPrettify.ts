@@ -23,6 +23,12 @@ export class CliPrettify {
         return prettyfier.formatTables(text);
     }
 
+    public static check(text: string): void {
+        if (this.prettify(text) !== text) {
+            throw new Error("The input file is not prettyfied!");
+        }
+    }
+
     private static createPrettyfier(): MultiTablePrettyfier {
         const logger = new ConsoleLogger();
         return new MultiTablePrettyfier(

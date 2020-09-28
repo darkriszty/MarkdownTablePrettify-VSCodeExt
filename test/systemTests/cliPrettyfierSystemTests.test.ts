@@ -4,9 +4,8 @@ import * as assert from 'assert';
 import { CliPrettify } from '../../cli/cliPrettify';
 
 fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
-    suite("CLI Prettyfier system tests", () => {
+    suite("CLI Prettyfier system tests - prettyfied input files match prepared expected files", () => {
         const distinctTests: string[] = getTestFileNames(files);
-
         for (let fileNameRoot of distinctTests) {
             test(`[${fileNameRoot}]`, () => {
                 const input = fs.readFileSync(pathFor(`${fileNameRoot}-input.md`), "utf8");
@@ -14,7 +13,32 @@ fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
 
                 const actual = CliPrettify.prettify(input);
 
-                assert.equal(actual, expected);
+                assert.strictEqual(actual, expected);
+            });
+        }
+    });
+});
+
+fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
+    suite("CLI Prettyfier system tests - check() for non pretty files throws error", () => {
+        const distinctTests: string[] = getTestFileNames(files);
+        for (let fileNameRoot of distinctTests) {
+            test(`[${fileNameRoot}]`, () => {
+                const input = fs.readFileSync(pathFor(`${fileNameRoot}-input.md`), "utf8");
+                assert.throws(() => CliPrettify.check(input));
+            });
+        }
+    });
+});
+
+
+fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
+    suite("CLI Prettyfier system tests - check() for pretty files does not throw", () => {
+        const distinctTests: string[] = getTestFileNames(files);
+        for (let fileNameRoot of distinctTests) {
+            test(`[${fileNameRoot}]`, () => {
+                const expected = fs.readFileSync(pathFor(`${fileNameRoot}-expected.md`), "utf8");
+                assert.doesNotThrow(() => CliPrettify.check(expected));
             });
         }
     });

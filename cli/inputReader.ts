@@ -1,6 +1,5 @@
 export class InputReader {
     static subscribe(readDone): void {
-        //TODO: read the "--check" argument
         if (process.stdin.isTTY) {
             readDone(process.argv[2] || "");
         } else {

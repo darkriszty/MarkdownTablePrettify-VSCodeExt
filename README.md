@@ -33,7 +33,9 @@ The tipical location of the installed extension (your actual version might diffe
 Available features from the command line:
 - To format a file: `npm run --silent prettify-md < input.md`.
 - To format a file and save the output: `npm run --silent prettify-md < input.md > output.md`.
-- To check whether a file is prettyfied or not: `npm run --silent prettify-md --check < input.md`. This will fail if the file is not prettyfied.
+- To check whether a file is prettyfied or not: `npm run --silent check-md < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
+
+> Note: the `--silent` switch sets the npm log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
 
 ## Extension Settings
 
