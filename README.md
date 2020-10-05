@@ -20,7 +20,7 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 Formatting files or checking if they're already formatted is possible from the command line. This requires `node` and `npm`.
 
 The extension has to be downloaded and compiled:
-- Locate your VSCode installed extension path or download the extension from Github.
+- Locate the installed extension path or download the extension from Github.
 - Go to the extension directory.
 - Run `npm install`.
 - Run `npm run compile`.
