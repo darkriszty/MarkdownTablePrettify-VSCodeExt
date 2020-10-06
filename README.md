@@ -11,7 +11,7 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 - Save space by not right-padding the last column if the table has no border.
 - Support empty columns inside tables.
 - Support column alignment options with ":".
-- CLI support to prettify files.
+- CLI and docker support to prettify files.
 
 ![feature X](assets/animation.gif)
 
@@ -25,7 +25,7 @@ The extension has to be downloaded and compiled:
 - Run `npm install`.
 - Run `npm run compile`.
 
-The tipical location of the installed extension (your actual version might differ):
+The typical location of the installed extension (your actual version might differ):
 - Windows %USERPROFILE%\.vscode\extensions\darkriszty.markdown-table-prettify-3.0.0
 - macOS ~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0
 - Linux ~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0
@@ -36,6 +36,13 @@ Available features from the command line:
 - To check whether a file is prettyfied or not: `npm run --silent check-md < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
 
 > Note: the `--silent` switch sets the npm log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
+
+### Formatting with docker
+
+Available features from docker:
+- To prettify a file: `docker container run -i darkriszty/prettify-md < input.md`.
+- To prettify a file and save the output: `docker container run -i darkriszty/prettify-md < input.md > output.md`.
+- To check whether a file is prettyfied or not: `docker container run -i darkriszty/prettify-md --check < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
 
 ## Extension Settings
 
