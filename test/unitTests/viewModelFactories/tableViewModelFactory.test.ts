@@ -8,6 +8,7 @@ import { RowViewModel } from "../../../src/viewModels/rowViewModel";
 import { RowViewModelFactory } from "../../../src/viewModelFactories/rowViewModelFactory";
 import { TableViewModelFactory } from "../../../src/viewModelFactories/tableViewModelFactory";
 import { Cell } from "../../../src/models/cell";
+import { Row } from "../../../src/models/row";
 
 suite("TableViewModelFactory tests", () => {
     let _rowVmb: IMock<RowViewModelFactory>;
@@ -22,8 +23,8 @@ suite("TableViewModelFactory tests", () => {
             ["v1", "v2"],
             ["v3", "v4"],
         ]);
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
+        const expectedSeparator = new RowViewModel([], "");
+        const expectedRow = new RowViewModel([], "");
 
         _rowVmb
             .setup(m => m.buildSeparator(It.isAny(), It.isAny()))
@@ -46,20 +47,20 @@ suite("TableViewModelFactory tests", () => {
             ["v1", "v2"],
             ["v3", "v4"],
         ]);
-        const expectedSeparator = new RowViewModel([]);
-        const expectedRow = new RowViewModel([]);
+        const expectedSeparator = new RowViewModel([], "");
+        const expectedRow = new RowViewModel([], "");
         _rowVmb.setup(m => m.buildSeparator(It.isAny(), It.isAny())).returns(() => expectedSeparator)
         _rowVmb.setup(m => m.buildRow(It.isAny(), It.isAny())).returns(() => expectedRow);
 
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.header, expectedRow);
-        assert.equal(tableVm.separator, expectedSeparator);
+        assert.strictEqual(tableVm.header, expectedRow);
+        assert.strictEqual(tableVm.separator, expectedSeparator);
         assertExt.isNotNull(tableVm.rows);
-        assert.equal(tableVm.rows.length, 2);
-        assert.equal(tableVm.rows[0], expectedRow);
-        assert.equal(tableVm.rows[1], expectedRow);
+        assert.strictEqual(tableVm.rows.length, 2);
+        assert.strictEqual(tableVm.rows[0], expectedRow);
+        assert.strictEqual(tableVm.rows[1], expectedRow);
     });
 
     test("build() with table having left border sets hasLeftBorder on viewModel", () => {
@@ -73,7 +74,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasLeftBorder, true);
+        assert.strictEqual(tableVm.hasLeftBorder, true);
     });
 
     test("build() with table without left border sets hasLeftBorder on viewModel to false", () => {
@@ -86,7 +87,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasLeftBorder, false);
+        assert.strictEqual(tableVm.hasLeftBorder, false);
     });
 
     test("build() with table having right border sets hasRightBorder on viewModel", () => {
@@ -100,7 +101,7 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasRightBorder, true);
+        assert.strictEqual(tableVm.hasRightBorder, true);
     });
 
     test("build() with table without right border sets hasRightBorder on viewModel to false", () => {
@@ -113,15 +114,13 @@ suite("TableViewModelFactory tests", () => {
         const tableVm = createViewModelFactory().build(table);
 
         assertExt.isNotNull(tableVm);
-        assert.equal(tableVm.hasRightBorder, false);
+        assert.strictEqual(tableVm.hasRightBorder, false);
     });
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
-        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-        return table;
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
     }
-    
 
     function createViewModelFactory(): TableViewModelFactory {
         return new TableViewModelFactory(_rowVmb.object);

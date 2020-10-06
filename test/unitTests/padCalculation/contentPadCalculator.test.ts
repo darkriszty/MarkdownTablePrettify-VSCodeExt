@@ -7,6 +7,7 @@ import { Cell } from '../../../src/models/cell';
 import { PadCalculatorSelector } from '../../../src/padCalculation/padCalculatorSelector';
 import { BasePadCalculator } from '../../../src/padCalculation/basePadCalculator';
 import { PadCalculator } from '../../../src/padCalculation/padCalculator';
+import { Row } from '../../../src/models/row';
 
 suite("ContentPadCalculator tests", () => {
 
@@ -29,7 +30,7 @@ suite("ContentPadCalculator tests", () => {
 
         const pad = sut.getLeftPadding(table, 1, 2);
 
-        assert.equal(pad, "test");
+        assert.strictEqual(pad, "test");
         _selector.verifyAll();
         _mockCalculator.verifyAll();
     });
@@ -45,15 +46,14 @@ suite("ContentPadCalculator tests", () => {
 
         const pad = sut.getRightPadding(table, 1, 2);
 
-        assert.equal(pad, "foo bar");
+        assert.strictEqual(pad, "foo bar");
         _selector.verifyAll();
         _mockCalculator.verifyAll();
     });
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
-        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-        return table;
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
     }
 
     function createCalculator(): PadCalculator { 

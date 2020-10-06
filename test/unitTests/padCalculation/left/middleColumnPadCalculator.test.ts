@@ -3,6 +3,7 @@ import { Table } from '../../../../src/models/table';
 import { Alignment } from '../../../../src/models/alignment';
 import { Cell } from '../../../../src/models/cell';
 import { MiddleColumnPadCalculator } from '../../../../src/padCalculation/left/middleColumnPadCalculator';
+import { Row } from '../../../../src/models/row';
 
 suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
@@ -15,7 +16,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getLeftPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.strictEqual(pad, " ");
     });
 
     test("getLeftPadding() Middle column is empty cell gets left padded with one character", () => {
@@ -27,7 +28,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getLeftPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.strictEqual(pad, " ");
     });
 
     test("getRightPadding() Middle column is empty cell gets right padded with maxColLength characters", () => {
@@ -39,7 +40,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "      ");
+        assert.strictEqual(pad, "      ");
     });
 
     test("getRightPadding() Middle column equal to maxColLength gets right padded with one character", () => {
@@ -51,7 +52,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, " ");
+        assert.strictEqual(pad, " ");
     });
 
     test("getRightPadding() Middle column 1 char shorter than maxColLength gets right padded with 2 characters", () => {
@@ -63,7 +64,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "  ");
+        assert.strictEqual(pad, "  ");
     });
 
     test("getRightPadding() Middle column 2 char shorter than maxColLength gets right padded with 3 characters", () => {
@@ -75,7 +76,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "   ");
+        assert.strictEqual(pad, "   ");
     });
 
     test("getRightPadding() Middle column 3 char shorter than maxColLength gets right padded with 4 characters", () => {
@@ -87,7 +88,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "    ");
+        assert.strictEqual(pad, "    ");
     });
 
     test("getRightPadding() Middle column is empty string gets right padded with maxColLength+1 characters", () => {
@@ -99,7 +100,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "      ");
+        assert.strictEqual(pad, "      ");
     });
 
     test("getRightPadding() Middle column with 0 maxLength gets right padded with 2 character", () => {
@@ -111,7 +112,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
 
         const pad = getRightPad(sut, table);
 
-        assert.equal(pad, "  ");
+        assert.strictEqual(pad, "  ");
     });
 
     test("Regular middle gets padded both left and right with expected amount", () => {
@@ -124,8 +125,8 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
         const leftPad = sut.getLeftPadding(" ", table, 1, 1);
         const rightPad = sut.getRightPadding(" ", table, 1, 1);
 
-        assert.equal(leftPad, " ");
-        assert.equal(rightPad, "     ");
+        assert.strictEqual(leftPad, " ");
+        assert.strictEqual(rightPad, "     ");
     });
 
     function getLeftPad(sut: MiddleColumnPadCalculator, table: Table): string {
@@ -141,8 +142,7 @@ suite("LeftAlign - MiddleColumnPadCalculator tests", () => {
     }
 
     function tableFor(rows: string[][]) {
-        const alignments: Alignment[] = rows[0].map(() => Alignment.Left);
-        let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-        return table;
+        const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
     }
 });

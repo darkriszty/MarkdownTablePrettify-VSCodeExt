@@ -11,9 +11,9 @@ suite("LeftAlignmentMarker tests", () => {
         results.push(sut.mark("123"));
         results.push(sut.mark("----------"));
 
-        assert.equal(results[0], ":b");
-        assert.equal(results[1], ":23");
-        assert.equal(results[2], ":---------");
+        assert.strictEqual(results[0], ":b");
+        assert.strictEqual(results[1], ":23");
+        assert.strictEqual(results[2], ":---------");
     });
 
     test("mark() for a null input returns the given input", () => {
@@ -21,7 +21,7 @@ suite("LeftAlignmentMarker tests", () => {
 
         const result = sut.mark(null);
 
-        assert.equal(result, null);
+        assert.strictEqual(result, null);
     });
 
     test("mark() for an empty input returns the given input", () => {
@@ -29,7 +29,7 @@ suite("LeftAlignmentMarker tests", () => {
 
         const result = sut.mark("");
 
-        assert.equal(result, "");
+        assert.strictEqual(result, "");
     });
 
     test("mark() for an input length of 1 returns the given input", () => {
@@ -37,7 +37,7 @@ suite("LeftAlignmentMarker tests", () => {
 
         const result = sut.mark("a");
 
-        assert.equal(result, "a");
+        assert.strictEqual(result, "a");
     });
 
     function createSut() {

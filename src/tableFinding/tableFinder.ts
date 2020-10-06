@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
-import { EOL } from "os";
+import { Document } from "../models/doc/document";
+import { Range } from "../models/doc/range";
 import { TableValidator } from "../modelFactory/tableValidator";
 
 export class TableFinder {
@@ -7,68 +7,46 @@ export class TableFinder {
         private readonly _tableValidator: TableValidator
     ) { }
 
-    public getTables(document: vscode.TextDocument): vscode.Range[] {
-        let rows: string[] = document.getText().split(/\r\n|\r|\n/);
-
-        let result = [];
-        let previousRowIndex = 0;
-        while(true) {
-            let { tableStartRow, tableEndRow } = this.getNextResult(rows, previousRowIndex);
-            if (tableStartRow == null || tableEndRow == null)
-                break;
-            result.push(this.getRangeForLines(tableStartRow, tableEndRow));
-            previousRowIndex = tableEndRow;
-        }
-
-        return result;
-    }
-
-    private getNextResult(rows: string[], startAtRow: number) {
+    public getNextRange(document: Document, startLine: number): Range {
         // look for the separator row, assume table starts 1 row before & ends when invalid
-        let rowIndex = startAtRow;
-        while (rowIndex < rows.length) {
-            let table = this._tableValidator.lineIsValidSeparator(rows[rowIndex])
-                ? this.getTableFromSeparatorIndex(rows, rowIndex)
+        let rowIndex = startLine;
+
+        while (rowIndex < document.lines.length) {
+            const isValidSeparatorRow = this._tableValidator.lineIsValidSeparator(document.lines[rowIndex].value);
+            let tableRange = isValidSeparatorRow
+                ? this.getNextValidTableRange(document, rowIndex)
                 : null;
-            if (table != null) return table;
+            if (tableRange != null) {
+                return tableRange;
+            }
             rowIndex++;
         }
 
-        return {
-            tableStartRow: null,
-            tableEndRow: null
-        };
+        return null;
     }
 
-    private getTableFromSeparatorIndex(rows: string[], separatorRowIndex: number) {
-        let tableValid = true;
-        let tableStartRow = separatorRowIndex - 1;
-        let tableEndRow = separatorRowIndex;
+    private getNextValidTableRange(document: Document, separatorRowIndex: number): Range {
+        let firstTableFileRow = separatorRowIndex - 1;
+        let lastTableFileRow = separatorRowIndex + 1;
+        let selection = null;
 
-        while (tableValid && tableEndRow < rows.length) {
-            tableEndRow++;
-            let selection = this.concatRows(rows, tableStartRow, tableEndRow)
-            tableValid = this._tableValidator.isValid(selection);
+        while (lastTableFileRow < document.lines.length) {
+            const newSelection = document.getText(new Range(firstTableFileRow, lastTableFileRow));
+            const tableValid = this._tableValidator.isValid(newSelection);
+            if (tableValid) {
+                selection = newSelection;
+                lastTableFileRow++;
+            } else {
+                break;
+            }
         }
 
-        // make sure there is at least 1 row after the separator
-        return tableEndRow > separatorRowIndex + 1
-            ? {
-                tableStartRow: tableStartRow,
-                tableEndRow: tableEndRow - 1
-            }
-            : null;
-    }
+        if (selection == null) {
+            return null;
+        }
 
-    private concatRows(rows: string[], from: number, to: number) {
-        let relevantRows = rows.slice(from, to + 1);
-        return relevantRows.join(EOL);
-    }
-
-    private getRangeForLines(startLine: number, endLine: number): vscode.Range {
-        return new vscode.Range(
-            new vscode.Position(startLine, 0),
-            new vscode.Position(endLine, Number.MAX_SAFE_INTEGER) // avoid calculating the column in the editor, this will be validated by vscode
-        );
+        // return the row to the last valid try
+        lastTableFileRow--;
+        return new Range(firstTableFileRow, lastTableFileRow);
     }
 }

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## 3.0.0 - 2020-10-06
+### Added
+- Issue #32: Major refactoring to support CLI. Support `npm run prettify-md` and `npm run check-md`.
+- Issue #40: Provide command to run alongside prettier (shortcut `CTRL+ALT+M`).
+
 ## 2.5.0 - 2020-07-04
 ### Added
 - Issue #30: Add configurable text limit for table formatting

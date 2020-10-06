@@ -1,5 +1,4 @@
 import { Table } from "../../models/table";
-import { Cell } from "../../models/cell";
 import { BasePadCalculator } from "../basePadCalculator";
 
 export abstract class CenterPadCalculator extends BasePadCalculator {
@@ -14,7 +13,7 @@ export abstract class CenterPadCalculator extends BasePadCalculator {
     protected totalPadCount(table: Table, column: number, row: number): number {
         const longestColumnLength = table.getLongestColumnLengths()[column];
         let padCount = longestColumnLength > 0
-            ? longestColumnLength - table.rows[row][column].getLength()
+            ? longestColumnLength - table.rows[row].cells[column].getLength()
             : 1;
         padCount += this.extraPadCount(table);
         return padCount / 2;

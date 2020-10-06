@@ -1,4 +1,3 @@
-import { Table } from "../models/table";
 import { SelectionInterpreter } from "./selectionInterpreter";
 
 export class TableValidator {
@@ -8,8 +7,8 @@ export class TableValidator {
     public isValid(selection: string): boolean {
         if (selection == null || selection === undefined)
             return false;
-        const rawRows = this._selectionInterpreter.allRows(selection);
-        
+        const rawRows: string[][] = this._selectionInterpreter.allRows(selection);
+
         const sizeValid = rawRows.length > 2 && // at least two rows are required (besides the separator)
                           rawRows[0].length > 1 && // at least two columns are required
                           rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column

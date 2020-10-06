@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "2.5.0",
+  "version": "3.0.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -38,7 +38,19 @@
           "description": "The maximum text length to apply formatting to."
         }
       }
-    }
+    },
+    "commands": [{
+      "command": "markdownTablePrettify.prettifyTables",
+      "title": "Prettify markdown tables"
+    }],
+    "keybindings": [
+      {
+        "command": "markdownTablePrettify.prettifyTables",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m",
+        "when": "editorTextFocus && editorLangId == markdown && !editorReadonly && !inCompositeEditor"
+      }
+    ]
   },
   "capabilities": {
     "documentFormattingProvider": "true"
@@ -47,7 +59,9 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -p ./",
     "pretest": "npm run compile",
-    "test": "gulp copy-systemTest-resources && node ./out/test/index.js"
+    "test": "gulp copy-systemTest-resources && node ./out/test/index.js",
+    "prettify-md": "node ./out/cli/index.js",
+    "check-md": "node ./out/cli/index.js --check"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.2",

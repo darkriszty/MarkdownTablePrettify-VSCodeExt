@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { SizeLimitChecker } from './sizeLimitCheker';
+import { ConfigSizeLimitChecker } from '../prettyfiers/sizeLimit/configSizeLimitCheker';
 import { TableDocumentPrettyfier } from './tableDocumentPrettyfier';
+import { TableDocumentPrettyfierCommand } from './tableDocumentPrettyfierCommand';
 import { TableFinder } from '../tableFinding/tableFinder';
 import { TableDocumentRangePrettyfier } from "./tableDocumentRangePrettyfier";
 import { ILogger } from '../diagnostics/logger';
@@ -18,27 +19,14 @@ import { BorderTransformer } from '../modelFactory/transformers/borderTransforme
 import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
+import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
+import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
 
-export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: SizeLimitChecker = null, loggers: ILogger[] = null) {
+export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: ConfigSizeLimitChecker = null, loggers: ILogger[] = null) {
     loggers = loggers || getLoggers();
     sizeLimitCheker = sizeLimitCheker || getSizeLimitChecker(loggers);
 
-    return new TableDocumentRangePrettyfier(
-        new TableFactory(
-            new AlignmentFactory(), new SelectionInterpreter(strict), 
-            new TrimmerTransformer(new BorderTransformer(null))
-        ),
-        new TableValidator(new SelectionInterpreter(strict)),
-        new TableViewModelFactory(
-            new RowViewModelFactory(
-                new ContentPadCalculator(new PadCalculatorSelector(), " "), 
-                new AlignmentMarkerStrategy(":")
-            )
-        ),
-        new TableStringWriter(),
-        loggers,
-        sizeLimitCheker
-    );
+    return new TableDocumentRangePrettyfier(getSingleTablePrettyfier(loggers, sizeLimitCheker));
 }
 
 export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFormattingEditProvider {
@@ -46,8 +34,41 @@ export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFo
     const sizeLimitCheker = getSizeLimitChecker(loggers);
 
     return new TableDocumentPrettyfier(
-        new TableFinder(new TableValidator(new SelectionInterpreter(strict))), 
-        getDocumentRangePrettyfier(strict, sizeLimitCheker, loggers),
+        new MultiTablePrettyfier(
+            new TableFinder(new TableValidator(new SelectionInterpreter(strict))),
+            getSingleTablePrettyfier(loggers, sizeLimitCheker),
+            sizeLimitCheker
+        )
+    );
+}
+
+export function getDocumentPrettyfierCommand(): TableDocumentPrettyfierCommand {
+    const loggers = getLoggers();
+    const sizeLimitCheker = getSizeLimitChecker(loggers);
+
+    return new TableDocumentPrettyfierCommand(
+        new MultiTablePrettyfier(
+            new TableFinder(new TableValidator(new SelectionInterpreter(true))),
+            getSingleTablePrettyfier(loggers, sizeLimitCheker),
+            sizeLimitCheker
+        )
+    );
+}
+
+function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSizeLimitChecker): SingleTablePrettyfier {
+    return new SingleTablePrettyfier(
+        new TableFactory(
+            new AlignmentFactory(),
+            new SelectionInterpreter(false),
+            new TrimmerTransformer(new BorderTransformer(null))
+        ),
+        new TableValidator(new SelectionInterpreter(false)),
+        new TableViewModelFactory(new RowViewModelFactory(
+            new ContentPadCalculator(new PadCalculatorSelector(), " "),
+            new AlignmentMarkerStrategy(":")
+        )),
+        new TableStringWriter(),
+        loggers,
         sizeLimitCheker
     );
 }
@@ -60,9 +81,9 @@ function getLoggers(): ILogger[] {
     ]
 }
 
-function getSizeLimitChecker(loggers: ILogger[]): SizeLimitChecker {
+function getSizeLimitChecker(loggers: ILogger[]): ConfigSizeLimitChecker {
     const maxTextLength = getConfigurationValue<number>("maxTextLength", 1000000);
-    return new SizeLimitChecker(loggers, maxTextLength);
+    return new ConfigSizeLimitChecker(loggers, maxTextLength);
 }
 
 function getConfigurationValue<T>(key: string, defaultValue: T): T {

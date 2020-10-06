@@ -1,14 +1,11 @@
-import { ILogger } from "../diagnostics/logger";
+import { ILogger } from "../../diagnostics/logger";
+import { SizeLimitChecker } from "./sizeLimitChecker";
 
-export class SizeLimitChecker {
+export class ConfigSizeLimitChecker implements SizeLimitChecker {
     constructor(
         private readonly _loggers: ILogger[],
         private readonly _maxTextLength: number
     ){}
-
-    public get maxTextLength() : number {
-        return this._maxTextLength;
-    }
 
     public isWithinAllowedSizeLimit(text: string): boolean {
         const whithinLimit = text.length <= this._maxTextLength;

@@ -1,7 +1,7 @@
 import { Transformer } from "./transformer";
-import { Table } from "../../models/table";
 import { Alignment } from "../../models/alignment";
-import { Cell } from "../../models/cell";
+import { Row } from "../../models/row";
+import { Table } from "../../models/table";
 
 export class BorderTransformer extends Transformer {
     
@@ -11,36 +11,36 @@ export class BorderTransformer extends Transformer {
 
         const hasLeftBorder: boolean = this.isColumnEmpty(input.rows, 0);
         const hasRightBorder: boolean = this.isColumnEmpty(input.rows, input.columnCount - 1);
-        const rows = this.rowsWithoutEmptyFirstAndLastColumn(input.rows, hasLeftBorder, hasRightBorder);
+        const rows: Row[] = this.rowsWithoutEmptyFirstAndLastColumn(input.rows, hasLeftBorder, hasRightBorder);
         const alignments = this.alignmentsWithoutEmptyFirstAndLastColumn(input.alignments, hasLeftBorder, hasRightBorder);
 
-        let result = new Table(rows, alignments);
+        let result = new Table(rows, input.separatorEOL, alignments);
         result.hasLeftBorder = hasLeftBorder;
         result.hasRightBorder = this.hasRightBorder(hasLeftBorder, hasRightBorder);
         return result;
     }
 
-    private isColumnEmpty(rows: Cell[][], column: number): boolean {
+    private isColumnEmpty(rows: Row[], column: number): boolean {
         for (let row = 0; row < rows.length; row++) {
-            const value = rows[row][column];
+            const value = rows[row].cells[column];
             if (value != null && value.getValue().trim() != "")
                 return false;
         }
         return true;
     }
 
-    private rowsWithoutEmptyFirstAndLastColumn(rows: Cell[][], hasLeftBorder: boolean, hasRightBorder: boolean): Cell[][] {
+    private rowsWithoutEmptyFirstAndLastColumn(rows: Row[], hasLeftBorder: boolean, hasRightBorder: boolean): Row[] {
         let newRows = rows;
         if (hasLeftBorder)
             this.removeColumn(newRows, 0);
         if (hasRightBorder)
-            this.removeColumn(newRows, newRows[0].length - 1);
+            this.removeColumn(newRows, newRows[0].cells.length - 1);
         return newRows;
     }
 
-    private removeColumn(rows: Cell[][], column: number): void {
+    private removeColumn(rows: Row[], column: number): void {
         for (let row = 0; row < rows.length; row++)
-            rows[row].splice(column, 1);
+            rows[row].cells.splice(column, 1);
     }
 
     private alignmentsWithoutEmptyFirstAndLastColumn(alignments: Alignment[], hasLeftBorder: boolean, hasRightBorder: boolean): Alignment[] {

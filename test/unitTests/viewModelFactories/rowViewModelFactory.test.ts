@@ -8,6 +8,7 @@ import { Alignment } from '../../../src/models/alignment';
 import { Cell } from '../../../src/models/cell';
 import { AlignmentMarkerStrategy, IAlignmentMarker } from '../../../src/viewModelFactories/alignmentMarking';
 import { RowViewModel } from '../../../src/viewModels/rowViewModel';
+import { Row } from '../../../src/models/row';
 
 suite("RowViewModelFactory.buildRow() tests", () => {
     let _contentPadCalculator: IMock<PadCalculator>;
@@ -40,7 +41,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         
         const rowViewModel = sut.buildRow(row, table);
 
-        assert.equal(rowViewModel.getValueAt(1).startsWith("test"), true);
+        assert.strictEqual(rowViewModel.getValueAt(1).startsWith("test"), true);
     });
 
     test("Value returned from padCalculator.getRightPadding is used to end the row value", () => {
@@ -51,7 +52,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         
         const rowViewModel = sut.buildRow(row, table);
 
-        assert.equal(rowViewModel.getValueAt(1).endsWith("test"), true);
+        assert.strictEqual(rowViewModel.getValueAt(1).endsWith("test"), true);
     });
 
     test("Empty middle column uses only left and right pad to create the value", () => {
@@ -65,7 +66,7 @@ suite("RowViewModelFactory.buildRow() tests", () => {
         const rowViewModel = sut.buildRow(row, table);
 
         assertExt.isNotNull(rowViewModel);
-        assert.equal(rowViewModel.getValueAt(1), "LR");
+        assert.strictEqual(rowViewModel.getValueAt(1), "LR");
     });
 });
 
@@ -80,14 +81,14 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const sut = createFactory(_contentPadCalculator.object);
         const table = threeColumnTable();
         const rows: RowViewModel[] = [
-            new RowViewModel(["abc", "defghi"]),
-            new RowViewModel(["abcd", "efgh"])
+            new RowViewModel(["abc", "defghi"], "\n"),
+            new RowViewModel(["abcd", "efgh"], "\n")
         ];
 
         const separator = sut.buildSeparator(rows, table);
 
-        assert.equal(separator.getValueAt(0), "----");
-        assert.equal(separator.getValueAt(1), "------");
+        assert.strictEqual(separator.getValueAt(0), "----");
+        assert.strictEqual(separator.getValueAt(1), "------");
     });
 
     test("Calls marker to mark the beginning and end", () => {
@@ -99,8 +100,8 @@ suite("RowViewModelFactory.buildSeparator() tests", () => {
         const sut = createFactory(_contentPadCalculator.object, alignmentStrategy.object);
         const table = threeColumnTable();
         const rows: RowViewModel[] = [
-            new RowViewModel(["abc", "defghi", "xyx"]),
-            new RowViewModel(["abcd", "efgh", "xyz"])
+            new RowViewModel(["abc", "defghi", "xyx"], "\n"),
+            new RowViewModel(["abcd", "efgh", "xyz"], "\n")
         ];
 
         sut.buildSeparator(rows, table);
@@ -126,8 +127,7 @@ function threeColumnTableWithEmptyMiddleColumn(alignment: Alignment = Alignment.
 
 function tableFor(rows: string[][], alignment: Alignment) {
     const alignments: Alignment[] = rows[0].map(() => alignment);
-    let table = new Table(rows.map(row => row.map(c  => new Cell(c))), alignments);
-    return table;
+    return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
 }
 
 function createFactory(contentPadCalculator: PadCalculator, alignmentStrategy: AlignmentMarkerStrategy = null): RowViewModelFactory 

@@ -1,8 +1,12 @@
 export class RowViewModel {
 
-    constructor (private _values: string[]) { }
+    constructor (
+        private readonly _values: string[],
+        private readonly _eol: string
+    ) { }
 
     public get columnCount(): number { return this._values.length; }
+    public get EOL(): string { return this._eol; }
 
     public getValueAt(index: number): string {
         const maxIndex = this._values.length - 1;

@@ -1,4 +1,3 @@
-import { EOL } from "os";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { RowViewModel } from "../viewModels/rowViewModel";
 
@@ -34,7 +33,7 @@ export class TableStringWriter {
         }
         buffer += this.getRightBorderIfNeeded(table);
         if (addEndOfLine)
-            buffer += EOL;
+            buffer += row.EOL;
         return buffer;
     }
 

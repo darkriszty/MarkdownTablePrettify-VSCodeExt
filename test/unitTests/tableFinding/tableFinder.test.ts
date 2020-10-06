@@ -1,64 +1,62 @@
 import * as assert from 'assert';
-import * as vscode from "vscode";
-import { TableFinder } from '../../../src/tableFinding/tableFinder';
-import { MarkdownTextDocumentStub } from '../../stubs/markdownTextDocumentStub';
-import { TableValidator } from '../../../src/modelFactory/tableValidator';
 import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
+import { TableValidator } from '../../../src/modelFactory/tableValidator';
+import { Document } from '../../../src/models/doc/document';
+import { Range } from '../../../src/models/doc/range';
+import { TableFinder } from '../../../src/tableFinding/tableFinder';
 
 suite("TableFinder tests", () => {
 
-    test("getTables() for an empty document returns no ranges", () => {
-        let sut = getSut();
-        let document = makeDocument("");
+    test("getNextRange() for an empty document returns no range", () => {
+        const sut = createSut();
+        const document = new Document("");
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 0);
 
-        assert.equal(tableRanges.length, 0);
+        assert.strictEqual(range, null);
     });
 
-    test("getTables() for a document containing only text returns no ranges", () => {
-        let sut = getSut();
-        let document = makeDocument(`
+    test("getNextRange() for a document containing only text returns no range", () => {
+        const sut = createSut();
+        const document = new Document(`
             hello world
             line 2
             line 3`);
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 0);
 
-        assert.equal(tableRanges.length, 0);
+        assert.strictEqual(range, null);
     });
 
-    test("getTables() for single table in entire document returns a single full document range", () => {
-        let sut = getSut();
-        let document = makeDocument(`|Primitive Type|Size(bit)|Wrapper
+    test("getNextRange() with document having a full range table returns full doc range", () => {
+        const sut = createSut();
+        const document = new Document(`|Primitive Type|Size(bit)|Wrapper
             |-|-|-
             |short|16|Short
             |int|32|Integer`);
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 0);
 
-        assert.equal(tableRanges.length, 1);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(0, 0, 3, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(range, new Range(0, 3));
     });
 
-    test("getTables() for single table the expected range is returned", () => {
-        let sut = getSut();
-        let document = makeDocument(`no table on first line
+    test("getNextRange() for single table the expected range is returned", () => {
+        const sut = createSut();
+        const document = new Document(`no table on first line
             |Primitive Type|Size(bit)|Wrapper
             |-|-|-
             |short|16|Short
             |int|32|Integer
             no table on last line`);
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 0);
 
-        assert.equal(tableRanges.length, 1);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(range, new Range(1, 4));
     });
 
-    test("getTables() for two tables the expected ranges are returned", () => {
-        let sut = getSut();
-        let document = makeDocument(`
+    test("getNextRange() for two tables when searched from beginning finds the first table range", () => {
+        const sut = createSut();
+        const document = new Document(`
             |Primitive Type|Size(bit)|Wrapper
             |-|-|-
             |short|16|Short
@@ -69,16 +67,32 @@ suite("TableFinder tests", () => {
             |short|16|Short
             |int|32|Integer`);
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 0);
 
-        assert.equal(tableRanges.length, 2);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
-        assert.deepStrictEqual(tableRanges[1], new vscode.Range(6, 0, 9, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(range, new Range(1, 4));
     });
 
-    test("getTables() jumps over invalid tables", () => {
-        let sut = getSut();
-        let document = makeDocument(`
+    test("getNextRange() for two tables when searched from the end of first finds the second table range", () => {
+        const sut = createSut();
+        const document = new Document(`
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer
+
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer`);
+
+        let range = sut.getNextRange(document, 5);
+
+        assert.deepStrictEqual(range, new Range(6, 9));
+    });
+
+    test("getNextRange() jumps over invalid tables", () => {
+        const sut = createSut();
+        const document = new Document(`
             |Primitive Type|Size(bit)|Wrapper
             |-|-|-
             |short|16|Short
@@ -92,33 +106,26 @@ suite("TableFinder tests", () => {
             |short|16|Short
             |int|32|Integer`);
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 5);
 
-        assert.equal(tableRanges.length, 2);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
-        assert.deepStrictEqual(tableRanges[1], new vscode.Range(9, 0, 12, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(range, new Range(9, 12));
     });
 
-    test("getTables() for table with alignments the expected range is returned", () => {
-        let sut = getSut();
-        let document = makeDocument(`no table on first line
+    test("getNextRange() for table with alignments the expected range is returned", () => {
+        const sut = createSut();
+        const document = new Document(`no table on first line
             |Primitive Type|Size(bit)|Wrapper
             |-:|-|-
             |short|16|Short
             |int|32|Integer
             no table on last line`);
 
-        let tableRanges = sut.getTables(document);
+        let range = sut.getNextRange(document, 0);
 
-        assert.equal(tableRanges.length, 1);
-        assert.deepStrictEqual(tableRanges[0], new vscode.Range(1, 0, 4, Number.MAX_SAFE_INTEGER));
+        assert.deepStrictEqual(range, new Range(1, 4));
     });
 
-    function getSut() {
+    function createSut() {
         return new TableFinder(new TableValidator(new SelectionInterpreter(true)));
-    }
-
-    function makeDocument(documentContents: string) {
-        return new MarkdownTextDocumentStub(documentContents);
     }
 });

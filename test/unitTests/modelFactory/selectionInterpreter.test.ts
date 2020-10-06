@@ -9,11 +9,11 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 2);
-        assert.equal(rows[0].length, 1);
-        assert.equal(rows[1].length, 1);
-        assert.equal(rows[0][0], "line1");
-        assert.equal(rows[1][0], "line2");
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows[0].length, 1);
+        assert.strictEqual(rows[1].length, 1);
+        assert.strictEqual(rows[0][0], "line1");
+        assert.strictEqual(rows[1][0], "line2");
     });
 
     test("allRows() splits text by linux-style line endings", () => {
@@ -22,11 +22,11 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 2);
-        assert.equal(rows[0].length, 1);
-        assert.equal(rows[1].length, 1);
-        assert.equal(rows[0][0], "foo");
-        assert.equal(rows[1][0], "bar");
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows[0].length, 1);
+        assert.strictEqual(rows[1].length, 1);
+        assert.strictEqual(rows[0][0], "foo");
+        assert.strictEqual(rows[1][0], "bar");
     });
 
     test("allRows() splits each line by | cell separator", () => {
@@ -35,13 +35,13 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 2);
-        assert.equal(rows[0].length, 2);
-        assert.equal(rows[1].length, 2);
-        assert.equal(rows[0][0], "h1");
-        assert.equal(rows[0][1], "h2");
-        assert.equal(rows[1][0], "v1");
-        assert.equal(rows[1][1], "v2");
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows[0].length, 2);
+        assert.strictEqual(rows[1].length, 2);
+        assert.strictEqual(rows[0][0], "h1");
+        assert.strictEqual(rows[0][1], "h2");
+        assert.strictEqual(rows[1][0], "v1");
+        assert.strictEqual(rows[1][1], "v2");
     });
 
     test("allRows() line starting and ending with pipe is correctly splitted", () => {
@@ -50,14 +50,14 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 1);
-        assert.equal(rows[0].length, 6);
-        assert.equal(rows[0][0], "");
-        assert.equal(rows[0][1], "h1");
-        assert.equal(rows[0][2], "h2");
-        assert.equal(rows[0][3], "h3");
-        assert.equal(rows[0][4], "h4");
-        assert.equal(rows[0][5], "");
+        assert.strictEqual(rows.length, 1);
+        assert.strictEqual(rows[0].length, 6);
+        assert.strictEqual(rows[0][0], "");
+        assert.strictEqual(rows[0][1], "h1");
+        assert.strictEqual(rows[0][2], "h2");
+        assert.strictEqual(rows[0][3], "h3");
+        assert.strictEqual(rows[0][4], "h4");
+        assert.strictEqual(rows[0][5], "");
     });
 
     test("allRows() doesn't consider \\| as separator", () => {
@@ -66,13 +66,13 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 2);
-        assert.equal(rows[0].length, 2);
-        assert.equal(rows[1].length, 2);
-        assert.equal(rows[0][0], "h1");
-        assert.equal(rows[0][1], "h2\\|still\\|h2");
-        assert.equal(rows[1][0], "v1");
-        assert.equal(rows[1][1], "v2");
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows[0].length, 2);
+        assert.strictEqual(rows[1].length, 2);
+        assert.strictEqual(rows[0][0], "h1");
+        assert.strictEqual(rows[0][1], "h2\\|still\\|h2");
+        assert.strictEqual(rows[1][0], "v1");
+        assert.strictEqual(rows[1][1], "v2");
     });
 
     test("allRows() doesn't consider separator that's in a `code block` #1", () => {
@@ -81,9 +81,9 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 1);
-        assert.equal(rows[0].length, 1);
-        assert.equal(rows[0][0], "`h1|h2|h3`");
+        assert.strictEqual(rows.length, 1);
+        assert.strictEqual(rows[0].length, 1);
+        assert.strictEqual(rows[0][0], "`h1|h2|h3`");
     });
 
     test("allRows() doesn't consider separator that's in a `code block` #2", () => {
@@ -92,11 +92,11 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 1);
-        assert.equal(rows[0].length, 3);
-        assert.equal(rows[0][0], "h1");
-        assert.equal(rows[0][1], "h2`|still|h2`");
-        assert.equal(rows[0][2], "h3");
+        assert.strictEqual(rows.length, 1);
+        assert.strictEqual(rows[0].length, 3);
+        assert.strictEqual(rows[0][0], "h1");
+        assert.strictEqual(rows[0][1], "h2`|still|h2`");
+        assert.strictEqual(rows[0][2], "h3");
     });
 
     test("allRows() doesn't consider separator that's in a `code block` #3", () => {
@@ -105,11 +105,11 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 1);
-        assert.equal(rows[0].length, 3);
-        assert.equal(rows[0][0], "`h1|h1`");
-        assert.equal(rows[0][1], "h2");
-        assert.equal(rows[0][2], "h3`|h3`");
+        assert.strictEqual(rows.length, 1);
+        assert.strictEqual(rows[0].length, 3);
+        assert.strictEqual(rows[0][0], "`h1|h1`");
+        assert.strictEqual(rows[0][1], "h2");
+        assert.strictEqual(rows[0][2], "h3`|h3`");
     });
 
     test("separator() returns the first row", () => {
@@ -118,9 +118,9 @@ suite("SelectionInterpreter tests", () => {
 
         const separator = sut.separator(text);
 
-        assert.equal(separator.length, 2);
-        assert.equal(separator[0], ":-");
-        assert.equal(separator[1], "-");
+        assert.strictEqual(separator.length, 2);
+        assert.strictEqual(separator[0], ":-");
+        assert.strictEqual(separator[1], "-");
     });
 
     test("allRows() in strict mode returns empty lines", () => {
@@ -129,12 +129,12 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 3);
-        assert.equal(rows[0].length, 1);
-        assert.equal(rows[1].length, 1);
-        assert.equal(rows[2].length, 0);
-        assert.equal(rows[0][0], "line1");
-        assert.equal(rows[1][0], "line2");
+        assert.strictEqual(rows.length, 3);
+        assert.strictEqual(rows[0].length, 1);
+        assert.strictEqual(rows[1].length, 1);
+        assert.strictEqual(rows[2].length, 0);
+        assert.strictEqual(rows[0][0], "line1");
+        assert.strictEqual(rows[1][0], "line2");
     });
 
     test("allRows() in non-strict mode skips empty lines", () => {
@@ -143,11 +143,11 @@ suite("SelectionInterpreter tests", () => {
 
         const rows = sut.allRows(text);
 
-        assert.equal(rows.length, 2);
-        assert.equal(rows[0].length, 1);
-        assert.equal(rows[1].length, 1);
-        assert.equal(rows[0][0], "line1");
-        assert.equal(rows[1][0], "line2");
+        assert.strictEqual(rows.length, 2);
+        assert.strictEqual(rows[0].length, 1);
+        assert.strictEqual(rows[1].length, 1);
+        assert.strictEqual(rows[0][0], "line1");
+        assert.strictEqual(rows[1][0], "line2");
     });
 
     function createSut(strict: boolean = false): SelectionInterpreter {

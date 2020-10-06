@@ -12,7 +12,7 @@ suite("AlignmentMarkerStrategy tests", () => {
 
         const distinctMarkers = markers.filter((v, i, a) => a.indexOf(v) == i);
 
-        assert.equal(distinctMarkers.length, markers.length);
+        assert.strictEqual(distinctMarkers.length, markers.length);
     });
 
 });

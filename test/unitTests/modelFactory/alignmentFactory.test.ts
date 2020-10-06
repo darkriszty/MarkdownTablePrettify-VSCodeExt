@@ -16,10 +16,10 @@ suite("AlignmentFactory tests", () => {
         const sut = createFactory();
 
         const alignments = sut.createAlignments(separatorCells);
-        assert.equal(alignments.length, 3);
-        assert.equal(alignments[0], Alignment.NotSet);
-        assert.equal(alignments[1], Alignment.NotSet);
-        assert.equal(alignments[2], Alignment.NotSet);
+        assert.strictEqual(alignments.length, 3);
+        assert.strictEqual(alignments[0], Alignment.NotSet);
+        assert.strictEqual(alignments[1], Alignment.NotSet);
+        assert.strictEqual(alignments[2], Alignment.NotSet);
     });
 
     test("createAlignments() with separators having mixed alignments returns expected alignments", () => {
@@ -27,13 +27,13 @@ suite("AlignmentFactory tests", () => {
         const sut = createFactory();
 
         const alignments = sut.createAlignments(separatorCells);
-        assert.equal(alignments.length, 6);
-        assert.equal(alignments[0], Alignment.Center);
-        assert.equal(alignments[1], Alignment.Left);
-        assert.equal(alignments[2], Alignment.Left);
-        assert.equal(alignments[3], Alignment.NotSet);
-        assert.equal(alignments[4], Alignment.Right);
-        assert.equal(alignments[5], Alignment.Center);
+        assert.strictEqual(alignments.length, 6);
+        assert.strictEqual(alignments[0], Alignment.Center);
+        assert.strictEqual(alignments[1], Alignment.Left);
+        assert.strictEqual(alignments[2], Alignment.Left);
+        assert.strictEqual(alignments[3], Alignment.NotSet);
+        assert.strictEqual(alignments[4], Alignment.Right);
+        assert.strictEqual(alignments[5], Alignment.Center);
     });
 
     function createFactory(): AlignmentFactory {
