@@ -5,9 +5,11 @@ All notable changes to the `markdowntableprettify` extension will be documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 3.0.0 - 2020-10-06
 ### Added
-- Issue #32(preparation): Major refactoring to support CLI. Support `npm run prettify-md` and `npm run check-md`.
-- Issue #40: Provide command to run alongside prettier (shortcut `CTRL+ALT+M`)
+- Issue #32: Major refactoring to support CLI. Support `npm run prettify-md` and `npm run check-md`.
+- Issue #40: Provide command to run alongside prettier (shortcut `CTRL+ALT+M`).
 
 ## 2.5.0 - 2020-07-04
 ### Added
