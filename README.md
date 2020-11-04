@@ -26,9 +26,9 @@ The extension has to be downloaded and compiled:
 - Run `npm run compile`.
 
 The typical location of the installed extension (your actual version might differ):
-- Windows %USERPROFILE%\.vscode\extensions\darkriszty.markdown-table-prettify-3.0.0
-- macOS ~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0
-- Linux ~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0
+- Windows: `%USERPROFILE%\.vscode\extensions\darkriszty.markdown-table-prettify-3.0.0`
+- macOS: `~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0`
+- Linux: `~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0`
 
 Available features from the command line:
 - To prettify a file: `npm run --silent prettify-md < input.md`.
@@ -38,6 +38,8 @@ Available features from the command line:
 > Note: the `--silent` switch sets the npm log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
 
 ### Formatting with docker
+
+The core formatting logic of the extension is also available as a node docker image: `docker pull darkriszty/prettify-md`.
 
 Available features from docker:
 - To prettify a file: `docker container run -i darkriszty/prettify-md < input.md`.

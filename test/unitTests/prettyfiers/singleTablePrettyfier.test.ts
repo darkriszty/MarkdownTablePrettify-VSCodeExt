@@ -77,7 +77,7 @@ suite("SingleTablePrettyfier Tests", () => {
 
         const result = sut.prettifyTable(document, null);
 
-        assert.strictEqual(result, inputText);
+        assert.strictEqual(result, null);
         _sizeLimitChecker.verify(checker => checker.isWithinAllowedSizeLimit(inputText), Times.once());
         _tableValidator.verify(validator => validator.isValid(inputText), Times.once());
         _tableFactory.verify(factory => factory.getModel(It.isAny(), It.isAny()), Times.never());

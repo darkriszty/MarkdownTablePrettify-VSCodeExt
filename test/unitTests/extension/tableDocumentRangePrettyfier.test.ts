@@ -27,6 +27,19 @@ suite("TableDocumentRangePrettyfier tests", () => {
         _singleTablePrettyfier.verify(_ => _.prettifyTable(It.isAny(), It.isAny()), Times.once());
     });
 
+    test("provideDocumentRangeFormattingEdits() invalid table selection doesn't alter the selected text", () => {
+        const sut = createSut();
+        const input = Array(5).fill("hello world").join("\n");
+        const expectedResult = null;
+        const document = new MarkdownTextDocumentStub(input);
+        const range = document.getFullRange();
+        _singleTablePrettyfier.setup(_ => _.prettifyTable(It.isAny(), It.isAny())).returns(() => expectedResult);
+
+        const result = sut.provideDocumentRangeFormattingEdits(document, range, null, null);
+
+        assert.strictEqual(result.length, 0);
+    });
+
     function createSut(): TableDocumentRangePrettyfier {
         return new TableDocumentRangePrettyfier(_singleTablePrettyfier.object);
     }

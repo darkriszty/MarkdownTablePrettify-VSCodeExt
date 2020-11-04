@@ -16,6 +16,8 @@ export class TableDocumentRangePrettyfier implements vscode.DocumentRangeFormatt
         const formattedTable: string = this._singleTablePrettyfier.prettifyTable(
             new Document(document.getText()), new Range(range.start.line, range.end.line)
         );
-        return [ new vscode.TextEdit(range, formattedTable) ];
+        return formattedTable != null
+            ? [ new vscode.TextEdit(range, formattedTable) ]
+            : [ ];
     }
 }

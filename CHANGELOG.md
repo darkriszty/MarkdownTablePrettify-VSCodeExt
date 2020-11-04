@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## 3.0.1 - 2020-11-04
+### Fixed
+- Issue #42: Don't alter selection for invalid range formatting attempt (does not impact CLI).
+
 ## 3.0.0 - 2020-10-06
 ### Added
 - Issue #32: Major refactoring to support CLI. Support `npm run prettify-md` and `npm run check-md`.
