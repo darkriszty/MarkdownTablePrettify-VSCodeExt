@@ -48,8 +48,8 @@ Available features from docker:
 
 ## Extension Settings
 
-The extension is available for markdown language mode. It can either prettify a selected table (`Format Selection`) or the entire document (`Format Document`).
-A VSCode command called `Prettify markdown tables` is also available to format format the currently opened document. 
+The extension is available for markdown language mode. It can either prettify a selection (`Format Selection`) or the entire document (`Format Document`).
+A VSCode command called `Prettify markdown tables` is also available to format the currently opened document. 
 
 Configurable settings:
 - The maximum texth length of a selection/entire document to consider for formatting. Defaults to 1M chars. There is no limit when running from the command line.

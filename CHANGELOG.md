@@ -6,9 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## 3.0.1 - 2020-11-04
+## 3.1.0 - 2020-11-04
 ### Fixed
 - Issue #42: Don't alter selection for invalid range formatting attempt (does not impact CLI).
+- Issue #43: Handle `Format Selection` with multiple tables (does not impact CLI).
 
 ## 3.0.0 - 2020-10-06
 ### Added
