@@ -22,36 +22,26 @@ import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking'
 import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
 import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
 
-export function getDocumentRangePrettyfier(strict: boolean = false, sizeLimitCheker: ConfigSizeLimitChecker = null, loggers: ILogger[] = null) {
-    loggers = loggers || getLoggers();
-    sizeLimitCheker = sizeLimitCheker || getSizeLimitChecker(loggers);
-
-    return new TableDocumentRangePrettyfier(getSingleTablePrettyfier(loggers, sizeLimitCheker));
+export function getDocumentRangePrettyfier() {
+    return new TableDocumentRangePrettyfier(getMultiTablePrettyfier());
 }
 
-export function getDocumentPrettyfier(strict: boolean = true): vscode.DocumentFormattingEditProvider {
-    const loggers = getLoggers();
-    const sizeLimitCheker = getSizeLimitChecker(loggers);
-
-    return new TableDocumentPrettyfier(
-        new MultiTablePrettyfier(
-            new TableFinder(new TableValidator(new SelectionInterpreter(strict))),
-            getSingleTablePrettyfier(loggers, sizeLimitCheker),
-            sizeLimitCheker
-        )
-    );
+export function getDocumentPrettyfier(): vscode.DocumentFormattingEditProvider {
+    return new TableDocumentPrettyfier(getMultiTablePrettyfier());
 }
 
 export function getDocumentPrettyfierCommand(): TableDocumentPrettyfierCommand {
+    return new TableDocumentPrettyfierCommand(getMultiTablePrettyfier());
+}
+
+function getMultiTablePrettyfier(): MultiTablePrettyfier {
     const loggers = getLoggers();
     const sizeLimitCheker = getSizeLimitChecker(loggers);
 
-    return new TableDocumentPrettyfierCommand(
-        new MultiTablePrettyfier(
-            new TableFinder(new TableValidator(new SelectionInterpreter(true))),
-            getSingleTablePrettyfier(loggers, sizeLimitCheker),
-            sizeLimitCheker
-        )
+    return new MultiTablePrettyfier(
+        new TableFinder(new TableValidator(new SelectionInterpreter(true))),
+        getSingleTablePrettyfier(loggers, sizeLimitCheker),
+        sizeLimitCheker
     );
 }
 

@@ -22,8 +22,8 @@ export class SingleTablePrettyfier {
 
     public prettifyTable(document: Document, range: Range) : string
     {
-        let result: string = "";
-        let message: string = null;
+        let result: string = null;
+        let message: string = "";
         const selection: string = document.getText(range);
 
         try {

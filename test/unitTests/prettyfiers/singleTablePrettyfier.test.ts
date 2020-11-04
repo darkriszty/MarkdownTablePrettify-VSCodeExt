@@ -68,7 +68,7 @@ suite("SingleTablePrettyfier Tests", () => {
         _tableFactory.verify(factory => factory.getModel(It.isAny(), It.isAny()), Times.never());
     });
 
-    test("prettifyTable() when the table is not valid an info is logged", () => {
+    test("prettifyTable() when the table is not valid an info is logged and the input is returned", () => {
         const sut = createSut();
         const inputText = "hello world";
         const document = new Document(inputText);
