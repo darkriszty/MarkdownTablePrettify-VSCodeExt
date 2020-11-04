@@ -13,7 +13,7 @@
   },
   "icon": "assets/logo.png",
   "engines": {
-    "vscode": "^1.30.0"
+    "vscode": "^1.50.0"
   },
   "categories": [
     "Other"
