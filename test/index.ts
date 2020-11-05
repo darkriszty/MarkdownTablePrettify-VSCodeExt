@@ -18,7 +18,7 @@ async function main() {
 			],
 		});
 	} catch (err) {
-		console.error('Failed to run tests');
+		console.error('Failed to run tests. Reason: ' + err);
 		process.exit(1);
 	}
 }
