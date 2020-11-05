@@ -11,6 +11,7 @@ export function run(): Promise<void> {
 	mocha.color(true);
 
 	const testsRoot = path.resolve(__dirname);
+	console.log(`testsRoot: ${testsRoot}`)
 
 	return new Promise((c, e) => {
 		glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {

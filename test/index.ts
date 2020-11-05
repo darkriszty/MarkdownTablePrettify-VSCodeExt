@@ -5,8 +5,11 @@ import { runTests } from 'vscode-test';
 async function main() {
 	try {
 		// The paths are relative from the `/out/test` folder.
+		
 		const extensionDevelopmentPath = path.resolve(__dirname, '../../');
+		console.log(`extensionDevelopmentPath: ${extensionDevelopmentPath}`);
 		const extensionTestsPath = path.resolve(__dirname, './suite');
+		console.log(`extensionTestsPath: ${extensionTestsPath}`);
 
 		// Download VS Code, unzip it and run the integration test
 		await runTests({
