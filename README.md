@@ -1,6 +1,6 @@
 # Markdown table prettifier extension for Visual Studio Code
 
-[![Build Status](https://travis-ci.org/darkriszty/MarkdownTablePrettify-VSCodeExt.svg?branch=master)](https://travis-ci.org/darkriszty/MarkdownTablePrettify-VSCodeExt)
+[![Test Status](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/workflows/Tests/badge.svg)](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/actions)
 
 Makes tables more readable for humans. Compatible with the Markdown writer plugin's table formatter feature in Atom.
 
