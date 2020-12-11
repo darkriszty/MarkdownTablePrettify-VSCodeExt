@@ -21,6 +21,7 @@ import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
 import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
 import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
+import { FairTableIndentationDetector } from '../modelFactory/tableIndentationDetector';
 
 export function getDocumentRangePrettyfier() {
     return new TableDocumentRangePrettyfier(getMultiTablePrettyfier());
@@ -50,7 +51,8 @@ function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSiz
         new TableFactory(
             new AlignmentFactory(),
             new SelectionInterpreter(false),
-            new TrimmerTransformer(new BorderTransformer(null))
+            new TrimmerTransformer(new BorderTransformer(null)),
+            new FairTableIndentationDetector()
         ),
         new TableValidator(new SelectionInterpreter(false)),
         new TableViewModelFactory(new RowViewModelFactory(

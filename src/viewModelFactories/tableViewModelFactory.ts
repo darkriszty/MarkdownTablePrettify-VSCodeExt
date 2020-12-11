@@ -12,6 +12,7 @@ export class TableViewModelFactory {
     public build(tableWithoutSeparator: Table): TableViewModel {
 
         let result = new TableViewModel();
+        result.leftPad = tableWithoutSeparator.leftPad;
         result.hasLeftBorder = tableWithoutSeparator.hasLeftBorder;
         result.hasRightBorder = tableWithoutSeparator.hasRightBorder;
         result.header = this._rowViewModelFactory.buildRow(0, tableWithoutSeparator);

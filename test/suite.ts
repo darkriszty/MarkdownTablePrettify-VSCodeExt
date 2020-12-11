@@ -3,19 +3,15 @@ import * as Mocha from 'mocha';
 import * as glob from 'glob';
 
 export function run(): Promise<void> {
-
-	console.log('Starting run()');
-
 	// Create the mocha test
 	const mocha = new Mocha({
 		ui: 'tdd'
 	});
+
 	//@ts-ignore: types are still for v7, not for v8
 	mocha.color(true);
 
-	console.log(`__dirname: ${__dirname}`)
 	const testsRoot = path.resolve(__dirname);
-	console.log(`testsRoot: ${testsRoot}`)
 
 	return new Promise((c, e) => {
 		glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {

@@ -117,9 +117,35 @@ suite("TableViewModelFactory tests", () => {
         assert.strictEqual(tableVm.hasRightBorder, false);
     });
 
-    function tableFor(rows: string[][]) {
+    test("build() with table without leftPad has a default empty string leftPad on the viewModel", () => {
+        const table = tableFor([
+            ["c1", "c2"],
+            ["v1", "v2"],
+            ["v3", "v4"],
+        ]);
+
+        const tableVm = createViewModelFactory().build(table);
+
+        assertExt.isNotNull(tableVm);
+        assert.strictEqual(tableVm.leftPad, "");
+    });
+
+    test("build() with table having leftPad sets leftPad on viewModel", () => {
+        const table = tableFor([
+            ["c1", "c2"],
+            ["v1", "v2"],
+            ["v3", "v4"],
+        ], "\t");
+
+        const tableVm = createViewModelFactory().build(table);
+
+        assertExt.isNotNull(tableVm);
+        assert.strictEqual(tableVm.leftPad, "\t");
+    });
+
+    function tableFor(rows: string[][], leftPad: string = "") {
         const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
-        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
+        return new Table(rows.map(row => new Row(row.map(c => new Cell(c)), "\r\n")), "\r\n", alignments, leftPad);
     }
 
     function createViewModelFactory(): TableViewModelFactory {

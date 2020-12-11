@@ -26,6 +26,7 @@ export class TableStringWriter {
 
     private writeRowViewModel(row: RowViewModel, table: TableViewModel, addEndOfLine: boolean): string {
         let buffer = "";
+        buffer += table.leftPad;
         buffer += this.getLeftBorderIfNeeded(table);
         for (let col = 0; col < table.columnCount; col++) {
             buffer += row.getValueAt(col);

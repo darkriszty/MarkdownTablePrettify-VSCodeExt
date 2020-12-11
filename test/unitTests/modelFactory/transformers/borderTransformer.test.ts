@@ -56,9 +56,29 @@ suite("BorderTransformer tests", () => {
         assert.strictEqual(table.hasRightBorder, false);
     });
 
-    function tableFor(rows: string[][]) {
+    test("process() keeps leftPad if table has a left border", () => {
+        const rows = [
+            ["", "  h1  ", " ", "  h3  "],
+            ["", "c", "  ", "e"]
+        ];
+        const table = createSut().process(tableFor(rows, "\t"));
+
+        assert.strictEqual(table.leftPad, "\t");
+    });
+
+    test("process() does not keep leftPad if table has no left border", () => {
+        const rows = [
+            ["  h1  ", " ", "  h3  "],
+            ["c", "  ", "e"]
+        ];
+        const table = createSut().process(tableFor(rows, "\t"));
+
+        assert.strictEqual(table.leftPad, "");
+    });
+
+    function tableFor(rows: string[][], leftPad: string = "") {
         const alignments: Alignment[] = rows[0].map(r => Alignment.Left);
-        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments, leftPad);
     }
 
     function createSut() {

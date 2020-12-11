@@ -6,6 +6,7 @@ import { AlignmentFactory } from "../../../src/modelFactory/alignmentFactory";
 import { assertExt } from "../../assertExtensions";
 import { Transformer } from '../../../src/modelFactory/transformers/transformer';
 import { SelectionInterpreter } from '../../../src/modelFactory/selectionInterpreter';
+import { TableIndentationDetector } from '../../../src/modelFactory/tableIndentationDetector';
 import { Table } from '../../../src/models/table';
 import { Cell } from '../../../src/models/cell';
 import { Document } from '../../../src/models/doc/document';
@@ -15,10 +16,12 @@ import { Range } from '../../../src/models/doc/range';
 suite("TableFactory tests", () => {
     let _alignmentFactoryMock: IMock<AlignmentFactory>;
     let _transformer: IMock<Transformer>;
+    let _tableIndentationDetector: IMock<TableIndentationDetector>;
 
     setup(() => {
         _alignmentFactoryMock = Mock.ofType<AlignmentFactory>();
         _transformer = Mock.ofType<Transformer>();
+        _tableIndentationDetector = Mock.ofType<TableIndentationDetector>();
     });
 
     test("getModel() removes empty rows", () => {
@@ -128,13 +131,39 @@ suite("TableFactory tests", () => {
         selectionInterpreter.verify(_ => _.splitLine(It.isAny()), Times.exactly(3));
     });
 
-    function tableFor(rows: string[][], alignments: Alignment[]) {
-        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
+    test("getModel() calls indentation detector and creates a table with its result", () => {
+        const tableText =
+            ` c1 | c2 |   | c4
+          :---|--- |:-:|-:
+           a  | b  |   | d`;
+        const expectedAlignmets: Alignment[] = [Alignment.Left, Alignment.Left, Alignment.Left, Alignment.Left];
+        const tableData: string[][] = [["c1", "c2", "", "c4"], ["a", "b", "", "d"]];
+        const transformedTable = tableFor(tableData, expectedAlignmets, "  \t  ");
+        _alignmentFactoryMock.setup(m => m.createAlignments(It.isAny())).returns(() => expectedAlignmets);
+        _transformer.setup(_ => _.process(It.isAny())).returns(() => transformedTable);
+
+        let selectionInterpreter: IMock<SelectionInterpreter> = Mock.ofType<SelectionInterpreter>();
+        selectionInterpreter.setup(_ => _.splitLine(It.isAny())).returns(() => []);
+
+        _tableIndentationDetector.setup(_ => _.getLeftPad(It.isAny())).returns(() => "test");
+
+        const sut = createFactory(selectionInterpreter.object);
+        const document = new Document(tableText);
+
+        const table = sut.getModel(document, document.fullRange);
+
+        _tableIndentationDetector.verify(_ => _.getLeftPad(It.isAny()), Times.exactly(1));
+        assert.strictEqual(table.leftPad, "  \t  ");
+    });
+
+
+    function tableFor(rows: string[][], alignments: Alignment[], leftPad: string = "") {
+        return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments, leftPad);
     }
 
     function createFactory(selectionInterpreter: SelectionInterpreter = null): TableFactory {
         return new TableFactory(_alignmentFactoryMock.object, 
             selectionInterpreter == null ? new SelectionInterpreter(false) : selectionInterpreter, 
-            _transformer.object);
+            _transformer.object, _tableIndentationDetector.object);
     }
 });

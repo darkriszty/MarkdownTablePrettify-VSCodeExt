@@ -14,7 +14,10 @@ export class BorderTransformer extends Transformer {
         const rows: Row[] = this.rowsWithoutEmptyFirstAndLastColumn(input.rows, hasLeftBorder, hasRightBorder);
         const alignments = this.alignmentsWithoutEmptyFirstAndLastColumn(input.alignments, hasLeftBorder, hasRightBorder);
 
-        let result = new Table(rows, input.separatorEOL, alignments);
+        const leftPad = hasLeftBorder 
+            ? input.leftPad
+            : "";
+        let result = new Table(rows, input.separatorEOL, alignments, leftPad);
         result.hasLeftBorder = hasLeftBorder;
         result.hasRightBorder = this.hasRightBorder(hasLeftBorder, hasRightBorder);
         return result;
