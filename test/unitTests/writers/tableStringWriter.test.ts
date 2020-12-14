@@ -53,6 +53,24 @@ suite("TableStringWriter tests", () => {
         assert.strictEqual(lines[4], "|v5");
     });
 
+    test("writeTable() with indented table writes the indentation at the beginning of all rows", () => {
+        const input: TableViewModel = new TableViewModel();
+        input.leftPad = "\t";
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["-", "-"]);
+        input.rows = [
+            makeRowViewModel(["v1", "v2"]),
+            makeRowViewModel(["v3", "v4"]),
+            makeRowViewModel(["", "v5"])
+        ];
+
+        const tableText: string = createSut().writeTable(input);
+
+        assertExt.isNotNull(tableText);
+        const lines = tableText.split(/\r\n|\r|\n/);
+        lines.forEach(line => assert.strictEqual(line[0], input.leftPad));
+    });
+
     test("writeTable() null table throws exception", () => {
         const writer = createSut();
         assert.throws(() => writer.writeTable(null));

@@ -6,7 +6,7 @@ import { Table } from "../../models/table";
 export class TrimmerTransformer extends Transformer {
     
     public transform(input: Table): Table {
-        return new Table(this.trimColumnValues(input.rows), input.separatorEOL, input.alignments);
+        return new Table(this.trimColumnValues(input.rows), input.separatorEOL, input.alignments, input.leftPad);
     }
 
     private trimColumnValues(rows: Row[]): Row[] {

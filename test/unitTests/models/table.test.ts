@@ -58,6 +58,12 @@ suite("Table tests", () => {
         assert.strictEqual(table.separatorEOL, "\r\n");
     });
 
+    test("leftPad returns the given constructor value", () => {
+        const table = new Table([], "", [], "\tHello\t");
+
+        assert.strictEqual(table.leftPad, "\tHello\t");
+    });
+
     test("getLongestColumnLengths() mixed CJK and english chars returns longest row length for each column", () => {
         const table = tableFor([
             ["a", "b"],

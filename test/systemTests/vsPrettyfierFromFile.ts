@@ -21,6 +21,7 @@ import { TableViewModelFactory } from "../../src/viewModelFactories/tableViewMod
 import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { MultiTablePrettyfier } from '../../src/prettyfiers/multiTablePrettyfier';
 import { SingleTablePrettyfier } from '../../src/prettyfiers/singleTablePrettyfier';
+import { FairTableIndentationDetector } from '../../src/modelFactory/tableIndentationDetector';
 
 export class VsPrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -74,7 +75,8 @@ export class VsPrettyfierFromFile {
                     new TableFactory(
                         new AlignmentFactory(),
                         new SelectionInterpreter(false),
-                        new TrimmerTransformer(new BorderTransformer(null))
+                        new TrimmerTransformer(new BorderTransformer(null)),
+                        new FairTableIndentationDetector()
                     ),
                     new TableValidator(new SelectionInterpreter(false)),
                     new TableViewModelFactory(new RowViewModelFactory(

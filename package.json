@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -16,7 +16,12 @@
     "vscode": "^1.50.0"
   },
   "categories": [
-    "Other"
+    "Formatters"
+  ],
+  "keywords": [
+    "markdown",
+    "table",
+    "formatter"
   ],
   "activationEvents": [
     "onLanguage:markdown"

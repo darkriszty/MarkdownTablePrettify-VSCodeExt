@@ -15,6 +15,7 @@ import { ContentPadCalculator } from "../src/padCalculation/contentPadCalculator
 import { PadCalculatorSelector } from "../src/padCalculation/padCalculatorSelector";
 import { AlignmentMarkerStrategy } from "../src/viewModelFactories/alignmentMarking";
 import { TableStringWriter } from "../src/writers/tableStringWriter";
+import { FairTableIndentationDetector } from "../src/modelFactory/tableIndentationDetector";
 
 export class CliPrettify {
 
@@ -37,7 +38,8 @@ export class CliPrettify {
                 new TableFactory(
                     new AlignmentFactory(),
                     new SelectionInterpreter(false),
-                    new TrimmerTransformer(new BorderTransformer(null))
+                    new TrimmerTransformer(new BorderTransformer(null)),
+                    new FairTableIndentationDetector()
                 ),
                 new TableValidator(new SelectionInterpreter(false)),
                 new TableViewModelFactory(new RowViewModelFactory(

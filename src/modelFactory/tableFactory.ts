@@ -3,6 +3,7 @@ import { AlignmentFactory } from "./alignmentFactory";
 import { Alignment } from "../models/alignment";
 import { Transformer } from "./transformers/transformer";
 import { SelectionInterpreter } from "./selectionInterpreter";
+import { TableIndentationDetector } from "./tableIndentationDetector";
 import { Cell } from "../models/cell";
 import { Line } from "../models/doc/line";
 import { Row } from "../models/row";
@@ -14,11 +15,12 @@ export class TableFactory {
     constructor(
         private _alignmentFactory: AlignmentFactory,
         private _selectionInterpreter: SelectionInterpreter,
-        private _transformer: Transformer)
+        private _transformer: Transformer,
+        private _tableIndentationDetector: TableIndentationDetector)
     { }
 
     public getModel(document: Document, range: Range): Table {
-        const lines = document.getLines(range);
+        const lines: Line[] = document.getLines(range);
         if (lines == null || lines.length == 0)
             throw new Error("Can't create table model from no lines.");
 
@@ -38,6 +40,8 @@ export class TableFactory {
             ? this._alignmentFactory.createAlignments(separator) 
             : [];
 
-        return this._transformer.process(new Table(rowsWithoutSeparator, separatorLine.EOL, alignments));
+        const leftPad: string = this._tableIndentationDetector.getLeftPad(lines.map(l => l.value));
+
+        return this._transformer.process(new Table(rowsWithoutSeparator, separatorLine.EOL, alignments, leftPad));
     }
 }

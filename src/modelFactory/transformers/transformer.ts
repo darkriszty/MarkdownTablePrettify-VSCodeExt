@@ -7,6 +7,7 @@ export abstract class Transformer {
     protected abstract transform(input: Table): Table;
 
     public process(input: Table): Table {
+        //Note: consider dropping the transformers and moving all table related logic inside the factory.
         if (input == null || input.isEmpty())
             return input;
 

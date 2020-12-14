@@ -7,7 +7,8 @@ export class Table {
     constructor(
         rows: Row[],
         private readonly _separatorEOL: string,
-        private readonly _alignments: Alignment[])
+        private readonly _alignments: Alignment[],
+        public readonly leftPad: string = "")
     {
         if (rows != null && rows[0] != null && rows[0].cells.length != _alignments.length)
             throw new Error("The number of columns must match the number of alignments.");
