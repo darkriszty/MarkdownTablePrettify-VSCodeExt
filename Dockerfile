@@ -1,10 +1,23 @@
-FROM node:current
+FROM node:14-alpine AS builder
+
+WORKDIR /tmp
+
+# Install node modules first to leverage Docker cache.
+COPY package*.json ./
+RUN npm ci
+
+COPY tsconfig.json .
+COPY cli/ cli/
+COPY src/ src/
+RUN npm run compile
+
+
+FROM node:14-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY --from=builder /tmp/out .
 
-RUN npm ci
-RUN npm run compile
+USER node
 
-ENTRYPOINT [ "node", "./out/cli/index.js" ]
+ENTRYPOINT [ "node", "./cli/index.js" ]
