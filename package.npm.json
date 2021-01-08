@@ -1,0 +1,7 @@
+{
+    "main": "./cli/cliPrettify.js",
+    "files": [
+        "/cli",
+        "/src"
+    ]
+}
