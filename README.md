@@ -3,7 +3,7 @@
 [![Test Status](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/workflows/Tests/badge.svg)](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/actions)
 [![Visual Studio Code extension](https://img.shields.io/visual-studio-marketplace/v/darkriszty.markdown-table-prettify?color=success&label=VSCode)](https://marketplace.visualstudio.com/items?itemName=darkriszty.markdown-table-prettify)
 [![Docker image](https://img.shields.io/docker/v/darkriszty/prettify-md?color=success&label=Docker)](https://hub.docker.com/r/darkriszty/prettify-md/tags?page=1&ordering=last_updated)
-[![npm package](https://img.shields.io/npm/v/markdown-table-prettify?color=success)](https://hub.docker.com/r/darkriszty/prettify-md/tags?page=1&ordering=last_updated)
+[![npm package](https://img.shields.io/npm/v/markdown-table-prettify?color=success)](https://www.npmjs.com/package/markdown-table-prettify)
 
 Makes tables more readable for humans. Compatible with the Markdown writer plugin's table formatter feature in Atom.
 
