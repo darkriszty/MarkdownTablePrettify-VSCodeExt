@@ -3,7 +3,7 @@
 [![Test Status](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/workflows/Tests/badge.svg)](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/actions)
 [![Visual Studio Code extension](https://img.shields.io/visual-studio-marketplace/v/darkriszty.markdown-table-prettify?color=success&label=VSCode)](https://marketplace.visualstudio.com/items?itemName=darkriszty.markdown-table-prettify)
 [![Docker image](https://img.shields.io/docker/v/darkriszty/prettify-md?color=success&label=Docker)](https://hub.docker.com/r/darkriszty/prettify-md/tags?page=1&ordering=last_updated)
-[![npm package](https://img.shields.io/npm/v/markdown-table-prettify?color=success)](https://www.npmjs.com/package/markdown-table-prettify)
+[![NPM package](https://img.shields.io/npm/v/markdown-table-prettify?color=success)](https://www.npmjs.com/package/markdown-table-prettify)
 
 Makes tables more readable for humans. Compatible with the Markdown writer plugin's table formatter feature in Atom.
 
@@ -62,18 +62,18 @@ Available features from docker:
 
 ## CLI
 
-Formatting files or checking if they're already formatted is possible from the command line. This requires `node` and `npm`.
+Formatting files or checking if they're already formatted is possible from the command line. This requires `node` and `npm` (optionally also `npx`).
 
 ### Available features from the command line:
 - To prettify a file: `npm run --silent prettify-md < input.md`.
 - To prettify a file and save the output: `npm run --silent prettify-md < input.md > output.md`.
 - To check whether a file is prettyfied or not: `npm run --silent check-md < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
 
-> Note: the `--silent` switch sets the npm log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
+> Note: the `--silent` switch sets the NPM log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
 
 ### Installation
 
-To access the CLI, the extension can either be used from the Github sources, from the install VSCode extension or from npm.
+To access the CLI, the extension can either be used from the Github sources, from the already instaledl VSCode extension or from NPM.
 
 #### Compiling from the source code
 
@@ -89,12 +89,9 @@ Locate the installed extension path. The typical location of the installed exten
 - macOS: `~/.vscode/extensions/darkriszty.markdown-table-prettify-{version}`
 - Linux: `~/.vscode/extensions/darkriszty.markdown-table-prettify-{version}`
 
-#### Using it from npm
+#### Getting it from NPM
 
-Install the npm package `npm install -g markdown-table-prettify`. Use `npx` to prettify files:
-- To prettify a file: `npx markdown-table-prettify < input.md`.
-- To prettify a file and save the output: `npx markdown-table-prettify < input.md > output.md`.
-- To check whether a file is prettyfied or not: `npx markdown-table-prettify --check < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
+Install the NPM package `npm install -g markdown-table-prettify`. Optionally, use `npx` to prettify files: `npx markdown-table-prettify < input.md` (instead of `npm run --silent prettify-md < input.md`).
 
 ## Known Issues
 

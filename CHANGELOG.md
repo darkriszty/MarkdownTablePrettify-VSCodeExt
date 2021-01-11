@@ -5,6 +5,8 @@ All notable changes to the `markdowntableprettify` extension will be documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 3.2.2 - 2020-01-11
 ### Added
 - Issue #49: NPM package support.
 
