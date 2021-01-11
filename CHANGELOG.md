@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## 3.2.2 - 2020-01-11
+### Added
+- Issue #49: NPM package support.
+
+## 3.2.1 - 2020-01-01
+### Fixed
+- Issue #50: Dockerfile improvements.
+
 ## 3.2.0 - 2020-12-14
 ### Added
 - Issue #47: Support for indented tables.

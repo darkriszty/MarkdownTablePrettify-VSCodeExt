@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { CliPrettify } from "./cliPrettify";
 import { InputReader } from "./inputReader";
 
