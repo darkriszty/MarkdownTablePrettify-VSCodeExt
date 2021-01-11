@@ -64,23 +64,37 @@ Available features from docker:
 
 Formatting files or checking if they're already formatted is possible from the command line. This requires `node` and `npm`.
 
-The extension has to be downloaded and compiled:
-- Locate the installed extension path or download the extension from Github.
-- Go to the extension directory.
-- Run `npm install`.
-- Run `npm run compile`.
-
-The typical location of the installed extension (your actual version might differ):
-- Windows: `%USERPROFILE%\.vscode\extensions\darkriszty.markdown-table-prettify-3.0.0`
-- macOS: `~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0`
-- Linux: `~/.vscode/extensions/darkriszty.markdown-table-prettify-3.0.0`
-
-Available features from the command line:
+### Available features from the command line:
 - To prettify a file: `npm run --silent prettify-md < input.md`.
 - To prettify a file and save the output: `npm run --silent prettify-md < input.md > output.md`.
 - To check whether a file is prettyfied or not: `npm run --silent check-md < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
 
 > Note: the `--silent` switch sets the npm log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
+
+### Installation
+
+To access the CLI, the extension can either be used from the Github sources, from the install VSCode extension or from npm.
+
+#### Compiling from the source code
+
+- Download the source code.
+- Go to the extension directory.
+- Run `npm install`.
+- Run `npm run compile`.
+
+#### Using the already installed VSCode extension
+
+Locate the installed extension path. The typical location of the installed extension:
+- Windows: `%USERPROFILE%\.vscode\extensions\darkriszty.markdown-table-prettify-{version}`
+- macOS: `~/.vscode/extensions/darkriszty.markdown-table-prettify-{version}`
+- Linux: `~/.vscode/extensions/darkriszty.markdown-table-prettify-{version}`
+
+#### Using it from npm
+
+Install the npm package `npm install -g markdown-table-prettify`. Use `npx` to prettify files:
+- To prettify a file: `npx markdown-table-prettify < input.md`.
+- To prettify a file and save the output: `npx markdown-table-prettify < input.md > output.md`.
+- To check whether a file is prettyfied or not: `npx markdown-table-prettify --check < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
 
 ## Known Issues
 

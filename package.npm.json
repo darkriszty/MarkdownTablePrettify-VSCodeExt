@@ -1,5 +1,12 @@
 {
     "main": "./cli/cliPrettify.js",
+    "bin": {
+        "markdown-table-prettify": "./cli/index.js"
+    },
+    "scripts": {
+        "prettify-md": "node ./cli/index.js",
+        "check-md": "node ./cli/index.js --check"
+    },
     "files": [
         "/cli",
         "/src"
