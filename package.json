@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "formatter"
   ],
   "activationEvents": [
-    "onLanguage:markdown"
+    "onStartupFinished"
   ],
   "main": "./out/src/extension/extension",
   "contributes": {
@@ -41,6 +41,11 @@
           "type": "integer",
           "default": 1000000,
           "description": "The maximum text length to apply formatting to."
+        },
+        "markdownTablePrettify.extendedLanguages": {
+          "type": "array",
+          "default": [ ],
+          "description": "Additional VSCode language identifiers to register the formatter for. Eg: [ 'ruby' ]"
         }
       }
     },
@@ -55,7 +60,7 @@
         "command": "markdownTablePrettify.prettifyTables",
         "key": "ctrl+alt+m",
         "mac": "cmd+alt+m",
-        "when": "editorTextFocus && editorLangId == markdown && !editorReadonly && !inCompositeEditor"
+        "when": "editorTextFocus && !editorReadonly && !inCompositeEditor"
       }
     ]
   },

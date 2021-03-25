@@ -1,17 +1,25 @@
 'use strict';
 import * as vscode from 'vscode';
-import { getDocumentRangePrettyfier, getDocumentPrettyfier, getDocumentPrettyfierCommand } from './prettyfierFactory';
+import { getSupportLanguageIds, getDocumentRangePrettyfier, getDocumentPrettyfier, getDocumentPrettyfierCommand } from './prettyfierFactory';
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
 export function activate(context: vscode.ExtensionContext): void {
-    const MD_MODE: vscode.DocumentFilter = { language: "markdown" };
-    const command = "markdownTablePrettify.prettifyTables";
 
+    const supportedLanguageIds = getSupportLanguageIds();
+    for (let language of supportedLanguageIds) {
+        context.subscriptions.push(
+            vscode.languages.registerDocumentRangeFormattingEditProvider({ language }, getDocumentRangePrettyfier()),
+            vscode.languages.registerDocumentFormattingEditProvider({ language }, getDocumentPrettyfier())
+        );
+    }
+
+    const command = "markdownTablePrettify.prettifyTables";
     context.subscriptions.push(
-        vscode.languages.registerDocumentRangeFormattingEditProvider(MD_MODE, getDocumentRangePrettyfier()),
-        vscode.languages.registerDocumentFormattingEditProvider(MD_MODE, getDocumentPrettyfier()),
-        vscode.commands.registerTextEditorCommand(command, textEditor => getDocumentPrettyfierCommand().prettifyDocument(textEditor))
+        vscode.commands.registerTextEditorCommand(command, textEditor => {
+            if (supportedLanguageIds.indexOf(textEditor.document.languageId) >= 0)
+                getDocumentPrettyfierCommand().prettifyDocument(textEditor);
+        })
     );
 }
 

@@ -24,8 +24,9 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 The extension is available for markdown language mode. It can either prettify a selection (`Format Selection`) or the entire document (`Format Document`).
 A VSCode command called `Prettify markdown tables` is also available to format the currently opened document. 
 
-Configurable settings:
-- The maximum texth length of a selection/entire document to consider for formatting. Defaults to 1M chars. (limit does not apply from CLI or NPM).
+### Configurable settings:
+- The maximum texth length of a selection/entire document to consider for formatting. Default: 1M chars (limit does not apply from CLI or NPM).
+- Additional languages to support formatting for besides `markdown`. See possible configurable values [here](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers). Default: `[ ]`.
 - Keyboard shortcut to prettify the currently opened markdown document. Default: CTRL+ALT+M (CMD+ALT+M on Mac).
 
 ## NPM

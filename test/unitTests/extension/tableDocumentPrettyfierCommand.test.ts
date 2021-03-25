@@ -28,7 +28,7 @@ suite("TableDocumentPrettyfierCommand tests", () => {
         _multiTablePrettyfier.verify(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny()), Times.once());
     });
 
-    test("prettifyDocument() for non-markdown documents doesn't do anything", () => {
+    test("prettifyDocument() for non-markdown documents it still calls MultiTablePrettyfier and edit()", () => {
         const sut = createSut();
         const input = Array(10).fill("hello world").join("\n");
         const expectedResult = Array(10).fill("expected result").join("\n");
@@ -40,8 +40,8 @@ suite("TableDocumentPrettyfierCommand tests", () => {
 
         sut.prettifyDocument(textEditor.object);
 
-        textEditor.verify(e => e.edit(It.isAny()), Times.never());
-        _multiTablePrettyfier.verify(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny()), Times.never());
+        textEditor.verify(e => e.edit(It.isAny()), Times.once());
+        _multiTablePrettyfier.verify(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny()), Times.once());
     });
 
     function createSut(): TableDocumentPrettyfierCommand {
