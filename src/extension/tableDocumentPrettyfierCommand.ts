@@ -8,10 +8,6 @@ export class TableDocumentPrettyfierCommand {
     ) { }
 
     public prettifyDocument(editor: vscode.TextEditor) {
-        if (editor.document.languageId !== "markdown") {
-            return;
-        }
-
         const formattedDocument: string = this._multiTablePrettyfier.formatTables(editor.document.getText());
 
         editor.edit(textEditorEdit => {

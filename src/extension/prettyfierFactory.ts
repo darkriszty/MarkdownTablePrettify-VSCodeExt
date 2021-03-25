@@ -23,6 +23,10 @@ import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
 import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
 import { FairTableIndentationDetector } from '../modelFactory/tableIndentationDetector';
 
+export function getSupportLanguageIds() {
+    return [ "markdown", ...getConfigurationValue<Array<string>>("extendedLanguages", []) ];
+}
+
 export function getDocumentRangePrettyfier() {
     return new TableDocumentRangePrettyfier(getMultiTablePrettyfier());
 }
