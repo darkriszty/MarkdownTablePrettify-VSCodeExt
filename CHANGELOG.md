@@ -1,10 +1,14 @@
 # Change Log
 
-All notable changes to the `markdowntableprettify` extension will be documented in this file.
+All notable changes will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 3.4.0 - 2020-04-04
+### Added
+- Issue #56: Support ignoring parts of documents with an ignore directive.
 
 ## 3.3.0 - 2020-03-25
 ### Added

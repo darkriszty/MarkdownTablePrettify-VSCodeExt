@@ -15,6 +15,7 @@ Makes tables more readable for humans. Compatible with the Markdown writer plugi
 - Support empty columns inside tables.
 - Support column alignment options with ":".
 - Find and format multiple tables.
+- Support \``code blocks`\` and ignore blocks with `<!-- markdown-table-prettify-ignore-start -->` and `<!-- markdown-table-prettify-ignore-end -->`.
 - Support indented tables.
 
 ## Visual Studio Code
