@@ -3,7 +3,7 @@ import { Alignment } from "../models/alignment";
 export class AlignmentFactory {
 
     public createAlignments(cells: string[]): Alignment[] {
-        return cells.map(this.alignmentOf);
+        return cells.map(cell => this.alignmentOf(cell.trim()));
     }
 
     private alignmentOf(cell: string): Alignment {

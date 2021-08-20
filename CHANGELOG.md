@@ -6,19 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## 3.4.0 - 2020-04-04
+## 3.5.0 - 2021-08-20
+### Added
+- Issue #60: Ignore whitespaces around alignment markers.
+
+## 3.4.0 - 2021-04-04
 ### Added
 - Issue #56: Support ignoring parts of documents with an ignore directive.
 
-## 3.3.0 - 2020-03-25
+## 3.3.0 - 2021-03-25
 ### Added
 - Issue #54: Config to support more languages in VSCode formatting.
 
-## 3.2.2 - 2020-01-11
+## 3.2.2 - 2021-01-11
 ### Added
 - Issue #49: NPM package support.
 
-## 3.2.1 - 2020-01-01
+## 3.2.1 - 2021-01-01
 ### Fixed
 - Issue #50: Dockerfile improvements.
 
