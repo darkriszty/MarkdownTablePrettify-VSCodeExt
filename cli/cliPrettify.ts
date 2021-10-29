@@ -48,7 +48,7 @@ export class CliPrettify {
                     new ContentPadCalculator(new PadCalculatorSelector(), " "),
                     new AlignmentMarkerStrategy(":")
                 )),
-                new TableStringWriter(new ValuePaddingProvider(options.columnPadding)),
+                new TableStringWriter(new ValuePaddingProvider(options?.columnPadding ?? 0)),
                 [ logger ],
                 new NoSizeLimitChecker()
             ),
