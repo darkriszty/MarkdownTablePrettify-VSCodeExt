@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from "vscode";
-import * as fs from 'fs';
-import * as path from 'path';
+import { readFileContents } from './systemTestFileReader';
 import { ConfigSizeLimitChecker } from '../../src/prettyfiers/sizeLimit/configSizeLimitCheker';
 import { TableDocumentPrettyfier } from '../../src/extension/tableDocumentPrettyfier';
 import { ILogger } from "../../src/diagnostics/logger";
@@ -22,6 +21,8 @@ import { TableStringWriter } from "../../src/writers/tableStringWriter";
 import { MultiTablePrettyfier } from '../../src/prettyfiers/multiTablePrettyfier';
 import { SingleTablePrettyfier } from '../../src/prettyfiers/singleTablePrettyfier';
 import { FairTableIndentationDetector } from '../../src/modelFactory/tableIndentationDetector';
+import { ValuePaddingProvider } from '../../src/writers/valuePaddingProvider';
+import SystemTestsConfig from './systemTestsConfig';
 
 export class VsPrettyfierFromFile {
     private readonly _logger: ILogger;
@@ -33,8 +34,8 @@ export class VsPrettyfierFromFile {
     public assertPrettyfiedAsExpected(fileNamePrefix: string): void {
         vscode.workspace.openTextDocument(`${fileNamePrefix}-input.md`)
             .then(inputDocument => {
-                const edits = this.formatFile(inputDocument);
-                const expectedFileContents = this.readFileContents(`${fileNamePrefix}-expected.md`);
+                const edits = this.formatFile(inputDocument, fileNamePrefix);
+                const expectedFileContents = readFileContents(`${fileNamePrefix}-expected.md`);
                 this.assertEditsPrettyfied(inputDocument, edits, expectedFileContents);
             });
     }
@@ -55,19 +56,11 @@ export class VsPrettyfierFromFile {
             assert.strictEqual(actualLines[i], expectedLines[i]);
     }
 
-    private formatFile(doc: vscode.TextDocument): vscode.TextEdit[] {
-        return this.createPrettyfier().provideDocumentFormattingEdits(doc, null, null);
+    private formatFile(doc: vscode.TextDocument, fileNameRoot: string): vscode.TextEdit[] {
+        return this.createPrettyfier(SystemTestsConfig.getColumnPaddingFor(fileNameRoot)).provideDocumentFormattingEdits(doc, null, null);
     }
 
-    private readFileContents(fileName: string) {
-        return fs.readFileSync(this.pathFor(fileName), 'utf-8');
-    }
-
-    private pathFor(fileName: string) {
-        return path.resolve(__dirname, fileName);
-    }
-
-    private createPrettyfier(): TableDocumentPrettyfier {
+    private createPrettyfier(columnPadding: number): TableDocumentPrettyfier {
         return new TableDocumentPrettyfier(
             new MultiTablePrettyfier(
                 new TableFinder(new TableValidator(new SelectionInterpreter(true))),
@@ -83,7 +76,7 @@ export class VsPrettyfierFromFile {
                         new ContentPadCalculator(new PadCalculatorSelector(), " "),
                         new AlignmentMarkerStrategy(":")
                     )),
-                    new TableStringWriter(),
+                    new TableStringWriter(new ValuePaddingProvider(columnPadding)),
                     [ this._logger ],
                     new ConfigSizeLimitChecker([ this._logger ], 50000)
                 ),
