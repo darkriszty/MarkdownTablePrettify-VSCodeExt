@@ -29,7 +29,8 @@ A VSCode command called `Prettify markdown tables` is also available to format t
 ### Configurable settings:
 - The maximum texth length of a selection/entire document to consider for formatting. Default: 1M chars (limit does not apply from CLI or NPM).
 - Additional languages to support formatting for besides `markdown`. See possible configurable values [here](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers). Default: `[ ]`.
-- Keyboard shortcut to prettify the currently opened markdown document. Default: CTRL+ALT+M (CMD+ALT+M on Mac).
+- Column spacing to make the columns more spaced out from each other. Default: `0` (no extra spacing).
+- Keyboard shortcut to prettify the currently opened markdown document. Default: <kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>M</kbd> (<kbd>CMD</kbd>+<kbd>ALT</kbd>+<kbd>M</kbd> on Mac).
 
 ## NPM
 
@@ -54,25 +55,23 @@ foo   | bar
 */
 ```
 
-## Docker
+## Docker & CLI
 
-The core formatting logic is available as a node docker image: `docker pull darkriszty/prettify-md`.
+The core formatting logic is available as a node docker image: `docker pull darkriszty/prettify-md` or as a stand alone CLI tool.
 
-Available features from docker:
-- To prettify a file: `docker container run -i darkriszty/prettify-md < input.md`.
-- To prettify a file and save the output: `docker container run -i darkriszty/prettify-md < input.md > output.md`.
-- To check whether a file is prettyfied or not: `docker container run -i darkriszty/prettify-md --check < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
+Formatting files or checking if they're already formatted is also possible from the command line without docker. This requires `node` and `npm` (optionally also `npx`).
 
-## CLI
+| Feature                              | Docker                                                                        | CLI                                                         |
+|--------------------------------------|-------------------------------------------------------------------------------|-------------------------------------------------------------|
+| Prettify a file                      | `docker container run -i darkriszty/prettify-md < input.md`                   | `npm run --silent prettify-md < input.md`                   |
+| Prettify a file and save the output  | `docker container run -i darkriszty/prettify-md < input.md > output.md`       | `npm run --silent prettify-md < input.md > output.md`       |
+| * Check whether a file is prettyfied | `docker container run -i darkriszty/prettify-md --check < input.md`           | `npm run --silent check-md < input.md`                      |
+| Use `1` extra space between columns  | `docker container run -i darkriszty/prettify-md --columnPadding=1 < input.md` | `npm run --silent prettify-md -- --columnPadding=1 < input.md` |
 
-Formatting files or checking if they're already formatted is possible from the command line. This requires `node` and `npm` (optionally also `npx`).
-
-### Available features from the command line:
-- To prettify a file: `npm run --silent prettify-md < input.md`.
-- To prettify a file and save the output: `npm run --silent prettify-md < input.md > output.md`.
-- To check whether a file is prettyfied or not: `npm run --silent check-md < input.md`. This will fail with an exception and return code `1` if the file is not prettyfied.
-
+> \* : the check will fail with an exception and return code `1` if the file is not prettyfied.
+> 
 > Note: the `--silent` switch sets the NPM log level to silent, which is useful to hide the executed file name and concentrate on the actual output.
+> Note: the `--` after the npm run script part is needed for npm to forward the arguments (for instance `--columnPadding=1`) to the actual script.
 
 ### Installation
 
