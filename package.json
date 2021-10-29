@@ -2,7 +2,7 @@
   "name": "markdown-table-prettify",
   "displayName": "Markdown Table Prettifier",
   "description": "Transforms markdown tables to be more readable.",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "publisher": "darkriszty",
   "repository": {
     "type": "git",
@@ -46,6 +46,11 @@
           "type": "array",
           "default": [],
           "description": "Additional VSCode language identifiers to register the formatter for. Eg: [ 'ruby' ]"
+        },
+        "markdownTablePrettify.columnPadding": {
+          "type": "integer",
+          "default": 0,
+          "description": "The left and right padding value expressed in number of spaces."
         }
       }
     },

@@ -1,7 +1,12 @@
+import { ValuePaddingProvider } from "./valuePaddingProvider";
 import { TableViewModel } from "../viewModels/tableViewModel";
 import { RowViewModel } from "../viewModels/rowViewModel";
 
 export class TableStringWriter {
+    public constructor(
+        private readonly _valuePaddingProvider: ValuePaddingProvider
+    ) {  }
+
     public writeTable(table: TableViewModel): string {
         if (table == null) throw new Error("Table can't be null.");
         if (table.header == null) throw new Error("Table must have a header.");
@@ -29,7 +34,9 @@ export class TableStringWriter {
         buffer += table.leftPad;
         buffer += this.getLeftBorderIfNeeded(table);
         for (let col = 0; col < table.columnCount; col++) {
+            buffer += this._valuePaddingProvider.getLeftPadding();
             buffer += row.getValueAt(col);
+            buffer += this._valuePaddingProvider.getRightPadding(table, col);
             buffer += this.getSeparatorIfNeeded(table, col);
         }
         buffer += this.getRightBorderIfNeeded(table);

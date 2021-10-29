@@ -1,0 +1,10 @@
+{
+    "cliIgnoreFiles": [
+        "largeFileIsNotFormatted-input.md",
+        "largeFileIsNotFormatted-expected.md"
+    ],
+    "columnPadding": {
+        "paddingOf1": 1,
+        "paddingOf2": 2
+    }
+}

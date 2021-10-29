@@ -10,18 +10,19 @@ import { VsWindowLogger } from '../diagnostics/vsWindowLogger';
 import { TableFactory } from "../modelFactory/tableFactory";
 import { AlignmentFactory } from "../modelFactory/alignmentFactory";
 import { TableValidator } from "../modelFactory/tableValidator";
-import { TableStringWriter } from "../writers/tableStringWriter";
 import { ContentPadCalculator } from '../padCalculation/contentPadCalculator';
 import { TableViewModelFactory } from '../viewModelFactories/tableViewModelFactory';
 import { RowViewModelFactory } from '../viewModelFactories/rowViewModelFactory';
-import { TrimmerTransformer } from '../modelFactory/transformers/trimmerTransformer';
 import { BorderTransformer } from '../modelFactory/transformers/borderTransformer';
+import { TrimmerTransformer } from '../modelFactory/transformers/trimmerTransformer';
+import { FairTableIndentationDetector } from '../modelFactory/tableIndentationDetector';
 import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
 import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
 import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
-import { FairTableIndentationDetector } from '../modelFactory/tableIndentationDetector';
+import { TableStringWriter } from "../writers/tableStringWriter";
+import { ValuePaddingProvider } from '../writers/valuePaddingProvider';
 
 export function getSupportLanguageIds() {
     return [ "markdown", ...getConfigurationValue<Array<string>>("extendedLanguages", []) ];
@@ -42,15 +43,16 @@ export function getDocumentPrettyfierCommand(): TableDocumentPrettyfierCommand {
 function getMultiTablePrettyfier(): MultiTablePrettyfier {
     const loggers = getLoggers();
     const sizeLimitCheker = getSizeLimitChecker(loggers);
+    const columnPadding: number = getConfigurationValue<number>("columnPadding", 0);
 
     return new MultiTablePrettyfier(
         new TableFinder(new TableValidator(new SelectionInterpreter(true))),
-        getSingleTablePrettyfier(loggers, sizeLimitCheker),
+        getSingleTablePrettyfier(loggers, sizeLimitCheker, columnPadding),
         sizeLimitCheker
     );
 }
 
-function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSizeLimitChecker): SingleTablePrettyfier {
+function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSizeLimitChecker, columnPadding: number): SingleTablePrettyfier {
     return new SingleTablePrettyfier(
         new TableFactory(
             new AlignmentFactory(),
@@ -63,7 +65,7 @@ function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSiz
             new ContentPadCalculator(new PadCalculatorSelector(), " "),
             new AlignmentMarkerStrategy(":")
         )),
-        new TableStringWriter(),
+        new TableStringWriter(new ValuePaddingProvider(columnPadding)),
         loggers,
         sizeLimitCheker
     );

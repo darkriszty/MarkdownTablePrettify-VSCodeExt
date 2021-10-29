@@ -1,11 +1,20 @@
 import * as assert from 'assert';
+import { IMock, It, Mock } from 'typemoq';
 import { assertExt } from "../../assertExtensions";
 import { TableViewModel } from "../../../src/viewModels/tableViewModel";
 import { TableStringWriter } from "../../../src/writers/tableStringWriter";
 import { RowViewModel } from "../../../src/viewModels/rowViewModel";
+import { ValuePaddingProvider } from '../../../src/writers/valuePaddingProvider';
 
 suite("TableStringWriter tests", () => {
     const eol = "\n";
+    let _valuePaddingProvider: IMock<ValuePaddingProvider>;
+
+    setup(() => {
+        _valuePaddingProvider = Mock.ofType<ValuePaddingProvider>();
+        _valuePaddingProvider.setup(_ => _.getLeftPadding()).returns(() => "");
+        _valuePaddingProvider.setup(_ => _.getRightPadding(It.isAny(), It.isAny())).returns(() => "");
+    });
 
     test("writeTable() with valid input writes the header on the first row", () => {
         const input : TableViewModel = new TableViewModel();
@@ -158,11 +167,38 @@ suite("TableStringWriter tests", () => {
         assert.strictEqual(lines[4], "v5|v6|");
     });
 
+    test("writeTable() adds left and right padding for values", () => {
+        const input : TableViewModel = new TableViewModel();
+        input.hasLeftBorder = true;
+        input.hasRightBorder = true;
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["--", "--"]);
+        input.rows = [ 
+            makeRowViewModel(["v1", "v2"]),
+            makeRowViewModel(["v3", "v4"]),
+            makeRowViewModel(["v5", "v6"])
+        ];
+        _valuePaddingProvider = Mock.ofType<ValuePaddingProvider>();
+        _valuePaddingProvider.setup(_ => _.getLeftPadding()).returns(() => " ");
+        _valuePaddingProvider.setup(_ => _.getRightPadding(It.isAny(), It.isAny())).returns(() => " ");
+
+        const tableText: string = createSut().writeTable(input);
+
+        assertExt.isNotNull(tableText);
+        const lines = tableText.split(/\r\n|\r|\n/);
+        assert.strictEqual(lines.length, 5);
+        assert.strictEqual(lines[0], "| c1 | c2 |");
+        assert.strictEqual(lines[1], "| -- | -- |");
+        assert.strictEqual(lines[2], "| v1 | v2 |");
+        assert.strictEqual(lines[3], "| v3 | v4 |");
+        assert.strictEqual(lines[4], "| v5 | v6 |");
+    });
+
     function makeRowViewModel(values: string[]) {
         return new RowViewModel(values, eol);
     }
 
     function createSut() : TableStringWriter {
-        return new TableStringWriter();
+        return new TableStringWriter(_valuePaddingProvider.object);
     }
 });

@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
+import { parseArguments } from "./argumentsParser";
+import { CliOptions } from "./cliOptions";
 import { CliPrettify } from "./cliPrettify";
 import { InputReader } from "./inputReader";
 
-const checkOnly = process.argv.length > 2 || process.argv.find(arg => arg === "--check");
+const cliOptions: CliOptions = parseArguments(process.argv);
 
 InputReader.subscribe(input =>
-    checkOnly
-        ? CliPrettify.check(input)
-        : process.stdout.write(CliPrettify.prettify(input))
+    cliOptions.check
+        ? CliPrettify.check(input, cliOptions)
+        : process.stdout.write(CliPrettify.prettify(input, cliOptions))
 );
