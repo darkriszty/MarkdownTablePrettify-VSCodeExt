@@ -13,6 +13,7 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
     lineCount: number;
     isClosed: boolean;
     eol: vscode.EndOfLine;
+    encoding: string;
 
     constructor(text: string) {
         this.setLines(text);
@@ -22,6 +23,7 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
         this.languageId = "markdown";
         this.version = 1;
         this.isDirty = false;
+        this.encoding = "utf8";
     }
 
     private setLines(text: string) {

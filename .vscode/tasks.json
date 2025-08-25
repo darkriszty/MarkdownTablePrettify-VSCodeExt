@@ -32,7 +32,7 @@
                 "echo": false,
                 "focus": false
             },
-            "command": "npm run compile --loglevel silent && gulp copy-systemTest-resources"
+            "command": "npm run compile --loglevel silent && npx gulp copy-systemTest-resources"
         }
     ]
 }
