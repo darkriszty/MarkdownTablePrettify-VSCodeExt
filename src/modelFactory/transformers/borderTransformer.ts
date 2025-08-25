@@ -14,7 +14,8 @@ export class BorderTransformer extends Transformer {
         const rows: Row[] = this.rowsWithoutEmptyFirstAndLastColumn(input.rows, hasLeftBorder, hasRightBorder);
         const alignments = this.alignmentsWithoutEmptyFirstAndLastColumn(input.alignments, hasLeftBorder, hasRightBorder);
 
-        const leftPad = hasLeftBorder 
+        // allow indentation if the table has a clear left border or if it was indented with tabs (possibly with additional spaces for alignment)
+        const leftPad = hasLeftBorder || /^\t/.test(input.leftPad)
             ? input.leftPad
             : "";
         let result = new Table(rows, input.separatorEOL, alignments, leftPad);
