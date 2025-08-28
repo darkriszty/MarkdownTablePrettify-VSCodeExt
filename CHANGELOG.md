@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - Issue #78: Support tab indentation for tables without a border.
+- Issue #77: Monospacing Issue with CJK Font: separator length not calculated correctly.
 - Updated Node to the latest LTS for the Docker image.
 - Updated the devDependencies.
 - Updated the versions for running the tests.

@@ -195,7 +195,8 @@ suite("TableStringWriter tests", () => {
     });
 
     function makeRowViewModel(values: string[]) {
-        return new RowViewModel(values, eol);
+        const displayWidths: number[] = values.map(v => v.length);
+        return new RowViewModel(values, displayWidths, eol);
     }
 
     function createSut() : TableStringWriter {

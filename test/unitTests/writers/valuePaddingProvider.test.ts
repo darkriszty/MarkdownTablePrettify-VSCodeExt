@@ -16,7 +16,7 @@ suite("ValuePaddingProvider tests", () => {
     test("getRightPadding() returns the pad for middle columns", () => {
         const sut = new ValuePaddingProvider(3);
         const table = new TableViewModel();
-        table.header = new RowViewModel(["", "", "", ""], "\n");
+        table.header = new RowViewModel(["", "", "", ""], [0, 0, 0, 0], "\n");
 
         const pad = sut.getRightPadding(table, 2);
 
@@ -27,7 +27,7 @@ suite("ValuePaddingProvider tests", () => {
         const sut = new ValuePaddingProvider(3);
         const table = new TableViewModel();
         table.hasRightBorder = true;
-        table.header = new RowViewModel(["", "", "", ""], "\n");
+        table.header = new RowViewModel(["", "", "", ""], [0, 0, 0, 0], "\n");
 
         const pad = sut.getRightPadding(table, 3);
 
@@ -38,7 +38,7 @@ suite("ValuePaddingProvider tests", () => {
         const sut = new ValuePaddingProvider(3);
         const table = new TableViewModel();
         table.hasRightBorder = false;
-        table.header = new RowViewModel(["", "", "", ""], "\n");
+        table.header = new RowViewModel(["", "", "", ""], [0, 0, 0, 0], "\n");
 
         const pad = sut.getRightPadding(table, 3);
 

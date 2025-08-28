@@ -14,25 +14,27 @@ export class RowViewModelFactory {
     public buildRow(row: number, table: Table): RowViewModel {
         if (table == null) throw new Error("Paramter can't be null");
 
-        let resultRow = new Array(table.columnCount);
+        let resultRow: string[] = new Array(table.columnCount);
+        let displayWidths: number[] = new Array(table.columnCount);
 
         for(let col = 0; col < table.columnCount; col++) {
-            resultRow[col] = 
-                this._contentPadCalculator.getLeftPadding(table, row, col) +
-                table.rows[row].cells[col].getValue() +
-                this._contentPadCalculator.getRightPadding(table, row, col);
+            const leftPadding = this._contentPadCalculator.getLeftPadding(table, row, col);
+            const rightPadding = this._contentPadCalculator.getRightPadding(table, row, col);
+
+            resultRow[col] = leftPadding + table.rows[row].cells[col].getValue() + rightPadding;
+            displayWidths[col] = leftPadding.length + table.rows[row].cells[col].getLength() + rightPadding.length;
         }
 
-        return new RowViewModel(resultRow, table.rows[row].EOL);
+        return new RowViewModel(resultRow, displayWidths, table.rows[row].EOL);
     }
 
     public buildSeparator(rows: RowViewModel[], table: Table): RowViewModel {
-        const columnCount = rows[0].columnCount;
-        let lengths = Array(columnCount).fill(0);
+        const columnCount: number = rows[0].columnCount;
+        let lengths: number[] = Array(columnCount).fill(0);
 
         for (const row of rows) {
-            for (let i = 0; i < columnCount; i++) {
-                lengths[i] = Math.max(lengths[i], (row.getValueAt(i).length));
+            for (let col = 0; col < columnCount; col++) {
+                lengths[col] = Math.max(lengths[col], row.getDisplayWidthAt(col));
             }
         }
 
@@ -40,6 +42,6 @@ export class RowViewModelFactory {
             .map(l => this.separatorChar.repeat(l))
             .map((val, col) => this._alignmentMarkerStrategy.markerFor(table.alignments[col]).mark(val));
 
-        return new RowViewModel(values, table.separatorEOL);
+        return new RowViewModel(values, lengths, table.separatorEOL);
     }
 }
