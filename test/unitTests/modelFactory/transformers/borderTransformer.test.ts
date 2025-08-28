@@ -66,12 +66,42 @@ suite("BorderTransformer tests", () => {
         assert.strictEqual(table.leftPad, "\t");
     });
 
-    test("process() does not keep leftPad if table has no left border", () => {
+    test("process() does not keep leftPad if table has no left border and uses spaces", () => {
+        const rows = [
+            ["  h1  ", " ", "  h3  "],
+            ["c", "  ", "e"]
+        ];
+        const table = createSut().process(tableFor(rows, "    "));
+
+        assert.strictEqual(table.leftPad, "");
+    });
+
+    test("process() keeps leftPad if table has no left border but uses tabs", () => {
         const rows = [
             ["  h1  ", " ", "  h3  "],
             ["c", "  ", "e"]
         ];
         const table = createSut().process(tableFor(rows, "\t"));
+
+        assert.strictEqual(table.leftPad, "\t");
+    });
+
+    test("process() keeps leftPad if table has no left border but uses multiple tabs", () => {
+        const rows = [
+            ["  h1  ", " ", "  h3  "],
+            ["c", "  ", "e"]
+        ];
+        const table = createSut().process(tableFor(rows, "\t\t\t"));
+
+        assert.strictEqual(table.leftPad, "\t\t\t");
+    });
+
+    test("process() does not keep leftPad if table has no left border and uses mixed whitespace", () => {
+        const rows = [
+            ["  h1  ", " ", "  h3  "],
+            ["c", "  ", "e"]
+        ];
+        const table = createSut().process(tableFor(rows, " \t "));
 
         assert.strictEqual(table.leftPad, "");
     });
