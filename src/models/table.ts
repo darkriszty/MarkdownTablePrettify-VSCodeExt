@@ -3,6 +3,7 @@ import { Row } from "./row";
 
 export class Table {
     private readonly _rows: Row[];
+    private _longestColumnLengthsCache: number[] = null;
 
     constructor(
         rows: Row[],
@@ -33,11 +34,17 @@ export class Table {
     public getLongestColumnLengths(): number[] {
         if (!this.hasRows) return [];
 
-        let maxColLengths: number[] = new Array(this.columnCount).fill(0);
+        this._longestColumnLengthsCache ??= this._calculateLongestColumnLengths();
+        return this._longestColumnLengthsCache;
+    }
+
+    private _calculateLongestColumnLengths(): number[] {
+        let result = new Array(this.columnCount).fill(0);
+
         for (let row = 0; row < this.rows.length; row++)
             for (let col = 0; col < this.rows[row].cells.length; col++)
-                maxColLengths[col] = Math.max(this.rows[row].cells[col].getLength(), maxColLengths[col]);
+                result[col] = Math.max(this.rows[row].cells[col].getLength(), result[col]);
 
-        return maxColLengths;
+        return result;
     }
 }
