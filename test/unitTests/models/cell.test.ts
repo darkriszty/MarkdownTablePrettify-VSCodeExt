@@ -34,4 +34,16 @@ suite("Cell tests", () => {
     test("getLength() for CJK characters returns 2 for each char", () => {
         assert.strictEqual(new Cell("test - 𠁻 𣄿 𣄿 content").getLength(), 23);
     });
+
+    test("getLength() for specific CJK characters 1", () => {
+        assert.strictEqual(new Cell("模組").getLength(), 4);
+    });
+
+    test("getLength() for specific CJK characters 2", () => {
+        assert.strictEqual(new Cell("模具設計").getLength(), 8);
+    });
+
+    test("getLength() for specific CJK characters 3", () => {
+        assert.strictEqual(new Cell("零件加工").getLength(), 8);
+    });
 });

@@ -9,3 +9,8 @@ int 𠁻|	-2,147,483,648 to 2,147,483,647|	Signed 32-bit integer
 uint|	0 to 4,294,967,295|	Unsigned 32-bit integer
 long|	-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807|	Signed 64-bit integer
 ulong 𠁻|	0 to 18,446,744,073,709,551,615|	Unsigned 64-bit integer
+
+| **模組** | **Second** |
+|--|--|
+| 模具設計 | V |
+| 零件加工 | X |
