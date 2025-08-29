@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES5",
+        "outDir": "out",
+        "lib": [ "ES5" ],
+        "sourceMap": false,
+        "rootDir": ".",
+        "downlevelIteration": true
+    },
+    "include": [
+        "src/**/*",
+        "cli/**/*"
+    ],
+    "exclude": [ 
+        "node_modules", 
+        ".vscode-test",
+        "test/**/*"
+    ]
+}

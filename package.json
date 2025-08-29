@@ -74,7 +74,7 @@
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
-    "dist": "rm -r ./out; tsc -p ./ --lib 'ES5' --target 'ES5' --sourceMap false --downlevelIteration true && npx gulp merge-packagejson-for-npm-dist && cp README.md out && cp LICENSE out && cd out && npm pack",
+    "dist": "rm -r ./out; tsc -p ./tsconfig.dist.json && npx gulp merge-packagejson-for-npm-dist && cp README.md out && cp LICENSE out && cd out && npm pack",
     "compile": "tsc -p ./",
     "pretest": "npm run compile",
     "test": "npx gulp copy-systemTest-resources && node ./out/test/index.js",
