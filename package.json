@@ -13,7 +13,7 @@
   },
   "icon": "assets/logo.png",
   "engines": {
-    "vscode": "^1.59.0"
+    "vscode": "^1.103.0"
   },
   "categories": [
     "Formatters"
