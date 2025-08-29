@@ -5,15 +5,18 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+N/A
+
+## 3.7.0 - 2025-08-29
 ### Added
 - Issue #78: Support tab indentation for tables without a border.
-- Issue #77: Monospacing Issue with CJK Font: separator length not calculated correctly.
-- Issue #82: Improve performance of column length calculation
+### Changed
 - Updated Node to the latest LTS for the Docker image.
 - Updated the devDependencies.
-- Updated the versions for running the tests.
-
-## 3.7.0 - TBD
+- Updated the versions in the pipelines for running the tests.
+### Fixed
+- Issue #77: Monospacing Issue with CJK Font: separator length not calculated correctly.
+- Issue #82: Improve performance of column length calculation.
 
 ## 3.6.0 - 2021-10-29
 ### Added
