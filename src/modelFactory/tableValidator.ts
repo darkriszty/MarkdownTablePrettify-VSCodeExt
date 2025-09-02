@@ -9,7 +9,7 @@ export class TableValidator {
             return false;
         const rawRows: string[][] = this._selectionInterpreter.allRows(selection);
 
-        const sizeValid = rawRows.length > 2 && // at least two rows are required (besides the separator)
+        const sizeValid = rawRows.length >= 2 && // at least header and separator rows are required
                           rawRows[0].length > 1 && // at least two columns are required
                           rawRows.every(r => r.length == rawRows[0].length); // all rows of a column must match the length of the first row of that column
 

@@ -5,7 +5,8 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-N/A
+### Added
+- Issue #86: Add support for header-only tables (without data rows)
 
 ## 3.7.0 - 2025-08-29
 ### Added

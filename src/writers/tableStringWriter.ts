@@ -11,11 +11,12 @@ export class TableStringWriter {
         if (table == null) throw new Error("Table can't be null.");
         if (table.header == null) throw new Error("Table must have a header.");
         if (table.separator == null) throw new Error("Table must have a separator.");
-        if (table.rows == null || table.rowCount == 0) throw new Error("Table must have rows.");
+        if (table.rows == null) throw new Error("Table rows can't be null.");
+        if (table.columnCount == 0) throw new Error("Table must have at least one column.");
 
         let buffer = "";
         buffer += this.writeRowViewModel(table.header, table, true);
-        buffer += this.writeRowViewModel(table.separator, table, true);
+        buffer += this.writeRowViewModel(table.separator, table, table.rowCount > 0);
         buffer += this.writeRows(table);
 
         return buffer;

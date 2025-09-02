@@ -99,7 +99,7 @@ suite("TableFinder tests", () => {
             |int|32|Integer
 
             |Invalid|
-            |-|-
+            |-|-|
 
             |Primitive Type|Size(bit)|Wrapper
             |-|-|-
@@ -109,6 +109,27 @@ suite("TableFinder tests", () => {
         let range = sut.getNextRange(document, 5);
 
         assert.deepStrictEqual(range, new Range(9, 12));
+    });
+
+    test("getNextRange() finds header only table", () => {
+        const sut = createSut();
+        const document = new Document(`
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer
+
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer`);
+
+        let range = sut.getNextRange(document, 5);
+
+        assert.deepStrictEqual(range, new Range(6, 7));
     });
 
     test("getNextRange() for table with alignments the expected range is returned", () => {
@@ -157,8 +178,8 @@ suite("TableFinder tests", () => {
     test("getNextRange() table after an end ignore is found", () => {
         const sut = createSut();
         const document = new Document(`no table on first line
-            |Primitive Type|Size(bit)|Wrapper
-            |-|-|-
+            |Primitive Type|Size(bit)|Wrapper|
+            |-|-|
             <!-- markdown-table-prettify-ignore-start -->
             |short|16|Short
             |int|32|Integer
@@ -167,7 +188,7 @@ suite("TableFinder tests", () => {
             |int|32|Integer
 
             |Invalid|
-            |-|-
+            |-|-|
 
             |Primitive Type|Size(bit)|Wrapper
             |-|-|-
@@ -184,7 +205,7 @@ suite("TableFinder tests", () => {
         const document = new Document(`no table on first line
 
             |Invalid|
-            |-|-
+            |-|-|
 
             <!-- markdown-table-prettify-ignore-end -->
             |Primitive Type|Size(bit)|Wrapper
