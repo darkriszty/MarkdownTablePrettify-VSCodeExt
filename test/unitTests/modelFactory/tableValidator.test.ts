@@ -55,6 +55,17 @@ suite("TableValidator tests", () => {
         assert.strictEqual(isValid, true);
     });
 
+    test("isValid() with header and separator only (no data rows) returns true", () => {
+        const sut = createSut();
+
+        const isValid: boolean = sut.isValid(
+            `header1|header2
+             -------|-------`
+        );
+
+        assert.strictEqual(isValid, true);
+    });
+
     test("isValid() with separator alignment options returns true", () => {
         const sut = createSut();
 

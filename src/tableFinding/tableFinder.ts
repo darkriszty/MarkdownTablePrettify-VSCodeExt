@@ -42,10 +42,17 @@ export class TableFinder {
 
     private getNextValidTableRange(document: Document, separatorRowIndex: number): { range: Range, ignoreBlockStarted: boolean} {
         let firstTableFileRow = separatorRowIndex - 1;
-        let lastTableFileRow = separatorRowIndex + 1;
+        let lastTableFileRow = separatorRowIndex;
         let selection = null;
         let ignoreBlockedStarted = false;
 
+        // accept also tables with no body (just header + separator rows), if valid, as a fallback in case more table rows cannot be found
+        const headerSeparatorSelection = document.getText(new Range(firstTableFileRow, lastTableFileRow));
+        if (this._tableValidator.isValid(headerSeparatorSelection)) {
+            selection = headerSeparatorSelection;
+        }
+
+        lastTableFileRow++;
         while (lastTableFileRow < document.lines.length) {
             // when the ignore-start is in the middle of a possible table don't go further
             if (document.lines[lastTableFileRow].value.trim() == this._ignoreStart) {

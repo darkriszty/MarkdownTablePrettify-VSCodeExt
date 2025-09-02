@@ -105,24 +105,41 @@ suite("TableStringWriter tests", () => {
         assert.throws(() => writer.writeTable(input));
     });
 
-    test("writeTable() table with null rows throws exception", () => {
+    test("writeTable() table with empty header and separator columns throws exception", () => {
         const input : TableViewModel = new TableViewModel();
         input.header = makeRowViewModel([]);
         input.separator = makeRowViewModel([]);
+        input.rows = [];
 
         const writer = createSut();
 
         assert.throws(() => writer.writeTable(input));
     });
 
-    test("writeTable() table with no rows throws exception", () => {
+    test("writeTable() table with null rows array throws exception", () => {
         const input : TableViewModel = new TableViewModel();
-        input.header = makeRowViewModel([]);
-        input.rows = [ ];
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["--", "--"]);
+        input.rows = null;
 
         const writer = createSut();
 
         assert.throws(() => writer.writeTable(input));
+    });
+
+    test("writeTable() table with no rows is allowed", () => {
+        const input : TableViewModel = new TableViewModel();
+        input.header = makeRowViewModel(["c1", "c2"]);
+        input.separator = makeRowViewModel(["--", "--"]);
+        input.rows = [ ];
+
+        const tableText: string = createSut().writeTable(input);
+
+        assertExt.isNotNull(tableText);
+        const lines = tableText.split(/\r\n|\r|\n/);
+        assert.strictEqual(lines.length, 2);
+        assert.strictEqual(lines[0], "c1|c2");
+        assert.strictEqual(lines[1], "--|--");
     });
 
     test("writeTable() writes left borders on all rows for viewModel having hasLeftBorderSet", () => {
