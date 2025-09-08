@@ -1,0 +1,42 @@
+name: Performance Benchmarks
+
+on:
+  # Run on pushes to main branches and feature branches with 'perf' in name
+  push:
+    branches: [ master, 'feature/*perf*' ]
+  
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running benchmark'
+        required: false
+        default: 'Manual benchmark run'
+
+  # Run on release
+  release:
+    types: [published]
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run benchmark
+      run: |
+        echo "Starting benchmark run..."
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "Reason: ${{ github.event.inputs.reason }}"
+        fi
+        xvfb-run -a npm run benchmark

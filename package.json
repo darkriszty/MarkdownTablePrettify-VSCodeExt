@@ -78,6 +78,7 @@
     "compile": "tsc -p ./",
     "pretest": "npm run compile",
     "test": "npx gulp copy-systemTest-resources && node ./out/test/index.js",
+    "benchmark": "npm run compile && npx gulp copy-systemTest-resources && node ./out/test/systemTests/benchmarkTestRunner.js",
     "prettify-md": "node ./out/cli/index.js",
     "check-md": "node ./out/cli/index.js --check"
   },

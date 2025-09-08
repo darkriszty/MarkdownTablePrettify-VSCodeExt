@@ -23,6 +23,19 @@
             ],
             "outFiles": [ "${workspaceRoot}/out/test/**/*.js" ],
             "preLaunchTask": "compileAndCopyTestResources"
+        },
+        {
+            "name": "Launch Benchmarks",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": [
+                "--disable-extensions",
+                "--extensionDevelopmentPath=${workspaceRoot}", 
+                "--extensionTestsPath=${workspaceRoot}/out/test/systemTests/benchmarkRunner.js" 
+            ],
+            "outFiles": [ "${workspaceRoot}/out/test/**/*.js" ],
+            "preLaunchTask": "compileAndCopyTestResources"
         }
     ]
 }
