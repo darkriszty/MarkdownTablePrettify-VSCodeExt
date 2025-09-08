@@ -12,6 +12,8 @@ interface BenchmarkResults {
         median: number;
         min: number;
         max: number;
+        standardDeviation: number;
+        confidenceInterval95: { lower: number; upper: number };
         totalDuration: number;
     };
     documentFormatting: {
@@ -23,6 +25,8 @@ interface BenchmarkResults {
             median: number;
             min: number;
             max: number;
+            standardDeviation: number;
+            confidenceInterval95: { lower: number; upper: number };
             totalDuration: number;
         };
     };
@@ -36,11 +40,11 @@ class PerformanceBenchmark {
     private overallStartTime: bigint = BigInt(0);
 
     private readonly baseline = {
-        factoryCreation: { average: 0.0001675, median: 0.0001522 },
+        factoryCreation: { average: 0.0001675, median: 0.0001522, standardDeviation: 0.0001 },
         documentFormatting: {
-            small: { average: 0.1429, median: 0.1162 },
-            medium: { average: 0.2358, median: 0.2186 },
-            large: { average: 4.2929, median: 2.2453 }
+            small: { average: 0.1429, median: 0.1162, standardDeviation: 0.05 },
+            medium: { average: 0.2358, median: 0.2186, standardDeviation: 0.08 },
+            large: { average: 4.2929, median: 2.2453, standardDeviation: 2.0 }
         }
     };
 
@@ -55,6 +59,8 @@ class PerformanceBenchmark {
                 median: 0,
                 min: 0,
                 max: 0,
+                standardDeviation: 0,
+                confidenceInterval95: { lower: 0, upper: 0 },
                 totalDuration: 0
             },
             documentFormatting: {},
@@ -150,6 +156,13 @@ class PerformanceBenchmark {
 
     async benchmarkFactoryCreation(iterations: number = 100000): Promise<void> {
         console.log('📦 Testing factory creation overhead...');
+        
+        // Warmup phase to mitigate JIT compilation effects
+        console.log('   🔥 Warming up JIT compiler...');
+        for (let i = 0; i < Math.min(10000, iterations / 10); i++) {
+            getDocumentPrettyfier();
+        }
+        
         const times: number[] = [];
         const sectionStart = process.hrtime.bigint();
 
@@ -163,13 +176,23 @@ class PerformanceBenchmark {
         const sectionEnd = process.hrtime.bigint();
         const totalDuration = Number(sectionEnd - sectionStart) / 1_000_000; // Convert to milliseconds
 
+        // Remove outliers for more stable results
+        const cleanTimes = this.removeOutliers(times);
+        console.log(`   📊 Removed ${times.length - cleanTimes.length} outliers (${((times.length - cleanTimes.length) / times.length * 100).toFixed(1)}%)`);
+
+        const average = cleanTimes.reduce((a, b) => a + b, 0) / cleanTimes.length;
+        const standardDeviation = this.calculateStandardDeviation(cleanTimes);
+        const confidenceInterval95 = this.calculateConfidenceInterval(cleanTimes);
+
         this.results.factoryCreation = {
             iterations,
-            times,
-            average: times.reduce((a, b) => a + b, 0) / times.length,
-            median: this.calculateMedian(times),
-            min: Math.min(...times),
-            max: Math.max(...times),
+            times: cleanTimes,
+            average,
+            median: this.calculateMedian(cleanTimes),
+            min: Math.min(...cleanTimes),
+            max: Math.max(...cleanTimes),
+            standardDeviation,
+            confidenceInterval95,
             totalDuration
         };
     }
@@ -184,9 +207,22 @@ class PerformanceBenchmark {
         }, {} as Record<string, typeof this.testFiles>);
 
         for (const [size, files] of Object.entries(sizeGroups)) {
+            console.log(`   📋 Testing ${size} files...`);
             const iterations = this.getIterationsForSize(size as any);
             const times: number[] = [];
+            
+            // Create prettyfier once and reuse
             const prettyfier = getDocumentPrettyfier();
+            
+            // Warmup phase - process each file a few times
+            console.log(`   🔥 Warming up with ${size} files...`);
+            const warmupIterations = Math.min(50, Math.floor(iterations / 20));
+            for (let i = 0; i < warmupIterations; i++) {
+                const file = files[i % files.length];
+                const document = await this.openDocument(`resources/${file.name}-input.md`);
+                prettyfier.provideDocumentFormattingEdits(document, {} as any, {} as any);
+            }
+            
             const sectionStart = process.hrtime.bigint();
 
             for (let i = 0; i < iterations; i++) {
@@ -203,14 +239,24 @@ class PerformanceBenchmark {
             const sectionEnd = process.hrtime.bigint();
             const totalDuration = Number(sectionEnd - sectionStart) / 1_000_000; // Convert to milliseconds
 
+            // Remove outliers for more stable results
+            const cleanTimes = this.removeOutliers(times);
+            console.log(`   📊 Removed ${times.length - cleanTimes.length} outliers (${((times.length - cleanTimes.length) / times.length * 100).toFixed(1)}%)`);
+
+            const average = cleanTimes.reduce((a, b) => a + b, 0) / cleanTimes.length;
+            const standardDeviation = this.calculateStandardDeviation(cleanTimes);
+            const confidenceInterval95 = this.calculateConfidenceInterval(cleanTimes);
+
             this.results.documentFormatting[size] = {
                 files: files.map(f => f.name),
                 iterations,
-                times,
-                average: times.reduce((a, b) => a + b, 0) / times.length,
-                median: this.calculateMedian(times),
-                min: Math.min(...times),
-                max: Math.max(...times),
+                times: cleanTimes,
+                average,
+                median: this.calculateMedian(cleanTimes),
+                min: Math.min(...cleanTimes),
+                max: Math.max(...cleanTimes),
+                standardDeviation,
+                confidenceInterval95,
                 totalDuration
             };
         }
@@ -224,10 +270,10 @@ class PerformanceBenchmark {
 
     private getIterationsForSize(size: 'small' | 'medium' | 'large'): number {
         switch (size) {
-            case 'small': return 15000;
-            case 'medium': return 10000;
-            case 'large': return 750;
-            default: return 10000;
+            case 'small': return 25000;
+            case 'medium': return 8000;
+            case 'large': return 600;
+            default: return 15000;
         }
     }
 
@@ -237,6 +283,57 @@ class PerformanceBenchmark {
         return sorted.length % 2 === 0 
             ? (sorted[mid - 1] + sorted[mid]) / 2 
             : sorted[mid];
+    }
+
+    private removeOutliers(times: number[]): number[] {
+        if (times.length < 10) return times; // Don't remove outliers from small datasets
+        
+        const sorted = [...times].sort((a, b) => a - b);
+        const q1Index = Math.floor(sorted.length * 0.25);
+        const q3Index = Math.floor(sorted.length * 0.75);
+        const q1 = sorted[q1Index];
+        const q3 = sorted[q3Index];
+        const iqr = q3 - q1;
+        
+        // Use more conservative outlier detection (3x IQR instead of 1.5x)
+        const lowerBound = q1 - 3 * iqr;
+        const upperBound = q3 + 3 * iqr;
+        
+        return times.filter(time => time >= lowerBound && time <= upperBound);
+    }
+
+    private calculateStandardDeviation(times: number[]): number {
+        const mean = times.reduce((a, b) => a + b, 0) / times.length;
+        const squaredDeviations = times.map(time => Math.pow(time - mean, 2));
+        const variance = squaredDeviations.reduce((a, b) => a + b, 0) / times.length;
+        return Math.sqrt(variance);
+    }
+
+    private calculateConfidenceInterval(times: number[]): { lower: number; upper: number } {
+        const mean = times.reduce((a, b) => a + b, 0) / times.length;
+        const stdDev = this.calculateStandardDeviation(times);
+        const standardError = stdDev / Math.sqrt(times.length);
+        
+        // 95% confidence interval using t-distribution approximation (1.96 for large samples)
+        const marginOfError = 1.96 * standardError;
+        
+        return {
+            lower: mean - marginOfError,
+            upper: mean + marginOfError
+        };
+    }
+
+    private calculateCoefficientOfVariation(times: number[]): number {
+        const mean = times.reduce((a, b) => a + b, 0) / times.length;
+        const stdDev = this.calculateStandardDeviation(times);
+        return (stdDev / mean) * 100; // Return as percentage
+    }
+
+    private getStabilityRating(coefficientOfVariation: number): string {
+        if (coefficientOfVariation <= 5) return '🟢 Excellent';
+        if (coefficientOfVariation <= 10) return '🟡 Good';
+        if (coefficientOfVariation <= 20) return '🟠 Fair';
+        return '🔴 Poor';
     }
 
     async runFullBenchmark(): Promise<void> {
@@ -264,33 +361,41 @@ class PerformanceBenchmark {
 
         // Factory creation results
         const factory = this.results.factoryCreation;
+        const factoryCv = this.calculateCoefficientOfVariation(factory.times);
         console.log(`\n🎯 Factory Creation:`);
         console.log(`   Iterations: ${factory.iterations}`);
-        console.log(`   Average: ${factory.average.toFixed(3)}ms`);
-        console.log(`   Median:  ${factory.median.toFixed(3)}ms`);
-        console.log(`   Min:     ${factory.min.toFixed(3)}ms`);
-        console.log(`   Max:     ${factory.max.toFixed(3)}ms`);
+        console.log(`   Average: ${factory.average.toFixed(6)}ms ± ${factory.standardDeviation.toFixed(6)}ms`);
+        console.log(`   Median:  ${factory.median.toFixed(6)}ms`);
+        console.log(`   95% CI:  [${factory.confidenceInterval95.lower.toFixed(6)}, ${factory.confidenceInterval95.upper.toFixed(6)}]ms`);
+        console.log(`   Range:   [${factory.min.toFixed(6)}, ${factory.max.toFixed(6)}]ms`);
+        console.log(`   Stability: ${factoryCv.toFixed(1)}% CV ${this.getStabilityRating(factoryCv)}`);
         console.log(`   Total Duration: ${factory.totalDuration.toFixed(3)}ms`);
 
         // Document formatting results
         for (const [size, results] of Object.entries(this.results.documentFormatting)) {
+            const cv = this.calculateCoefficientOfVariation(results.times);
             console.log(`\n🎯 Document Formatting (${size}):`);
             const fileList = results.files.length <= 3 
                 ? results.files.join(', ')
                 : `${results.files.slice(0, 3).join(', ')}...`;
             console.log(`   Test files: ${results.files.length} files (${fileList})`);
             console.log(`   Iterations: ${results.iterations}`);
-            console.log(`   Average: ${results.average.toFixed(3)}ms`);
+            console.log(`   Average: ${results.average.toFixed(3)}ms ± ${results.standardDeviation.toFixed(3)}ms`);
             console.log(`   Median:  ${results.median.toFixed(3)}ms`);
-            console.log(`   Min:     ${results.min.toFixed(3)}ms`);
-            console.log(`   Max:     ${results.max.toFixed(3)}ms`);
+            console.log(`   95% CI:  [${results.confidenceInterval95.lower.toFixed(3)}, ${results.confidenceInterval95.upper.toFixed(3)}]ms`);
+            console.log(`   Range:   [${results.min.toFixed(3)}, ${results.max.toFixed(3)}]ms`);
+            console.log(`   Stability: ${cv.toFixed(1)}% CV ${this.getStabilityRating(cv)}`);
             console.log(`   Total Duration: ${results.totalDuration.toFixed(3)}ms`);
         }
 
         console.log('\n' + '='.repeat(100));
         console.log(`⏱️  OVERALL BENCHMARK DURATION: ${this.results.overallDuration.toFixed(3)}ms`);
         console.log('='.repeat(100));
-        console.log('💡 TIP: Run this benchmark before and after code changes to measure improvements!');
+        console.log('💡 TIPS FOR CONSISTENT BENCHMARKING:');
+        console.log('   • Close other applications to reduce system interference');
+        console.log('   • Run multiple times and compare confidence intervals');
+        console.log('   • Look for CV (Coefficient of Variation) < 10% for reliable measurements');
+        console.log('   • Focus on trends across multiple runs rather than absolute values');
         console.log('='.repeat(100));
     }
 
