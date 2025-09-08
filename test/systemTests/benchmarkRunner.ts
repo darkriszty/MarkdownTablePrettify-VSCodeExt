@@ -66,22 +66,26 @@ class PerformanceBenchmark {
     private checkPerformanceRegression(): void {
         console.log(`\n📊 Comparing against hard-coded baseline`);
         
+        let hasRegression = false;
+        
         // Factory creation comparison
-        let hasRegression = this.comparePerformance(
+        const factoryRegression = this.comparePerformance(
             'Factory creation',
             this.results.factoryCreation.average,
             this.baseline.factoryCreation.average,
             6
         );
+        hasRegression = hasRegression || factoryRegression;
         
         // Document formatting comparisons
         for (const [size, results] of Object.entries(this.results.documentFormatting)) {
             if (this.baseline.documentFormatting[size]) {
-                hasRegression = hasRegression || this.comparePerformance(
+                const documentRegression = this.comparePerformance(
                     `Document formatting (${size})`,
                     results.average,
                     this.baseline.documentFormatting[size].average
                 );
+                hasRegression = hasRegression || documentRegression;
             }
         }
 
