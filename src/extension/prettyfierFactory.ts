@@ -24,6 +24,12 @@ import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
 import { TableStringWriter } from "../writers/tableStringWriter";
 import { ValuePaddingProvider } from '../writers/valuePaddingProvider';
 
+let cachedMultiTablePrettyfier: MultiTablePrettyfier | null = null;
+
+export function invalidateCache() {
+    cachedMultiTablePrettyfier = null;
+}
+
 export function getSupportLanguageIds() {
     return [ "markdown", ...getConfigurationValue<Array<string>>("extendedLanguages", []) ];
 }
@@ -41,15 +47,21 @@ export function getDocumentPrettyfierCommand(): TableDocumentPrettyfierCommand {
 }
 
 function getMultiTablePrettyfier(): MultiTablePrettyfier {
+    if (cachedMultiTablePrettyfier) {
+        return cachedMultiTablePrettyfier;
+    }
+
     const loggers = getLoggers();
     const sizeLimitCheker = getSizeLimitChecker(loggers);
     const columnPadding: number = getConfigurationValue<number>("columnPadding", 0);
 
-    return new MultiTablePrettyfier(
+    cachedMultiTablePrettyfier = new MultiTablePrettyfier(
         new TableFinder(new TableValidator(new SelectionInterpreter(true))),
         getSingleTablePrettyfier(loggers, sizeLimitCheker, columnPadding),
         sizeLimitCheker
     );
+
+    return cachedMultiTablePrettyfier;
 }
 
 function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSizeLimitChecker, columnPadding: number): SingleTablePrettyfier {
