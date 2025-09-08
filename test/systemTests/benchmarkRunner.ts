@@ -35,6 +35,17 @@ class PerformanceBenchmark {
     private testFiles: { name: string; size: 'small' | 'medium' | 'large' }[] = [];
     private overallStartTime: bigint = BigInt(0);
 
+    private readonly baseline = {
+        factoryCreation: { average: 0.0001675, median: 0.0001522 },
+        documentFormatting: {
+            small: { average: 0.1429, median: 0.1162 },
+            medium: { average: 0.2358, median: 0.2186 },
+            large: { average: 4.2929, median: 2.2453 }
+        }
+    };
+
+    private readonly thresholds = { improvement: 0.5, warning: 1.5, failure: 2 };
+
     constructor() {
         this.results = {
             factoryCreation: {
@@ -50,6 +61,55 @@ class PerformanceBenchmark {
             overallDuration: 0,
             timestamp: new Date().toISOString()
         };
+    }
+
+    private checkPerformanceRegression(): void {
+        console.log(`\n📊 Comparing against hard-coded baseline`);
+        
+        // Factory creation comparison
+        let hasRegression = this.comparePerformance(
+            'Factory creation',
+            this.results.factoryCreation.average,
+            this.baseline.factoryCreation.average,
+            6
+        );
+        
+        // Document formatting comparisons
+        for (const [size, results] of Object.entries(this.results.documentFormatting)) {
+            if (this.baseline.documentFormatting[size]) {
+                hasRegression = hasRegression || this.comparePerformance(
+                    `Document formatting (${size})`,
+                    results.average,
+                    this.baseline.documentFormatting[size].average
+                );
+            }
+        }
+
+        if (hasRegression) {
+            throw new Error('Performance regression detected! Benchmark failed due to >25% performance degradation.');
+        }
+    }
+
+    private comparePerformance(component: string, current: number, baseline: number, precision: number = 3): boolean {
+        const ratio = current / baseline;
+        const change = (ratio - 1) * 100;
+
+        let isFailure: boolean = false;
+        let message: string;
+
+        if (ratio <= this.thresholds.improvement) {
+            message = `🎉 ${component}: ${current.toFixed(precision)}ms vs baseline ${baseline.toFixed(precision)}ms (${Math.abs(change).toFixed(1)}% better)`;
+        } else if (ratio >= this.thresholds.failure) {
+            isFailure = true;
+            message = `❌ ${component} FAILURE: ${current.toFixed(precision)}ms vs baseline ${baseline.toFixed(precision)}ms (${change.toFixed(1)}% slower)`;
+        } else if (ratio >= this.thresholds.warning) {
+            message = `⚠️  ${component}: ${current.toFixed(precision)}ms vs baseline ${baseline.toFixed(precision)}ms (${change.toFixed(1)}% slower)`;
+        } else {
+            message = `✅ ${component}: ${current.toFixed(precision)}ms vs baseline ${baseline.toFixed(precision)}ms (${change.toFixed(1)}% change)`;
+        }
+
+        console.log(message);
+        return isFailure;
     }
 
     async loadTestFiles(): Promise<void> {
@@ -189,6 +249,8 @@ class PerformanceBenchmark {
 
         this.printResults();
         this.saveResults();
+
+        this.checkPerformanceRegression();
     }
 
     private printResults(): void {
