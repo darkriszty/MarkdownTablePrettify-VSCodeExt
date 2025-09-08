@@ -14,36 +14,36 @@ export class TableStringWriter {
         if (table.rows == null) throw new Error("Table rows can't be null.");
         if (table.columnCount == 0) throw new Error("Table must have at least one column.");
 
-        let buffer = "";
-        buffer += this.writeRowViewModel(table.header, table, true);
-        buffer += this.writeRowViewModel(table.separator, table, table.rowCount > 0);
-        buffer += this.writeRows(table);
+        const buffer: string[] = [];
+        buffer.push(this.writeRowViewModel(table.header, table, true));
+        buffer.push(this.writeRowViewModel(table.separator, table, table.rowCount > 0));
+        buffer.push(this.writeRows(table));
 
-        return buffer;
+        return buffer.join('');
     }
 
     private writeRows(table: TableViewModel): string {
-        let buffer = "";
+        const buffer: string[] = [];
         for (let row = 0; row < table.rowCount; row++) {
-            buffer += this.writeRowViewModel(table.rows[row], table, row != table.rowCount - 1);
+            buffer.push(this.writeRowViewModel(table.rows[row], table, row != table.rowCount - 1));
         }
-        return buffer;
+        return buffer.join('');
     }
 
     private writeRowViewModel(row: RowViewModel, table: TableViewModel, addEndOfLine: boolean): string {
-        let buffer = "";
-        buffer += table.leftPad;
-        buffer += this.getLeftBorderIfNeeded(table);
+        const buffer: string[] = [];
+        buffer.push(table.leftPad);
+        buffer.push(this.getLeftBorderIfNeeded(table));
         for (let col = 0; col < table.columnCount; col++) {
-            buffer += this._valuePaddingProvider.getLeftPadding();
-            buffer += row.getValueAt(col);
-            buffer += this._valuePaddingProvider.getRightPadding(table, col);
-            buffer += this.getSeparatorIfNeeded(table, col);
+            buffer.push(this._valuePaddingProvider.getLeftPadding());
+            buffer.push(row.getValueAt(col));
+            buffer.push(this._valuePaddingProvider.getRightPadding(table, col));
+            buffer.push(this.getSeparatorIfNeeded(table, col));
         }
-        buffer += this.getRightBorderIfNeeded(table);
+        buffer.push(this.getRightBorderIfNeeded(table));
         if (addEndOfLine)
-            buffer += row.EOL;
-        return buffer;
+            buffer.push(row.EOL);
+        return buffer.join('');
     }
 
     private getSeparatorIfNeeded(table: TableViewModel, currentColumn: number): string {
