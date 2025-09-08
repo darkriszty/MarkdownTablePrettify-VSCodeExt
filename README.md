@@ -5,6 +5,7 @@
 [![OVSX](https://img.shields.io/open-vsx/v/darkriszty/markdown-table-prettify?color=success&label=Open%20VSX)](https://open-vsx.org/extension/darkriszty/markdown-table-prettify)
 [![Docker image](https://img.shields.io/docker/v/darkriszty/prettify-md?color=success&label=Docker)](https://hub.docker.com/r/darkriszty/prettify-md/tags?page=1&ordering=last_updated)
 [![NPM package](https://img.shields.io/npm/v/markdown-table-prettify?color=success)](https://www.npmjs.com/package/markdown-table-prettify)
+[![Benchmarks](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/actions/workflows/benchmark.yml/badge.svg)](https://github.com/darkriszty/MarkdownTablePrettify-VSCodeExt/actions/workflows/benchmark.yml)
 
 Makes tables more readable for humans. Compatible with the Markdown writer plugin's table formatter feature in Atom.
 
