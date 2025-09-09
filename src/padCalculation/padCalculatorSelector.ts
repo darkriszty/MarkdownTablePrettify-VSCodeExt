@@ -19,6 +19,12 @@ export class PadCalculatorSelector {
     private static readonly rightLastColumn = new RightAlignment.LastColumnPadCalculator();
 
     public select(table: Table, column: number) : BasePadCalculator {
+        // For unbordered tables, the first column should never have additional left padding that isn't indentation (markdown spec compliance).
+        // Use left alignment padding logic for the first column regardless of its actual alignment.
+        if (column === 0 && !table.hasLeftBorder) {
+            return this.leftAlignmentPadCalculator(table, column);
+        }
+
         switch (table.alignments[column]) {
             case Alignment.Center: return this.centerAlignmentPadCalculator(table, column);
             case Alignment.Right: return this.rightAlignmentPadCalculator(table, column);
