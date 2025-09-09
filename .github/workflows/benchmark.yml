@@ -3,7 +3,7 @@ name: Performance Benchmarks
 on:
   # Run on pushes to main branches and feature branches with 'perf' in name
   push:
-    branches: [ master, 'feature/*perf*' ]
+    branches: [ main, 'feature/*perf*' ]
   
   # Allow manual triggering
   workflow_dispatch:
