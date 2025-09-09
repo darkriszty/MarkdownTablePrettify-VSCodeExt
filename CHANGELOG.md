@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Issue #86: Add support for header-only tables (without data rows)
 
+### Fixed
+- Issue #85: Fixed markdown spec compliance for unbordered tables with center/right aligned first columns. First column now uses left padding logic regardless of alignment to prevent invalid markdown output.
+
 ## 3.7.0 - 2025-08-29
 ### Added
 - Issue #78: Support tab indentation for tables without a border.
