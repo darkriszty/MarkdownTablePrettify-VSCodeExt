@@ -13,7 +13,7 @@
   },
   "icon": "assets/logo.png",
   "engines": {
-    "vscode": "^1.103.0"
+    "vscode": "^1.106.1"
   },
   "categories": [
     "Formatters"
@@ -84,15 +84,15 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.3.0",
-    "@types/vscode": "^1.103.0",
+    "@types/node": "^24.10.1",
+    "@types/vscode": "^1.106.1",
     "@vscode/test-electron": "^2.5.2",
-    "glob": "^11.0.3",
+    "glob": "^13.0.0",
     "gulp": "^5.0.1",
     "gulp-merge-json": "^2.2.1",
-    "mocha": "^11.7.1",
+    "mocha": "^11.7.5",
     "typemoq": "^2.1.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "license": "MIT"
 }
