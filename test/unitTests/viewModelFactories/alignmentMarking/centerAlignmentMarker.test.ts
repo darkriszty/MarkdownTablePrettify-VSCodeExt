@@ -21,7 +21,7 @@ suite("CenterAlignmentMarker tests", () => {
     test("mark() for a null input returns the given input", () => {
         const sut = createSut();
 
-        const result = sut.mark(null);
+        const result = sut.mark(null!);
 
         assert.strictEqual(result, null);
     });

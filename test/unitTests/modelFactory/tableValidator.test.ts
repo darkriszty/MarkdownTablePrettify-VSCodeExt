@@ -8,7 +8,7 @@ suite("TableValidator tests", () => {
     test("isValid() with null input returns false", () => {
         const sut = createSut();
 
-        const isValid: boolean = sut.isValid(null);
+        const isValid: boolean = sut.isValid(null!);
 
         assert.strictEqual(isValid, false);
     });
@@ -167,7 +167,7 @@ suite("TableValidator tests", () => {
         selectionInterpreter.verifyAll();
     });
 
-    function createSut(selectionInterpreter: SelectionInterpreter = null): TableValidator {
+    function createSut(selectionInterpreter: SelectionInterpreter = null!): TableValidator {
         return new TableValidator(selectionInterpreter == null ? new SelectionInterpreter(false): selectionInterpreter);
     }
 });

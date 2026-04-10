@@ -9,7 +9,7 @@ suite("Extension Tests", () => {
     });
 
     test("Extension gets activated", () => {
-         vscode.extensions.getExtension(_extensionName)
+         vscode.extensions.getExtension(_extensionName)!
             .activate()
             .then(() => {
                     assert.ok(true);

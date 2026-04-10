@@ -18,7 +18,7 @@ export class MultiTablePrettyfier {
         }
 
         let document = new Document(input);
-        let tableRange: Range = null;
+        let tableRange: Range | null = null;
         let tableSearchStartLine = 0;
 
         while ((tableRange = this._tableFinder.getNextRange(document, tableSearchStartLine)) != null) {

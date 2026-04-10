@@ -3,7 +3,7 @@ import { Row } from "./row";
 
 export class Table {
     private readonly _rows: Row[];
-    private _longestColumnLengthsCache: number[] = null;
+    private _longestColumnLengthsCache: number[] | null = null;
 
     constructor(
         rows: Row[],

@@ -6,9 +6,7 @@
         "lib": [ "ES2022" ],
         "types": [ "node" ],
         "sourceMap": true,
-        "rootDir": ".",
-        "strictNullChecks": false,
-        "strictPropertyInitialization": false
+        "rootDir": "."
     },
     "exclude": [ "node_modules", ".vscode-test" ]
 }

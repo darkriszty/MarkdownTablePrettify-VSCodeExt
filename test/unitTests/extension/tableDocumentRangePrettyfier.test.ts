@@ -20,7 +20,7 @@ suite("TableDocumentRangePrettyfier tests", () => {
         const range = document.getFullRange();
         _multiTablePrettyfier.setup(_ => _.formatTables(It.isAny())).returns(() => expectedResult);
 
-        const result = sut.provideDocumentRangeFormattingEdits(document, range, null, null);
+        const result = sut.provideDocumentRangeFormattingEdits(document, range, null!, null!);
 
         assert.strictEqual(result.length, 1);
         assert.strictEqual(result[0].range, range);
@@ -30,12 +30,12 @@ suite("TableDocumentRangePrettyfier tests", () => {
     test("provideDocumentRangeFormattingEdits() invalid table selection doesn't alter the selected text", () => {
         const sut = createSut();
         const input = Array(5).fill("hello world").join("\n");
-        const expectedResult: string = null;
+        const expectedResult: string = null!;
         const document = new MarkdownTextDocumentStub(input);
         const range = document.getFullRange();
         _multiTablePrettyfier.setup(_ => _.formatTables(It.isAny())).returns(() => expectedResult);
 
-        const result = sut.provideDocumentRangeFormattingEdits(document, range, null, null);
+        const result = sut.provideDocumentRangeFormattingEdits(document, range, null!, null!);
 
         assert.strictEqual(result.length, 0);
     });

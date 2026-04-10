@@ -10,7 +10,7 @@ export class TextLineStub implements vscode.TextLine {
     lineNumber: number;
     text: string;
     range: vscode.Range;
-    rangeIncludingLineBreak: vscode.Range;
-    firstNonWhitespaceCharacterIndex: number;
-    isEmptyOrWhitespace: boolean;
+    rangeIncludingLineBreak!: vscode.Range;
+    firstNonWhitespaceCharacterIndex!: number;
+    isEmptyOrWhitespace!: boolean;
 }

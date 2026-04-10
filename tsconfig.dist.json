@@ -6,9 +6,7 @@
         "lib": [ "ES2022" ],
         "types": [ "node" ],
         "sourceMap": false,
-        "rootDir": ".",
-        "strictNullChecks": false,
-        "strictPropertyInitialization": false
+        "rootDir": "."
     },
     "include": [
         "src/**/*",

@@ -161,7 +161,7 @@ suite("TableFactory tests", () => {
         return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments, leftPad);
     }
 
-    function createFactory(selectionInterpreter: SelectionInterpreter = null): TableFactory {
+    function createFactory(selectionInterpreter: SelectionInterpreter = null!): TableFactory {
         return new TableFactory(_alignmentFactoryMock.object, 
             selectionInterpreter == null ? new SelectionInterpreter(false) : selectionInterpreter, 
             _transformer.object, _tableIndentationDetector.object);

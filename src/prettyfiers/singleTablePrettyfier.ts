@@ -22,7 +22,7 @@ export class SingleTablePrettyfier {
 
     public prettifyTable(document: Document, range: Range) : string
     {
-        let result: string = null;
+        let result: string | null = null;
         let message: string = "";
         const selection: string = document.getText(range);
 
@@ -44,6 +44,6 @@ export class SingleTablePrettyfier {
         if (!!message)
             this._loggers.forEach(_ => _.logInfo(message));
 
-        return result;
+        return result!;
     }
 }
