@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - Issue #86: Add support for header-only tables (without data rows)
+- Issue #98: Include TypeScript type declarations in the NPM package.
 
 ### Fixed
 - Issue #85: Fixed markdown spec compliance for unbordered tables with center/right aligned first columns. First column now uses left padding logic regardless of alignment to prevent invalid markdown output.

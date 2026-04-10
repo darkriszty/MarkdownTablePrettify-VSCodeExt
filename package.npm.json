@@ -1,5 +1,6 @@
 {
     "main": "./cli/cliPrettify.js",
+    "types": "./cli/cliPrettify.d.ts",
     "bin": {
         "markdown-table-prettify": "./cli/index.js"
     },

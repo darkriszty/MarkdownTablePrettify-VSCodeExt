@@ -6,6 +6,7 @@
         "lib": [ "ES2022" ],
         "types": [ "node" ],
         "sourceMap": false,
+        "declaration": true,
         "rootDir": "."
     },
     "include": [
