@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 - Issue #85: Fixed markdown spec compliance for unbordered tables with center/right aligned first columns. First column now uses left padding logic regardless of alignment to prevent invalid markdown output.
+- Issue #88: Fixed bordered tables inside numbered/bullet lists having their list marker incorporated as a data column and losing their right border.
+- Issue #93: Fixed tables inside blockquotes not being prettified.
 
 ### Changed
 - **BREAKING**: Updated NPM package compilation target from ES5 to ES2022. Requires Node.js 16.11+.
