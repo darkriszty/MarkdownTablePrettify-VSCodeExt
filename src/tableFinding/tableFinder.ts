@@ -24,7 +24,7 @@ export class TableFinder {
 
             if (!isInIgnoreBlock) {
                 const isValidSeparatorRow = this._tableValidator.lineIsValidSeparator(document.lines[rowIndex].value);
-                const nextRangeResult = isValidSeparatorRow
+                const nextRangeResult: { range: Range, ignoreBlockStarted: boolean } = isValidSeparatorRow
                     ? this.getNextValidTableRange(document, rowIndex)
                     : { range: null, ignoreBlockStarted: isInIgnoreBlock};
 

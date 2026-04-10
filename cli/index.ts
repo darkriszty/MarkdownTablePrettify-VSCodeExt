@@ -7,7 +7,7 @@ import { InputReader } from "./inputReader";
 
 const cliOptions: CliOptions = parseArguments(process.argv);
 
-InputReader.subscribe(input =>
+InputReader.subscribe((input: string) =>
     cliOptions.check
         ? CliPrettify.check(input, cliOptions)
         : process.stdout.write(CliPrettify.prettify(input, cliOptions))

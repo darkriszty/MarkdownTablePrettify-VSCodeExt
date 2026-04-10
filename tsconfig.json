@@ -8,7 +8,6 @@
         "sourceMap": true,
         "rootDir": ".",
         "strictNullChecks": false,
-        "noImplicitAny": false,
         "strictPropertyInitialization": false
     },
     "exclude": [ "node_modules", ".vscode-test" ]

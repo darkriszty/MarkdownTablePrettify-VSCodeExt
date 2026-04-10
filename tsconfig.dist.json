@@ -8,7 +8,6 @@
         "sourceMap": false,
         "rootDir": ".",
         "strictNullChecks": false,
-        "noImplicitAny": false,
         "strictPropertyInitialization": false
     },
     "include": [

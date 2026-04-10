@@ -30,7 +30,7 @@ suite("TableDocumentRangePrettyfier tests", () => {
     test("provideDocumentRangeFormattingEdits() invalid table selection doesn't alter the selected text", () => {
         const sut = createSut();
         const input = Array(5).fill("hello world").join("\n");
-        const expectedResult = null;
+        const expectedResult: string = null;
         const document = new MarkdownTextDocumentStub(input);
         const range = document.getFullRange();
         _multiTablePrettyfier.setup(_ => _.formatTables(It.isAny())).returns(() => expectedResult);

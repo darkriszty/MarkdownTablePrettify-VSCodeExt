@@ -81,13 +81,13 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
         return 0;
     }
     getWordRangeAtPosition(position: vscode.Position): vscode.Range {
-        return new vscode.Range[0];
+        return new vscode.Range(0, 0, 0, 0);
     }
     validateRange(range: vscode.Range): vscode.Range {
         return range;
     }
     positionAt(offset: number): vscode.Position {
-        return new vscode.Position[0];
+        return new vscode.Position(0, 0);
     }
     validatePosition(position: vscode.Position): vscode.Position {
         return position;
