@@ -14,7 +14,7 @@ suite("Extension Tests", () => {
             .then(() => {
                     assert.ok(true);
                 }, rejectReason => {
-                    assert.fail(0, 1, `Extension not activated. Reason: ${rejectReason}`, null);
+                    assert.fail(`Extension not activated. Reason: ${rejectReason}`);
                 }
             );
     });

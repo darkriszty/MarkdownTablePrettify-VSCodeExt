@@ -37,7 +37,7 @@ export class SingleTablePrettyfier {
                 message = "Can't parse table from invalid text.";
                 result = selection;
             }
-        } catch (ex) {
+        } catch (ex: any) {
             this._loggers.forEach(_ => _.logError(ex));
         }
 

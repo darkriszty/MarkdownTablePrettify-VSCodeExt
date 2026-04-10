@@ -4,8 +4,12 @@
         "target": "es2022",
         "outDir": "out",
         "lib": [ "ES2022" ],
+        "types": [ "node" ],
         "sourceMap": true,
-        "rootDir": "."
+        "rootDir": ".",
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "strictPropertyInitialization": false
     },
     "exclude": [ "node_modules", ".vscode-test" ]
 }
