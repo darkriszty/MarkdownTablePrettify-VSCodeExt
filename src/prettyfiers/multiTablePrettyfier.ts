@@ -3,12 +3,14 @@ import { Range } from "../models/doc/range";
 import { TableFinder } from "../tableFinding/tableFinder";
 import { SizeLimitChecker } from "./sizeLimit/sizeLimitChecker";
 import { SingleTablePrettyfier } from "./singleTablePrettyfier";
+import { MarkdownPrefixStripper } from "../modelFactory/markdownPrefixStripper";
 
 export class MultiTablePrettyfier {
     constructor(
         private readonly _tableFinder: TableFinder,
         private readonly _singleTablePrettyfier: SingleTablePrettyfier,
-        private readonly _sizeLimitChecker: SizeLimitChecker
+        private readonly _sizeLimitChecker: SizeLimitChecker,
+        private readonly _prefixStripper: MarkdownPrefixStripper = new MarkdownPrefixStripper()
     ) { }
 
     public formatTables(input: string): string
@@ -17,7 +19,9 @@ export class MultiTablePrettyfier {
             return input;
         }
 
-        let document = new Document(input);
+        const { strippedText, prefixes } = this._prefixStripper.strip(input);
+
+        let document = new Document(strippedText);
         let tableRange: Range | null = null;
         let tableSearchStartLine = 0;
 
@@ -27,6 +31,6 @@ export class MultiTablePrettyfier {
             tableSearchStartLine = tableRange.endLine + 1;
         }
 
-        return document.getText();
+        return this._prefixStripper.restore(document.getText(), prefixes);
     }
 }
