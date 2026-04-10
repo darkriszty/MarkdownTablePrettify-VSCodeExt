@@ -1,5 +1,5 @@
 export class InputReader {
-    static subscribe(readDone): void {
+    static subscribe(readDone: (input: string) => void): void {
         if (process.stdin.isTTY) {
             readDone(process.argv[2] || "");
         } else {

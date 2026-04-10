@@ -2,7 +2,7 @@ import { Table } from "../../models/table";
 
 export abstract class Transformer {
 
-    constructor (private _next: Transformer) { }
+    constructor (private _next: Transformer | null) { }
 
     protected abstract transform(input: Table): Table;
 

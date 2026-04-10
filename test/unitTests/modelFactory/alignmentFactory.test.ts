@@ -5,7 +5,7 @@ import { Alignment } from "../../../src/models/alignment";
 suite("AlignmentFactory tests", () => {
 
     test("createAlignments() with null throws error", () => {
-        const separatorCells = null;
+        const separatorCells: string[] = null!;
         const sut = createFactory();
 
         assert.throws(() => sut.createAlignments(separatorCells))

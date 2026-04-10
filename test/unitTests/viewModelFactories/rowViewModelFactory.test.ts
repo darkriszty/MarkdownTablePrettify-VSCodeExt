@@ -134,7 +134,7 @@ function tableFor(rows: string[][], alignment: Alignment) {
     return new Table(rows.map(row => new Row(row.map(c  => new Cell(c)), "\r\n")), "\r\n", alignments);
 }
 
-function createFactory(contentPadCalculator: PadCalculator, alignmentStrategy: AlignmentMarkerStrategy = null): RowViewModelFactory 
+function createFactory(contentPadCalculator: PadCalculator, alignmentStrategy: AlignmentMarkerStrategy = null!): RowViewModelFactory 
 {
     alignmentStrategy = alignmentStrategy == null ? new AlignmentMarkerStrategy(":") : alignmentStrategy;
     return new RowViewModelFactory(contentPadCalculator, alignmentStrategy);

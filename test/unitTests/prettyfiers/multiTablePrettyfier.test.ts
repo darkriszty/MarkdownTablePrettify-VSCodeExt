@@ -44,7 +44,7 @@ suite("MultiTablePrettyfier tests", () => {
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 0)).returns(() => new Range(1, 1));
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 2)).returns(() => new Range(3, 3));
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 4)).returns(() => new Range(8, 8));
-        _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 9)).returns(() => null);
+        _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 9)).returns(() => null!);
         _singleTablePrettyfier.setup(singlePrettyfier => singlePrettyfier.prettifyTable(It.isAny(), It.isAny())).returns(() => "new text");
 
         sut.formatTables(text);
@@ -59,7 +59,7 @@ suite("MultiTablePrettyfier tests", () => {
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 0)).returns(() => new Range(1, 1));
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 2)).returns(() => new Range(3, 3));
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 4)).returns(() => new Range(8, 8));
-        _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 9)).returns(() => null);
+        _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 9)).returns(() => null!);
         _singleTablePrettyfier.setup(singlePrettyfier => singlePrettyfier.prettifyTable(It.isAny(), It.isAny())).returns(() => "new text");
 
         sut.formatTables(text);
@@ -73,7 +73,7 @@ suite("MultiTablePrettyfier tests", () => {
         _sizeLimitChecker.setup(checker => checker.isWithinAllowedSizeLimit(text)).returns(() => true);
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 0)).returns(() => new Range(1, 1));
         _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 2)).returns(() => new Range(3, 3));
-        _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 4)).returns(() => null);
+        _tableFinder.setup(tableFind => tableFind.getNextRange(It.isAny(), 4)).returns(() => null!);
         _singleTablePrettyfier
             .setup(singlePrettyfier => singlePrettyfier.prettifyTable(It.isAny(), It.is<Range>(r => r.startLine === 1)))
             .returns(() => "a");

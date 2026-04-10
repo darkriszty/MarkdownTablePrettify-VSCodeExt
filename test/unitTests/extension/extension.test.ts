@@ -9,12 +9,12 @@ suite("Extension Tests", () => {
     });
 
     test("Extension gets activated", () => {
-         vscode.extensions.getExtension(_extensionName)
+         vscode.extensions.getExtension(_extensionName)!
             .activate()
             .then(() => {
                     assert.ok(true);
                 }, rejectReason => {
-                    assert.fail(0, 1, `Extension not activated. Reason: ${rejectReason}`, null);
+                    assert.fail(`Extension not activated. Reason: ${rejectReason}`);
                 }
             );
     });

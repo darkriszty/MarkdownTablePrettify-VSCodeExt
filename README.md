@@ -35,7 +35,7 @@ A VSCode command called `Prettify markdown tables` is also available to format t
 
 ## NPM
 
-The core formatting logic is available as an NPM package: `npm install --save markdown-table-prettify`. The Typescript code is compiled down to ES5 and shipped inside the package.
+The core formatting logic is available as an NPM package: `npm install --save markdown-table-prettify`. The Typescript code is compiled to ES2022 and shipped inside the package. Requires Node.js 16.11+.
 
 It currently exposes the entry point also used by the _CLI_. It can be used from regular NodeJS or web apps:
 

@@ -6,7 +6,7 @@ import { Row } from '../../../src/models/row';
 
 suite("Table tests", () => {
     test("isEmpty() returns true for null rows", () => {
-        const table = new Table(null, null, null);
+        const table = new Table(null!, null!, null!);
 
         assert.strictEqual(table.isEmpty(), true);
     });

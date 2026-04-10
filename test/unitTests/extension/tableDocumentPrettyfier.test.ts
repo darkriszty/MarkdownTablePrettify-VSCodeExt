@@ -20,7 +20,7 @@ suite("TableDocumentPrettyfier tests", () => {
         // Note: due to a limitation of the MarkdownTextDocumentStub with OS line endings, we use `It.isAny()` instead of `input`.
         _multiTablePrettyfier.setup(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny())).returns(() => expectedResult)
 
-        const result = sut.provideDocumentFormattingEdits(document, null, null);
+        const result = sut.provideDocumentFormattingEdits(document, null!, null!);
 
         assert.strictEqual(result.length, 1);
         assert.strictEqual(result[0].newText, expectedResult);

@@ -11,7 +11,7 @@ suite("NotSetAlignmentMarker tests", () => {
         results.push(sut.mark("123"));
         results.push(sut.mark("----------"));
         results.push(sut.mark("x"));
-        results.push(sut.mark(null));
+        results.push(sut.mark(null!));
 
         assert.strictEqual(results[0], "ab");
         assert.strictEqual(results[1], "123");

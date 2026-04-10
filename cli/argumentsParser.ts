@@ -10,7 +10,7 @@ export function parseArguments(processArgs: string[]): CliOptions {
         return processArgs.length > 2 && processArgs.find(arg => arg.startsWith("--" + key)) !== undefined;
     }
 
-    function getArgumentValue(key: string): string {
+    function getArgumentValue(key: string): string | null {
         const hasArguments = processArgs.length > 2;
         const split = (hasArguments
             ? processArgs.find(arg => arg.startsWith("--" + key)) || ""

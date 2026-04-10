@@ -4,6 +4,12 @@ import * as vscode from 'vscode';
 import { getDistinctTestFileNames } from './systemTestFileReader';
 import { getDocumentPrettyfier } from '../../src/extension/prettyfierFactory';
 
+interface BenchmarkBaselineEntry {
+    average: number;
+    median: number;
+    standardDeviation: number;
+}
+
 interface BenchmarkResults {
     factoryCreation: {
         iterations: number;
@@ -39,7 +45,7 @@ class PerformanceBenchmark {
     private testFiles: { name: string; size: 'small' | 'medium' | 'large' }[] = [];
     private overallStartTime: bigint = BigInt(0);
 
-    private readonly baseline = {
+    private readonly baseline: { factoryCreation: BenchmarkBaselineEntry, documentFormatting: Record<string, BenchmarkBaselineEntry> } = {
         factoryCreation: { average: 0.0001675, median: 0.0001522, standardDeviation: 0.0001 },
         documentFormatting: {
             small: { average: 0.1429, median: 0.1162, standardDeviation: 0.05 },
@@ -415,14 +421,14 @@ class PerformanceBenchmark {
             ...this.results,
             factoryCreation: {
                 ...this.results.factoryCreation,
-                times: undefined // Exclude times array
+                times: undefined as undefined // Exclude times array
             },
             documentFormatting: Object.fromEntries(
                 Object.entries(this.results.documentFormatting).map(([size, data]) => [
                     size,
                     {
                         ...data,
-                        times: undefined // Exclude times arrays
+                        times: undefined as undefined // Exclude times arrays
                     }
                 ])
             )

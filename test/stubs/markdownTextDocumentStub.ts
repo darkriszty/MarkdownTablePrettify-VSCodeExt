@@ -3,16 +3,16 @@ import { EOL } from "os";
 import { TextLineStub } from "./textLineStub";
 
 export class MarkdownTextDocumentStub implements vscode.TextDocument {
-    private _lines: string[];
-    uri: vscode.Uri;
+    private _lines!: string[];
+    uri!: vscode.Uri;
     fileName: string;
     isUntitled: boolean;
     languageId: string;
     version: number;
     isDirty: boolean;
-    lineCount: number;
-    isClosed: boolean;
-    eol: vscode.EndOfLine;
+    lineCount!: number;
+    isClosed!: boolean;
+    eol!: vscode.EndOfLine;
     encoding: string;
 
     constructor(text: string) {
@@ -81,13 +81,13 @@ export class MarkdownTextDocumentStub implements vscode.TextDocument {
         return 0;
     }
     getWordRangeAtPosition(position: vscode.Position): vscode.Range {
-        return new vscode.Range[0];
+        return new vscode.Range(0, 0, 0, 0);
     }
     validateRange(range: vscode.Range): vscode.Range {
         return range;
     }
     positionAt(offset: number): vscode.Position {
-        return new vscode.Position[0];
+        return new vscode.Position(0, 0);
     }
     validatePosition(position: vscode.Position): vscode.Position {
         return position;

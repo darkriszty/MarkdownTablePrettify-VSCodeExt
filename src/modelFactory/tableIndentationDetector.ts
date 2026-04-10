@@ -3,7 +3,7 @@ export abstract class TableIndentationDetector {
     protected abstract getIndentationChars(leftPadsPerLine: string[]): string;
 
     public getLeftPad(lines: string[]): string {
-        const leftPadsPerLine: string[] = lines.map(l => l.match(/^\s*/)[0]);
+        const leftPadsPerLine: string[] = lines.map(l => (l.match(/^\s*/) || [""])[0]);
 
         return this.hasIndentation(leftPadsPerLine)
             ? this.getIndentationChars(leftPadsPerLine)

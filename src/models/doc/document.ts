@@ -16,13 +16,13 @@ export class Document {
         return new Range(0, this._lines.length);
     }
 
-    public getLines(range: Range): Line[] {
+    public getLines(range: Range | null): Line[] {
         return range == null
             ? this.lines
             : this.lines.slice(range.startLine, range.endLine + 1);
     }
 
-    public getText(range: Range = null): string {
+    public getText(range: Range | null = null): string {
         const lines = this.getLines(range);
 
         return lines.reduce((acc, curr, index) => {

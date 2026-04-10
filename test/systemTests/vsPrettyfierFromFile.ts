@@ -27,7 +27,7 @@ import SystemTestsConfig from './systemTestsConfig';
 export class VsPrettyfierFromFile {
     private readonly _logger: ILogger;
 
-    constructor(logger: ILogger = null) {
+    constructor(logger: ILogger | null = null) {
         this._logger = logger == null ? new ConsoleLogger() : logger;
     }
 
@@ -57,7 +57,7 @@ export class VsPrettyfierFromFile {
     }
 
     private formatFile(doc: vscode.TextDocument, fileNameRoot: string): vscode.TextEdit[] {
-        return this.createPrettyfier(SystemTestsConfig.getColumnPaddingFor(fileNameRoot)).provideDocumentFormattingEdits(doc, null, null);
+        return this.createPrettyfier(SystemTestsConfig.getColumnPaddingFor(fileNameRoot)).provideDocumentFormattingEdits(doc, null!, null!);
     }
 
     private createPrettyfier(columnPadding: number): TableDocumentPrettyfier {

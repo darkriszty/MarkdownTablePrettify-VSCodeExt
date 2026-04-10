@@ -61,7 +61,7 @@ suite("SingleTablePrettyfier Tests", () => {
         const document = new Document(inputText);
         _sizeLimitChecker.setup(checker => checker.isWithinAllowedSizeLimit(inputText)).returns(() => false);
 
-        const result = sut.prettifyTable(document, null);
+        const result = sut.prettifyTable(document, null!);
 
         assert.strictEqual(result, inputText);
         _sizeLimitChecker.verify(checker => checker.isWithinAllowedSizeLimit(inputText), Times.once());
@@ -75,7 +75,7 @@ suite("SingleTablePrettyfier Tests", () => {
         _sizeLimitChecker.setup(checker => checker.isWithinAllowedSizeLimit(inputText)).returns(() => true);
         _tableValidator.setup(validator => validator.isValid(inputText)).returns(() => false);
 
-        const result = sut.prettifyTable(document, null);
+        const result = sut.prettifyTable(document, null!);
 
         assert.strictEqual(result, inputText);
         _sizeLimitChecker.verify(checker => checker.isWithinAllowedSizeLimit(inputText), Times.once());

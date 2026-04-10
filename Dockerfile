@@ -1,4 +1,6 @@
-FROM node:22-alpine AS builder
+FROM node:lts-alpine AS builder
+
+RUN apk upgrade --no-cache
 
 WORKDIR /tmp
 
@@ -12,7 +14,9 @@ COPY src/ src/
 RUN npm run compile
 
 
-FROM node:22-alpine
+FROM node:lts-alpine
+
+RUN apk upgrade --no-cache
 
 WORKDIR /app
 

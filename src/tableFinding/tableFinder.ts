@@ -10,7 +10,7 @@ export class TableFinder {
         private readonly _tableValidator: TableValidator
     ) { }
 
-    public getNextRange(document: Document, startLine: number): Range {
+    public getNextRange(document: Document, startLine: number): Range | null {
         // look for the separator row, assume table starts 1 row before & ends when invalid
         let rowIndex = startLine;
         let isInIgnoreBlock = false;
@@ -24,7 +24,7 @@ export class TableFinder {
 
             if (!isInIgnoreBlock) {
                 const isValidSeparatorRow = this._tableValidator.lineIsValidSeparator(document.lines[rowIndex].value);
-                const nextRangeResult = isValidSeparatorRow
+                const nextRangeResult: { range: Range | null, ignoreBlockStarted: boolean } = isValidSeparatorRow
                     ? this.getNextValidTableRange(document, rowIndex)
                     : { range: null, ignoreBlockStarted: isInIgnoreBlock};
 
@@ -40,7 +40,7 @@ export class TableFinder {
         return null;
     }
 
-    private getNextValidTableRange(document: Document, separatorRowIndex: number): { range: Range, ignoreBlockStarted: boolean} {
+    private getNextValidTableRange(document: Document, separatorRowIndex: number): { range: Range | null, ignoreBlockStarted: boolean} {
         let firstTableFileRow = separatorRowIndex - 1;
         let lastTableFileRow = separatorRowIndex;
         let selection = null;

@@ -22,7 +22,7 @@ export class SingleTablePrettyfier {
 
     public prettifyTable(document: Document, range: Range) : string
     {
-        let result: string = null;
+        let result: string | null = null;
         let message: string = "";
         const selection: string = document.getText(range);
 
@@ -37,13 +37,13 @@ export class SingleTablePrettyfier {
                 message = "Can't parse table from invalid text.";
                 result = selection;
             }
-        } catch (ex) {
+        } catch (ex: any) {
             this._loggers.forEach(_ => _.logError(ex));
         }
 
         if (!!message)
             this._loggers.forEach(_ => _.logInfo(message));
 
-        return result;
+        return result!;
     }
 }

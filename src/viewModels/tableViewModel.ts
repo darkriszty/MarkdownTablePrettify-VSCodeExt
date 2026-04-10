@@ -5,9 +5,9 @@ export class TableViewModel {
     public get rowCount(): number { return this.rows.length; }
 
     public leftPad: string = "";
-    public header: RowViewModel;
-    public separator: RowViewModel;
+    public header!: RowViewModel;
+    public separator!: RowViewModel;
     public rows: RowViewModel[] = [];
-    public hasLeftBorder: boolean;
-    public hasRightBorder: boolean;
+    public hasLeftBorder!: boolean;
+    public hasRightBorder!: boolean;
 }

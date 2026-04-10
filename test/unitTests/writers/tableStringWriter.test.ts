@@ -82,7 +82,7 @@ suite("TableStringWriter tests", () => {
 
     test("writeTable() null table throws exception", () => {
         const writer = createSut();
-        assert.throws(() => writer.writeTable(null));
+        assert.throws(() => writer.writeTable(null!));
     });
 
     test("writeTable() table without header throws exception", () => {
@@ -120,7 +120,7 @@ suite("TableStringWriter tests", () => {
         const input : TableViewModel = new TableViewModel();
         input.header = makeRowViewModel(["c1", "c2"]);
         input.separator = makeRowViewModel(["--", "--"]);
-        input.rows = null;
+        input.rows = null!;
 
         const writer = createSut();
 
