@@ -5,21 +5,21 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## 4.0.0 - 2026-04-17
 ### Added
 - Issue #86: Add support for header-only tables (without data rows)
 - Issue #98: Include TypeScript type declarations in the NPM package.
-
-### Fixed
-- Issue #85: Fixed markdown spec compliance for unbordered tables with center/right aligned first columns. First column now uses left padding logic regardless of alignment to prevent invalid markdown output.
-- Issue #88: Fixed bordered tables inside numbered/bullet lists having their list marker incorporated as a data column and losing their right border.
-- Issue #93: Fixed tables inside blockquotes not being prettified.
-
 ### Changed
 - **BREAKING**: Updated NPM package compilation target from ES5 to ES2022. Requires Node.js 16.11+.
 - Updated TypeScript to 6 with full strict mode.
 - Updated all dependencies to latest versions.
 - Fixed vulnerabilities in transitive dependencies.
 - Updated Docker image to use `lts-alpine` tag for automatic LTS tracking and added OS-level security patching.
+### Fixed
+- Issue #85: Fixed markdown spec compliance for unbordered tables with center/right aligned first columns. First column now uses left padding logic regardless of alignment to prevent invalid markdown output.
+- Issue #88: Fixed bordered tables inside numbered/bullet lists having their list marker incorporated as a data column and losing their right border.
+- Issue #93: Fixed tables inside blockquotes not being prettified.
 
 ## 3.7.0 - 2025-08-29
 ### Added
