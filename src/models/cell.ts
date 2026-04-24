@@ -19,6 +19,10 @@ export class Cell {
     }
 
     private getCharDisplayLength(character: string): number {
+        // handle the most probable zero-width characters
+        if (/^[\u{200B}-\u{200F}\u{2060}-\u{2064}\u{FEFF}\u{034F}\u{061C}\u{00AD}]$/u.test(character))
+            return 0;
+
         // for the specified ranges use a length of 2, otherwise a length of 1
         return /^(([\u{4E00}-\u{9FFF}])|([\u{3400}-\u{4DBF}])|([\u{20000}-\u{2A6DF}])|([\u{2A700}-\u{2B73F}])|([\u{2B740}-\u{2B81F}]))$/u.test(character)
             ? 2

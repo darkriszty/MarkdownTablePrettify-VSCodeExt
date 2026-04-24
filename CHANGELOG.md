@@ -5,6 +5,8 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- Issue #106: Fixed table prettification breaking when cells contain zero-width characters.
 
 ## 4.0.0 - 2026-04-17
 ### Added
