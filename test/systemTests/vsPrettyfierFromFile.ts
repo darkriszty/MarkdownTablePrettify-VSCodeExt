@@ -22,6 +22,7 @@ import { MultiTablePrettyfier } from '../../src/prettyfiers/multiTablePrettyfier
 import { SingleTablePrettyfier } from '../../src/prettyfiers/singleTablePrettyfier';
 import { FairTableIndentationDetector } from '../../src/modelFactory/tableIndentationDetector';
 import { ValuePaddingProvider } from '../../src/writers/valuePaddingProvider';
+import { MarkdownTextDocumentStub } from '../stubs/markdownTextDocumentStub';
 import SystemTestsConfig from './systemTestsConfig';
 
 export class VsPrettyfierFromFile {
@@ -31,22 +32,17 @@ export class VsPrettyfierFromFile {
         this._logger = logger == null ? new ConsoleLogger() : logger;
     }
 
-    public assertPrettyfiedAsExpected(fileNamePrefix: string): void {
-        vscode.workspace.openTextDocument(`${fileNamePrefix}-input.md`)
-            .then(inputDocument => {
-                const edits = this.formatFile(inputDocument, fileNamePrefix);
-                const expectedFileContents = readFileContents(`${fileNamePrefix}-expected.md`);
-                this.assertEditsPrettyfied(inputDocument, edits, expectedFileContents);
-            });
+    public assertPrettyfiedAsExpected(fileNameRoot: string): void {
+        const inputFileContents = readFileContents(`${fileNameRoot}-input.md`);
+        const inputDocument = new MarkdownTextDocumentStub(inputFileContents);
+        const edits = this.formatFile(inputDocument, fileNameRoot);
+        const expectedFileContents = readFileContents(`${fileNameRoot}-expected.md`);
+        this.assertEditsPrettyfied(edits, expectedFileContents);
     }
 
-    private assertEditsPrettyfied(inputDocument: vscode.TextDocument, edits: vscode.TextEdit[], expected: string): void {
-        let actual = inputDocument.getText();
-        for (let edit of edits) {
-            const startIndex = inputDocument.offsetAt(edit.range.start);
-            const endIndex = inputDocument.offsetAt(inputDocument.validatePosition(edit.range.end));
-            actual = actual.substring(0, startIndex) + edit.newText + actual.substring(endIndex);
-        }
+    private assertEditsPrettyfied(edits: vscode.TextEdit[], expected: string): void {
+        assert.strictEqual(edits.length, 1, "Expected exactly one edit replacing the entire document");
+        const actual = edits[0].newText;
 
         const expectedLines = expected.split(/\r\n|\r|\n/);
         const actualLines = actual.split(/\r\n|\r|\n/);
@@ -78,9 +74,9 @@ export class VsPrettyfierFromFile {
                     )),
                     new TableStringWriter(new ValuePaddingProvider(columnPadding)),
                     [ this._logger ],
-                    new ConfigSizeLimitChecker([ this._logger ], 50000)
+                    new ConfigSizeLimitChecker([ this._logger ], 48000)
                 ),
-                new ConfigSizeLimitChecker([ this._logger ], 50000)
+                new ConfigSizeLimitChecker([ this._logger ], 48000)
             )
         );
     }
