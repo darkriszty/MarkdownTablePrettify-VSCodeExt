@@ -46,4 +46,16 @@ suite("Cell tests", () => {
     test("getLength() for specific CJK characters 3", () => {
         assert.strictEqual(new Cell("零件加工").getLength(), 8);
     });
+
+    test("getLength() for zero-width space returns 0", () => {
+        assert.strictEqual(new Cell("\u200B").getLength(), 0);
+    });
+
+    test("getLength() for text with zero-width space excludes it from length", () => {
+        assert.strictEqual(new Cell("@\alice").getLength(), 6);
+    });
+
+    test("getLength() for text with zero-width joiner excludes it from length", () => {
+        assert.strictEqual(new Cell("a\u200Db").getLength(), 2);
+    });
 });
