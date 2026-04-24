@@ -9,12 +9,8 @@ fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
 
         for (let fileNameRoot of distinctTests) {
             test(`[${fileNameRoot}]`, () => {
-                new VsPrettyfierFromFile().assertPrettyfiedAsExpected(nameWithDir(fileNameRoot));
+                new VsPrettyfierFromFile().assertPrettyfiedAsExpected(fileNameRoot);
             });
-        }
-
-        function nameWithDir(fileName: string) {
-            return `resources/${fileName}`;
         }
     });
 });
