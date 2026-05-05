@@ -20,14 +20,17 @@ import { SelectionInterpreter } from '../modelFactory/selectionInterpreter';
 import { PadCalculatorSelector } from '../padCalculation/padCalculatorSelector';
 import { AlignmentMarkerStrategy } from '../viewModelFactories/alignmentMarking';
 import { MultiTablePrettyfier } from '../prettyfiers/multiTablePrettyfier';
+import { TableAtCursorPrettyfier } from "../prettyfiers/tableAtCursorPrettyfier";
 import { SingleTablePrettyfier } from '../prettyfiers/singleTablePrettyfier';
 import { TableStringWriter } from "../writers/tableStringWriter";
 import { ValuePaddingProvider } from '../writers/valuePaddingProvider';
 
 let cachedMultiTablePrettyfier: MultiTablePrettyfier | null = null;
+let cachedTableAtCursorPrettyfier: TableAtCursorPrettyfier | null = null;
 
 export function invalidateCache() {
     cachedMultiTablePrettyfier = null;
+    cachedTableAtCursorPrettyfier = null;
 }
 
 export function getSupportLanguageIds() {
@@ -62,6 +65,23 @@ function getMultiTablePrettyfier(): MultiTablePrettyfier {
     );
 
     return cachedMultiTablePrettyfier;
+}
+
+export function getTableAtCursorPrettyfier(): TableAtCursorPrettyfier {
+    if (cachedTableAtCursorPrettyfier) {
+        return cachedTableAtCursorPrettyfier;
+    }
+
+    const loggers = getLoggers();
+    const sizeLimitChecker = getSizeLimitChecker(loggers);
+    const columnPadding = getConfigurationValue<number>("columnPadding", 0);
+
+    cachedTableAtCursorPrettyfier = new TableAtCursorPrettyfier(
+        new TableFinder(new TableValidator(new SelectionInterpreter(true))),
+        getSingleTablePrettyfier(loggers, sizeLimitChecker, columnPadding)
+    );
+
+    return cachedTableAtCursorPrettyfier;
 }
 
 function getSingleTablePrettyfier(loggers: ILogger[], sizeLimitCheker: ConfigSizeLimitChecker, columnPadding: number): SingleTablePrettyfier {

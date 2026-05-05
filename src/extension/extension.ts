@@ -1,6 +1,6 @@
 'use strict';
 import * as vscode from 'vscode';
-import { getSupportLanguageIds, getDocumentRangePrettyfier, getDocumentPrettyfier, getDocumentPrettyfierCommand, invalidateCache } from './prettyfierFactory';
+import { getSupportLanguageIds, getDocumentRangePrettyfier, getDocumentPrettyfier, getDocumentPrettyfierCommand, getTableAtCursorPrettyfier, invalidateCache } from './prettyfierFactory';
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
@@ -28,6 +28,15 @@ export function activate(context: vscode.ExtensionContext): void {
         vscode.commands.registerTextEditorCommand(command, textEditor => {
             if (supportedLanguageIds.indexOf(textEditor.document.languageId) >= 0)
                 getDocumentPrettyfierCommand().prettifyDocument(textEditor);
+        })
+    );
+
+    const formatTableCommand = "markdownTablePrettify.formatTableAtCursor";
+    context.subscriptions.push(
+        vscode.commands.registerTextEditorCommand(formatTableCommand, textEditor => {
+            if (supportedLanguageIds.indexOf(textEditor.document.languageId) >= 0) {
+                const found = getTableAtCursorPrettyfier().prettifyTableAtCursor(textEditor);
+            }
         })
     );
 }

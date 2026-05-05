@@ -58,6 +58,10 @@
       {
         "command": "markdownTablePrettify.prettifyTables",
         "title": "Prettify markdown tables"
+      },
+      {
+        "command": "markdownTablePrettify.prettifyTableAtCursor",
+        "title": "Prettify markdown table at cursor"
       }
     ],
     "keybindings": [
@@ -67,7 +71,16 @@
         "mac": "cmd+alt+m",
         "when": "editorTextFocus && !editorReadonly && !inCompositeEditor"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "markdownTablePrettify.prettifyTableAtCursor",
+          "when": "editorTextFocus && !editorReadonly && !inCompositeEditor",
+          "group": "1_modification"
+        }
+      ]
+    }
   },
   "capabilities": {
     "documentFormattingProvider": "true"
