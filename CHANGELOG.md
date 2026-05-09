@@ -5,6 +5,8 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Issue #111: Added context menu option to prettify table at cursor without selection.
 ### Fixed
 - Issue #106: Fixed table prettification breaking when cells contain zero-width characters.
 

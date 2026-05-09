@@ -76,8 +76,8 @@
       "editor/context": [
         {
           "command": "markdownTablePrettify.prettifyTableAtCursor",
-          "when": "editorTextFocus && !editorReadonly && !inCompositeEditor",
-          "group": "1_modification"
+          "when": "markdownTablePrettify.hasTableAtCursor && editorTextFocus && !editorReadonly && !inCompositeEditor",
+          "group": "1_modification@2"
         }
       ]
     }

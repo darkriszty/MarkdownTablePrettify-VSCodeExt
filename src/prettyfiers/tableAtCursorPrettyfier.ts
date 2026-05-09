@@ -11,7 +11,7 @@ export class TableAtCursorPrettyfier {
         private readonly _singleTablePrettyfier: SingleTablePrettyfier
     ) { }
 
-    public prettifyTableAtCursor(editor: vscode.TextEditor): boolean {
+    public async prettifyTableAtCursor(editor: vscode.TextEditor): Promise<boolean> {
         const cursorLine = editor.selection.active.line;
         const document = new Document(editor.document.getText());
 
@@ -22,11 +22,11 @@ export class TableAtCursorPrettyfier {
 
         const formattedTable = this._singleTablePrettyfier.prettifyTable(document, tableRange);
 
-        editor.edit(editBuilder => {
+        await editor.edit(editBuilder => {
             editBuilder.replace(
                 new vscode.Range(
                     new vscode.Position(tableRange.startLine, 0),
-                    new vscode.Position(tableRange.endLine, Number.MAX_SAFE_INTEGER)
+                    editor.document.lineAt(tableRange.endLine).range.end
                 ),
                 formattedTable
             );
@@ -35,25 +35,11 @@ export class TableAtCursorPrettyfier {
         return true;
     }
 
+    public hasTableAtCursor(document: Document, cursorLine: number): boolean {
+        return this.findTableRangeAtLine(document, cursorLine) != null;
+    }
+
     private findTableRangeAtLine(document: Document, cursorLine: number): Range | null {
-        const searchStart = Math.max(0, cursorLine - 1);
-        let searchFrom = 0;
-
-        let candidate: Range | null = null;
-        while (true) {
-            const range = this._tableFinder.getNextRange(document, searchFrom);
-            if (range == null) break;
-
-            if (range.startLine <= cursorLine && cursorLine <= range.endLine) {
-                candidate = range;
-                break;
-            }
-
-            if (range.startLine > cursorLine) break;
-
-            searchFrom = range.endLine + 1;
-        }
-
-        return candidate;
+        return this._tableFinder.getRangeContainingLine(document, cursorLine);
     }
 }
