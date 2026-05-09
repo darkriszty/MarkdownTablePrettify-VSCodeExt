@@ -7,10 +7,10 @@ export class TableDocumentPrettyfierCommand {
         private readonly _multiTablePrettyfier: MultiTablePrettyfier
     ) { }
 
-    public prettifyDocument(editor: vscode.TextEditor) {
+    public async prettifyDocument(editor: vscode.TextEditor): Promise<void> {
         const formattedDocument: string = this._multiTablePrettyfier.formatTables(editor.document.getText());
 
-        editor.edit(textEditorEdit => {
+        await editor.edit(textEditorEdit => {
             textEditorEdit.replace(new vscode.Range(
                 new vscode.Position(0, 0),
                 new vscode.Position(editor.document.lineCount - 1, Number.MAX_SAFE_INTEGER)

@@ -23,11 +23,7 @@ export class TableFinder {
             }
 
             if (!isInIgnoreBlock) {
-                const isValidSeparatorRow = this._tableValidator.lineIsValidSeparator(document.lines[rowIndex].value);
-                const nextRangeResult: { range: Range | null, ignoreBlockStarted: boolean } = isValidSeparatorRow
-                    ? this.getNextValidTableRange(document, rowIndex)
-                    : { range: null, ignoreBlockStarted: isInIgnoreBlock};
-
+                const nextRangeResult = this.getRangeAtSeparatorRow(document, rowIndex);
                 isInIgnoreBlock = nextRangeResult.ignoreBlockStarted;
 
                 if (nextRangeResult.range != null) {
@@ -38,6 +34,73 @@ export class TableFinder {
         }
 
         return null;
+    }
+
+    public getRangeContainingLine(document: Document, lineIndex: number): Range | null {
+        if (lineIndex < 0 || lineIndex >= document.lines.length) {
+            return null;
+        }
+
+        // search locally around the cursor
+        const trySeparator = (separatorRowIndex: number): Range | null => {
+            if (this.isLineInsideIgnoreBlock(document, separatorRowIndex)) {
+                return null;
+            }
+
+            const range = this.getRangeAtSeparatorRow(document, separatorRowIndex).range;
+            return range != null && range.startLine <= lineIndex && lineIndex <= range.endLine
+                ? range
+                : null;
+        };
+
+        const initialRange = trySeparator(lineIndex);
+        if (initialRange != null) {
+            return initialRange;
+        }
+
+        let offset = 1;
+        while (lineIndex - offset >= 0 || lineIndex + offset < document.lines.length) {
+            if (lineIndex - offset >= 0) {
+                const range = trySeparator(lineIndex - offset);
+                if (range != null) {
+                    return range;
+                }
+            }
+
+            if (lineIndex + offset < document.lines.length) {
+                const range = trySeparator(lineIndex + offset);
+                if (range != null) {
+                    return range;
+                }
+            }
+
+            offset++;
+        }
+
+        return null;
+    }
+
+    private isLineInsideIgnoreBlock(document: Document, lineIndex: number): boolean {
+        let ignoreBlockStarted = false;
+
+        for (let index = 0; index <= lineIndex && index < document.lines.length; index++) {
+            const trimmedLine = document.lines[index].value.trim();
+            if (trimmedLine == this._ignoreStart) {
+                ignoreBlockStarted = true;
+            } else if (trimmedLine == this._ignoreEnd) {
+                ignoreBlockStarted = false;
+            }
+        }
+
+        return ignoreBlockStarted;
+    }
+
+    private getRangeAtSeparatorRow(document: Document, separatorRowIndex: number): { range: Range | null, ignoreBlockStarted: boolean } {
+        if (!this._tableValidator.lineIsValidSeparator(document.lines[separatorRowIndex].value)) {
+            return { range: null, ignoreBlockStarted: false };
+        }
+
+        return this.getNextValidTableRange(document, separatorRowIndex);
     }
 
     private getNextValidTableRange(document: Document, separatorRowIndex: number): { range: Range | null, ignoreBlockStarted: boolean} {

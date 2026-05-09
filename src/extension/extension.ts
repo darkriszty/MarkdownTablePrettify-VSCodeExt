@@ -1,6 +1,7 @@
 'use strict';
 import * as vscode from 'vscode';
-import { getSupportLanguageIds, getDocumentRangePrettyfier, getDocumentPrettyfier, getDocumentPrettyfierCommand, invalidateCache } from './prettyfierFactory';
+import { getSupportLanguageIds, getDocumentRangePrettyfier, getDocumentPrettyfier, getDocumentPrettyfierCommand, getTableAtCursorPrettyfier, invalidateCache } from './prettyfierFactory';
+import { TableAtCursorContextKeyUpdater } from './tableAtCursorContextKeyUpdater';
 
 // This method is called when the extension is activated.
 // The extension is activated the very first time the command is executed.
@@ -23,11 +24,35 @@ export function activate(context: vscode.ExtensionContext): void {
         );
     }
 
+    const tableAtCursorContextKey = "markdownTablePrettify.hasTableAtCursor";
+    const contextKeyUpdater = new TableAtCursorContextKeyUpdater(
+        supportedLanguageIds,
+        tableAtCursorContextKey,
+        getTableAtCursorPrettyfier(),
+        vscode.commands.executeCommand
+    );
+
+    context.subscriptions.push(
+        vscode.window.onDidChangeActiveTextEditor(editor => void contextKeyUpdater.update(editor)),
+        vscode.window.onDidChangeTextEditorSelection(event => void contextKeyUpdater.update(event.textEditor))
+    );
+
+    void contextKeyUpdater.update(vscode.window.activeTextEditor);
+
     const command = "markdownTablePrettify.prettifyTables";
     context.subscriptions.push(
-        vscode.commands.registerTextEditorCommand(command, textEditor => {
-            if (supportedLanguageIds.indexOf(textEditor.document.languageId) >= 0)
-                getDocumentPrettyfierCommand().prettifyDocument(textEditor);
+        vscode.commands.registerTextEditorCommand(command, async textEditor => {
+            if (supportedLanguageIds.includes(textEditor.document.languageId))
+                await getDocumentPrettyfierCommand().prettifyDocument(textEditor);
+        })
+    );
+
+    const formatTableCommand = "markdownTablePrettify.prettifyTableAtCursor";
+    context.subscriptions.push(
+        vscode.commands.registerTextEditorCommand(formatTableCommand, async textEditor => {
+            if (supportedLanguageIds.includes(textEditor.document.languageId)) {
+                await getTableAtCursorPrettyfier().prettifyTableAtCursor(textEditor);
+            }
         })
     );
 }

@@ -218,6 +218,107 @@ suite("TableFinder tests", () => {
         assert.deepStrictEqual(range, new Range(6, 9));
     });
 
+    test("getRangeContainingLine() returns the table for a cursor on the header row", () => {
+        const sut = createSut();
+        const document = new Document(`|Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer`);
+
+        let range = sut.getRangeContainingLine(document, 0);
+
+        assert.deepStrictEqual(range, new Range(0, 3));
+    });
+
+    test("getRangeContainingLine() returns the table for a cursor on a body row", () => {
+        const sut = createSut();
+        const document = new Document(`|Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer`);
+
+        let range = sut.getRangeContainingLine(document, 3);
+
+        assert.deepStrictEqual(range, new Range(0, 3));
+    });
+
+    test("getRangeContainingLine() returns the table containing a line inside the first table", () => {
+        const sut = createSut();
+        const document = new Document(`
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer
+
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer`);
+
+        let range = sut.getRangeContainingLine(document, 3);
+
+        assert.deepStrictEqual(range, new Range(1, 4));
+    });
+
+    test("getRangeContainingLine() returns the table for a cursor on the separator row", () => {
+        const sut = createSut();
+        const document = new Document(`|A|B|\n|-|-|\n|1|2|`);
+
+        let range = sut.getRangeContainingLine(document, 1);
+
+        assert.deepStrictEqual(range, new Range(0, 2));
+    });
+
+    test("getRangeContainingLine() returns the second table when the cursor is in the second table", () => {
+        const sut = createSut();
+        const document = new Document(`|A|B|\n|-|-|\n|1|2|\n\n|C|D|\n|-|-|\n|3|4|`);
+
+        let range = sut.getRangeContainingLine(document, 6);
+
+        assert.deepStrictEqual(range, new Range(4, 6));
+    });
+
+    test("getRangeContainingLine() returns null for an out of range line", () => {
+        const sut = createSut();
+        const document = new Document(`|A|B|\n|-|-|\n|1|2|`);
+
+        let range = sut.getRangeContainingLine(document, 10);
+
+        assert.strictEqual(range, null);
+    });
+
+    test("getRangeContainingLine() returns null for a line between tables", () => {
+        const sut = createSut();
+        const document = new Document(`
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer
+
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer`);
+
+        let range = sut.getRangeContainingLine(document, 5);
+
+        assert.strictEqual(range, null);
+    });
+
+    test("getRangeContainingLine() returns null when the cursor is inside an ignored block", () => {
+        const sut = createSut();
+        const document = new Document(`<!-- markdown-table-prettify-ignore-start -->
+            |Primitive Type|Size(bit)|Wrapper
+            |-|-|-
+            |short|16|Short
+            |int|32|Integer
+            <!-- markdown-table-prettify-ignore-end -->`);
+
+        let range = sut.getRangeContainingLine(document, 3);
+
+        assert.strictEqual(range, null);
+    });
+
     function createSut() {
         return new TableFinder(new TableValidator(new SelectionInterpreter(true)));
     }
