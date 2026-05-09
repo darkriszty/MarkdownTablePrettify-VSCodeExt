@@ -12,23 +12,24 @@ suite("TableDocumentPrettyfierCommand tests", () => {
         _multiTablePrettyfier = Mock.ofType<MultiTablePrettyfier>();
     });
 
-    test("prettifyDocument() calls MultiTablePrettyfier and edit()", () => {
+    test("prettifyDocument() calls MultiTablePrettyfier and edit()", async () => {
         const sut = createSut();
         const input = Array(10).fill("hello world").join("\n");
         const expectedResult = Array(10).fill("expected result").join("\n");
         const textEditor = Mock.ofType<vscode.TextEditor>();
         const document = new MarkdownTextDocumentStub(input);
         textEditor.setup(e => e.document).returns(() => document);
+        textEditor.setup(e => e.edit(It.isAny())).returns(() => Promise.resolve(true));
         // Note: due to a limitation of the MarkdownTextDocumentStub with OS line endings, we use `It.isAny()` instead of `input`.
         _multiTablePrettyfier.setup(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny())).returns(() => expectedResult)
 
-        sut.prettifyDocument(textEditor.object);
+        await sut.prettifyDocument(textEditor.object);
 
         textEditor.verify(e => e.edit(It.isAny()), Times.once());
         _multiTablePrettyfier.verify(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny()), Times.once());
     });
 
-    test("prettifyDocument() for non-markdown documents it still calls MultiTablePrettyfier and edit()", () => {
+    test("prettifyDocument() for non-markdown documents it still calls MultiTablePrettyfier and edit()", async () => {
         const sut = createSut();
         const input = Array(10).fill("hello world").join("\n");
         const expectedResult = Array(10).fill("expected result").join("\n");
@@ -36,9 +37,10 @@ suite("TableDocumentPrettyfierCommand tests", () => {
         const document = new MarkdownTextDocumentStub(input);
         document.languageId = "text";
         textEditor.setup(e => e.document).returns(() => document);
+        textEditor.setup(e => e.edit(It.isAny())).returns(() => Promise.resolve(true));
         _multiTablePrettyfier.setup(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny())).returns(() => expectedResult)
 
-        sut.prettifyDocument(textEditor.object);
+        await sut.prettifyDocument(textEditor.object);
 
         textEditor.verify(e => e.edit(It.isAny()), Times.once());
         _multiTablePrettyfier.verify(multiTablePrettyfier => multiTablePrettyfier.formatTables(It.isAny()), Times.once());
