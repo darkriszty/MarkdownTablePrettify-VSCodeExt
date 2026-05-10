@@ -31,14 +31,14 @@ export class MarkdownPrefixStripper {
         let remaining = line;
 
         // Layer 1: Blockquote markers (always strip - unambiguous Markdown syntax)
-        const bqMatch = remaining.match(/^(\s*(?:>\s*)+)/);
+        const bqMatch = remaining.match(/^([^\S\r\n]*(?:>[^\S\r\n]*)+)/);
         if (bqMatch) {
             prefix += bqMatch[1];
             remaining = remaining.substring(bqMatch[1].length);
         }
 
         // Layer 2: List markers (only strip when followed by whitespace + |, i.e., bordered tables)
-        const listMatch = remaining.match(/^(\s*(?:\d+[.)]|[-*+]))(?=\s+\|)/);
+        const listMatch = remaining.match(/^([^\S\r\n]*(?:\d+[.)]|[-*+]))(?=[^\S\r\n]+\|)/);
         if (listMatch) {
             prefix += listMatch[1];
         }
