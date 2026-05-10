@@ -28,7 +28,14 @@ fs.readdir(path.resolve(__dirname, "resources/"), function(err, files) {
         for (let fileNameRoot of distinctTests) {
             test(`[${fileNameRoot}]`, () => {
                 const input = readFileContents(`${fileNameRoot}-input.md`);
-                assert.throws(() => CliPrettify.check(input));
+                const expected = readFileContents(`${fileNameRoot}-expected.md`);
+                const cliOptions = SystemTestsConfig.getCliOptionsFor(fileNameRoot);
+
+                if (input === expected) {
+                    assert.doesNotThrow(() => CliPrettify.check(input, cliOptions));
+                } else {
+                    assert.throws(() => CliPrettify.check(input, cliOptions));
+                }
             });
         }
     });
