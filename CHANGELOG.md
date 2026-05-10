@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Issue #111: Added context menu option to prettify table at cursor without selection.
 ### Fixed
 - Issue #106: Fixed table prettification breaking when cells contain zero-width characters.
+- Issue #109: Fixed new line handling inside blockquotes that breaks formatting.
 
 ## 4.0.0 - 2026-04-17
 ### Added
