@@ -1,4 +1,9 @@
 export class Cell {
+    private static readonly _segmenter = new Intl.Segmenter();
+    // gives the widths string-width reports, which markdownlint's MD060 uses to measure tables
+    private static readonly _emoji = /^(?:\p{Emoji_Presentation}|\p{Emoji}\u{FE0F})/u;
+    private static readonly _mayContainEmoji = /[\p{Emoji_Presentation}\u{FE0F}]/u;
+
     private _value: string;
 
     constructor(value: string) {
@@ -10,10 +15,22 @@ export class Cell {
     }
 
     public getLength(): number {
+        if (!Cell._mayContainEmoji.test(this._value))
+            return this.getCharsDisplayLength(this._value);
+
         let length: number = 0;
 
-        for (let i = 0, n = this._value.length; i < n; i++)
-            length += this.getCharDisplayLength(this._value.charAt(i));
+        for (const { segment } of Cell._segmenter.segment(this._value))
+            length += Cell._emoji.test(segment) ? 2 : this.getCharsDisplayLength(segment);
+
+        return length;
+    }
+
+    private getCharsDisplayLength(text: string): number {
+        let length: number = 0;
+
+        for (let i = 0, n = text.length; i < n; i++)
+            length += this.getCharDisplayLength(text.charAt(i));
 
         return length;
     }
